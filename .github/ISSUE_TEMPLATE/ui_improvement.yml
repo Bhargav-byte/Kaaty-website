@@ -1,0 +1,65 @@
+name: UI / Design Improvement
+description: Suggest a visual or interaction improvement to the Kaaty website
+labels: ["ui", "design", "needs-triage"]
+assignees:
+  - Bhargav-byte
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for layout, spacing, colour, typography, animation, or accessibility improvements.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected Area
+      options:
+        - Navbar
+        - Hero Section
+        - Product Section
+        - Solutions Section
+        - Integrations Section
+        - Pricing Section
+        - FAQ Section
+        - Demo Form
+        - Footer
+        - Mobile / Responsive
+        - Animations
+        - Accessibility
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Behaviour
+      description: Describe the current UI/UX and why it needs improvement.
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested Improvement
+      description: What should it look like or behave like instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / References
+      description: Add screenshots of the current state, mockups, or design references.
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Primarily Affects
+      options:
+        - Desktop
+        - Mobile
+        - Both
+    validations:
+      required: true

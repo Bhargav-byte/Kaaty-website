@@ -1,243 +1,226 @@
-# Kaaty Landing Page
-Official repository for the Kaaty marketing website and product ecosystem platform.
+# Kaaty Website
 
-## Overview
-This repository powers the public Kaaty website, including:
+> Official production repository for the Kaaty marketing website and product ecosystem platform.
+> **`main` = production. Every merge deploys live.**
 
-- Landing Pages
-- Product Pages
-- Solution Pages
-- Integration Pages
-- Pricing
-- Resources
-- Demo Booking Flow
-
-**Tech Stack**
-
-- React
-- Vite
-- TypeScript
-- Tailwind CSS
-- Netlify
+[![CI](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/ci.yml/badge.svg)](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/security.yml/badge.svg)](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/security.yml)
 
 ---
 
-# IMPORTANT WORKFLOW
-The `main` branch is connected directly to the production website.
+## ⚠️ Production Warning
 
-Any code pushed to `main` may automatically deploy to production.
+```
+main branch = live production website
+```
 
-Do NOT push directly to `main` unless the changes have been tested and approved.
+- **Never push directly to `main`.**
+- **All changes must go through a Pull Request.**
+- **Every PR must have CI passing + owner approval before merge.**
 
 ---
 
-# Getting Started
+## Tech Stack
 
-## Option 1: Clone Repository
+| Tool                | Version | Purpose                   |
+| ------------------- | ------- | ------------------------- |
+| React               | 19      | UI framework              |
+| TypeScript          | 5       | Type safety (strict mode) |
+| Vite                | 8       | Build tool & dev server   |
+| Tailwind CSS        | CDN     | Styling                   |
+| Netlify             | —       | Hosting & deployment      |
+| ESLint + Prettier   | 10 / 3  | Code quality              |
+| Husky + lint-staged | 9 / 15  | Git hooks                 |
+| GitHub Actions      | —       | CI/CD pipeline            |
 
-```
-git clone
-cd kaaty-landing-page
-npm install
-npm run dev
-```
+---
 
-## Option 2: Download ZIP
+## Getting Started
 
-1. Download the repository ZIP.
-2. Extract the files.
-3. Open the project in VS Code.
-4. Run:
+### Prerequisites
 
-```
-npm install
-npm run dev
+- Node.js >= 20
+- npm >= 10
+
+### Installation
+
+```bash
+git clone https://github.com/Bhargav-byte/kaaty-website.git
+cd kaaty-website
+npm install        # also installs Husky git hooks automatically
+npm run dev        # http://localhost:5173
 ```
 
 ---
 
-# Development Workflow
+## Available Scripts
 
-## Step 1: Pull Latest Changes
-Before starting any work:
+| Script                 | Description                                    |
+| ---------------------- | ---------------------------------------------- |
+| `npm run dev`          | Start dev server at localhost:5173             |
+| `npm run build`        | Production build → `dist/`                     |
+| `npm run preview`      | Preview production build locally               |
+| `npm run typecheck`    | TypeScript strict check (zero errors required) |
+| `npm run lint`         | ESLint check                                   |
+| `npm run lint:fix`     | ESLint auto-fix                                |
+| `npm run format`       | Prettier format all source files               |
+| `npm run format:check` | Prettier check (used in CI)                    |
+| `npm run size`         | Check JS bundle stays ≤ 350 kB                 |
+| `npm test`             | Run test suite                                 |
 
-```
+---
+
+## Development Workflow
+
+### Step 1 — Pull latest main
+
+```bash
 git checkout main
 git pull origin main
 ```
 
-## Step 2: Create a Feature Branch
-Create a branch based on the feature you are working on.
+### Step 2 — Create a feature branch
 
-Examples:
-
-```
-git checkout -b navbar-redesign
-```
-
-```
-git checkout -b pricing-page-update
+```bash
+# Pattern: feature/* | fix/* | hotfix/*
+git checkout -b feature/navbar-redesign
+git checkout -b fix/mobile-menu-overflow
+git checkout -b hotfix/netlify-build-failure
 ```
 
-```
-git checkout -b mobile-menu-fix
-```
+### Step 3 — Develop locally
 
-```
-git checkout -b integrations-section
-```
-Branch names should clearly describe the feature or bug being worked on.
-
----
-
-## Step 3: Work On Your Changes
-Run locally:
-
-```
+```bash
 npm run dev
 ```
-Test:
 
-- Desktop
-- Tablet
-- Mobile
-- Build process
+Test on **Desktop**, **Tablet**, and **Mobile** before pushing.
 
----
+### Step 4 — Verify before pushing
 
-## Step 4: Verify Build
-Before pushing:
-
-```
-npm run build
-```
-Make sure:
-
-- No build errors
-- No TypeScript errors
-- No console errors
-- No broken layouts
-
----
-
-## Step 5: Commit Changes
-
-```
-git add .
-git commit -m "Add integrations section"
-```
-Use clear commit messages.
-
-Examples:
-
-```
-feat: add integrations section
+```bash
+npm run typecheck    # must be zero errors
+npm run lint         # must be zero errors
+npm run format:check # must be zero diffs
+npm run build        # must succeed
+npm run size         # bundle must be ≤ 350 kB
 ```
 
-```
-fix: resolve mobile navbar issue
+### Step 5 — Commit with a clear message
+
+```bash
+# Conventional commit format
+git commit -m "feat(hero): add animated product showcase"
+git commit -m "fix(navbar): resolve mobile overflow on small screens"
+git commit -m "style(pricing): improve card spacing on mobile"
 ```
 
-```
-refactor: improve hero component structure
+### Step 6 — Push and open a Pull Request
+
+```bash
+git push origin feature/your-branch-name
+# Open a PR on GitHub → base: main
+# Fill the PR template completely including screenshots
 ```
 
 ---
 
-## Step 6: Push Feature Branch
-Never push unfinished work to main.
+## Branching Strategy
 
-```
-git push origin your-branch-name
-```
-Example:
-
-```
-git push origin pricing-page-update
-```
+| Branch      | Purpose                                               |
+| ----------- | ----------------------------------------------------- |
+| `main`      | Production — always deployable                        |
+| `feature/*` | New features (e.g. `feature/pricing-page`)            |
+| `fix/*`     | Bug fixes (e.g. `fix/mobile-menu`)                    |
+| `hotfix/*`  | Urgent production fixes (e.g. `hotfix/netlify-build`) |
 
 ---
 
-## Step 7: Review Before Merge
-Before merging into main:
+## Pull Request Rules
 
-- Code reviewed
-- Build successful
-- Responsive testing completed
-- No console errors
-- No broken pages
+Before a PR can merge into `main`:
 
-Only after verification should changes be merged into `main`.
-
----
-
-# Production Branch Rules
-
-## Main Branch
-
-```
-main = Production
-```
-Anything merged into `main` affects the live website.
-
-Be careful.
+- [ ] CI pipeline fully green (lint, typecheck, build, bundle size, secret scan)
+- [ ] Netlify preview deploy reviewed in a real browser
+- [ ] Tested on mobile AND desktop
+- [ ] No console errors
+- [ ] No secrets committed
+- [ ] Approved by **@Bhargav-byte**
 
 ---
 
-# Environment Variables
+## Production Deployment
 
-## Never Upload
-Do NOT commit:
+Deployment is automatic via **Netlify**:
+
+- Every merge to `main` → production deploy
+- Every PR → Netlify preview deploy (review before merge)
+- Config: `netlify.toml`
+
+**Do not** deploy manually or bypass Netlify.
+
+---
+
+## CI/CD Pipelines
+
+| Workflow         | Trigger            | Checks                                      |
+| ---------------- | ------------------ | ------------------------------------------- |
+| `ci.yml`         | push / PR          | format, lint, typecheck, build, bundle size |
+| `security.yml`   | push / PR / weekly | Gitleaks secret scan, npm audit             |
+| `lighthouse.yml` | push to main / PR  | Performance ≥ 85, A11y ≥ 90, SEO ≥ 90       |
+
+---
+
+## Security Guidelines
+
+### NEVER commit:
 
 ```
 .env
 .env.local
 .env.production
 .env.development
+.env.staging
 ```
-These files may contain:
 
-- API Keys
-- Database Credentials
-- Private Tokens
-- Secret Keys
+### NEVER hardcode:
 
-Keep all environment variables local and secure.
+- API Keys (Razorpay, Easebuzz, PhonePe, etc.)
+- Netlify tokens or deploy hooks
+- Authentication tokens or passwords
+- Database credentials
 
----
+All secrets are stored in **Netlify Environment Variables** only.
 
-# Security Guidelines
-Never commit:
+If you accidentally commit a secret:
 
-- API Keys
-- Access Tokens
-- Database Passwords
-- Netlify Secrets
-- Supabase Service Keys
+1. **Immediately rotate the leaked credential**
+2. Contact @Bhargav-byte
+3. Use `git filter-repo` to scrub history
 
-Always use environment variables.
+See [SECURITY.md](./SECURITY.md) for the full security policy.
 
 ---
 
-# Before Merging To Main
-Checklist:
+## Environment Variables
 
-- Branch created
-- Feature completed
-- Build passes
-- No TypeScript errors
-- Responsive tested
-- No console errors
-- Code reviewed
-- Ready for production
+This site currently has **no runtime environment variables**.
 
-Only then merge into `main`.
+If you add one:
+
+- Add it to Netlify → Site Settings → Environment Variables
+- Document it in [CONTRIBUTING.md](./CONTRIBUTING.md)
+- **Never add it to any `.env` file that gets committed**
 
 ---
 
-# Production Website
-Changes merged into `main` may automatically deploy to the live Kaaty website.
+## Contributing
 
-Please verify everything carefully before merging.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full contribution guide including commit conventions, PR workflow, and code quality requirements.
 
-Happy coding.
+---
+
+## License
+
+Private repository. All rights reserved.
+© 2025 Benvora Groups Private Limited.

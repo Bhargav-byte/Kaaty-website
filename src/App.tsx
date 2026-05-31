@@ -1,10 +1,96 @@
 import React from 'react'
 
+type LucideNode = [string, Record<string, unknown>?, LucideNode[]?]
+type LucideIcons = Record<string, LucideNode>
+
+declare global {
+  interface Window {
+    lucide?: { icons: LucideIcons }
+  }
+}
+
+type IconProps = {
+  name: string
+  size?: number
+  strokeWidth?: number
+  className?: string
+  style?: React.CSSProperties
+}
+
+type ContainerProps = {
+  className?: string
+  children: React.ReactNode
+}
+
+type ButtonVariant = 'primary' | 'dark' | 'outline' | 'ghostLight' | 'soft'
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonProps = {
+  children: React.ReactNode
+  variant?: ButtonVariant
+  size?: ButtonSize
+  icon?: string
+  className?: string
+  as?: 'button' | 'a'
+  href?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
+}
+
+type EyebrowProps = {
+  children: React.ReactNode
+  className?: string
+}
+
+type SectionHeadProps = {
+  eyebrow?: React.ReactNode
+  title: React.ReactNode
+  sub?: React.ReactNode
+  align?: 'center' | 'left'
+  light?: boolean
+  className?: string
+}
+
+type ItemLinkProps = {
+  href: string
+  icon: string
+  name: string
+  desc?: string
+}
+
+type StatusDotProps = { color: string }
+type MockKind = 'pos' | 'kds' | 'phone' | 'business' | 'vendor' | 'qr' | 'kiosk'
+
+type FeatureRow = {
+  title: string
+  mock: MockKind
+  desc: string
+  points: string[]
+}
+
+type FaqItem = { q: string; a: string }
+type BenefitItem = { icon: string; label: string }
+type LogoItem = { name: string; icon: string }
+type LogoBandProps = { heading?: string; logos: LogoItem[] }
+type SubHeroProps = {
+  eyebrow: string
+  title: React.ReactNode
+  sub: string
+  cta?: string
+  visual?: MockKind
+}
+type FeatureRowsProps = { rows: FeatureRow[] }
+type AccordionProps = { items: FaqItem[]; heading?: string }
+type BenefitStripProps = { benefits: BenefitItem[]; heading?: string }
+type MiniValueGridProps = {
+  heading?: string
+  items?: Array<{ icon: string; title: string; desc: string }>
+}
+type HeroVisualProps = { kind?: MockKind }
+
 /* ============================================================
    Kaaty — Shared primitives & Lucide icon renderer
    ============================================================ */
 
-function lucideChild(child, i) {
+function lucideChild(child: LucideNode, i: number): React.ReactElement {
   const tag = child[0]
   const attrs = child[1] || {}
   const kids = child[2]
@@ -15,9 +101,10 @@ function lucideChild(child, i) {
   )
 }
 
-function Icon({ name, size = 24, strokeWidth = 2, className = '', style }) {
+function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
   const L = typeof window !== 'undefined' ? window.lucide : null
-  const node = L && L.icons ? L.icons[toPascal(name)] || L.icons[name] : null
+  const icons = (L && L.icons ? L.icons : null) as LucideIcons | null
+  const node = icons ? icons[toPascal(name)] || icons[name] : null
   const children = node && Array.isArray(node[2]) ? node[2] : []
   return (
     <svg
@@ -38,19 +125,15 @@ function Icon({ name, size = 24, strokeWidth = 2, className = '', style }) {
     </svg>
   )
 }
-function toPascal(s) {
+function toPascal(s: string) {
   return String(s)
     .split('-')
     .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
     .join('')
 }
 
-function Container({ className = '', children }) {
-  return (
-    <div className={`mx-auto w-full max-w-7xl px-5 sm:px-8 ${className}`}>
-      {children}
-    </div>
-  )
+function Container({ className = '', children }: ContainerProps) {
+  return <div className={`mx-auto w-full max-w-7xl px-5 sm:px-8 ${className}`}>{children}</div>
 }
 
 function Button({
@@ -62,7 +145,7 @@ function Button({
   as = 'button',
   href,
   onClick,
-}) {
+}: ButtonProps) {
   const sizes = {
     sm: 'h-9 px-4 text-[13px]',
     md: 'h-11 px-5 text-[14px]',
@@ -105,7 +188,7 @@ function Button({
   )
 }
 
-function Eyebrow({ children, className = '' }) {
+function Eyebrow({ children, className = '' }: EyebrowProps) {
   return (
     <span
       className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-kaaty-50 px-3.5 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.12em] text-kaaty-700 ring-1 ring-inset ring-kaaty-100 ${className}`}
@@ -123,15 +206,10 @@ function SectionHead({
   align = 'center',
   light = false,
   className = '',
-}) {
-  const alignCls =
-    align === 'center'
-      ? 'mx-auto text-center items-center'
-      : 'text-left items-start'
+}: SectionHeadProps) {
+  const alignCls = align === 'center' ? 'mx-auto text-center items-center' : 'text-left items-start'
   return (
-    <div
-      className={`flex max-w-3xl flex-col gap-6 ${alignCls} ${className}`}
-    >
+    <div className={`flex max-w-3xl flex-col gap-6 ${alignCls} ${className}`}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         className={`font-display text-[clamp(1.9rem,4.2vw,3.1rem)] font-extrabold leading-[1.12] tracking-[-.025em] ${
@@ -276,19 +354,13 @@ const PRODUCTS = {
         title: 'Cross-channel queue',
         mock: 'kds',
         desc: 'Dine-in, online and QR orders in one unified queue.',
-        points: [
-          'No missed tickets across channels.',
-          'Priority and prep-time aware ordering.',
-        ],
+        points: ['No missed tickets across channels.', 'Priority and prep-time aware ordering.'],
       },
       {
         title: 'Bump, recall & timers',
         mock: 'business',
         desc: 'Keep service tight with live prep timers and recall.',
-        points: [
-          'Per-ticket timers flag slow orders.',
-          'Instant recall of bumped tickets.',
-        ],
+        points: ['Per-ticket timers flag slow orders.', 'Instant recall of bumped tickets.'],
       },
     ],
     benefits: [
@@ -312,10 +384,7 @@ const PRODUCTS = {
         title: 'Your own branded app',
         mock: 'phone',
         desc: 'A customer ordering channel that puts your brand front and centre.',
-        points: [
-          'Responsive digital menus with images.',
-          'Commission-free, direct-to-you orders.',
-        ],
+        points: ['Responsive digital menus with images.', 'Commission-free, direct-to-you orders.'],
       },
       {
         title: 'Real-time order tracking',
@@ -559,11 +628,7 @@ const PRODUCTS = {
     ],
   },
 }
-const PRODUCT_GROUPS = [
-  { label: 'Restaurant Operations', items: ['pos', 'kds', 'token-board'] },
-  { label: 'Customer Experience', items: ['mobile-app', 'qr-ordering', 'kiosk'] },
-  { label: 'Business Management', items: ['business', 'vendor', 'inventory-link'] },
-]
+// PRODUCT_GROUPS reserved for future nav restructure
 
 const SOLUTIONS = {
   'college-canteens': {
@@ -577,10 +642,7 @@ const SOLUTIONS = {
         title: 'Anti-fraud UPI confirmation',
         mock: 'pos',
         desc: 'Where Kaaty began — kill fake-screenshot scams for good.',
-        points: [
-          'Real-time UPI ledger confirmation.',
-          'Nothing marked paid until money lands.',
-        ],
+        points: ['Real-time UPI ledger confirmation.', 'Nothing marked paid until money lands.'],
       },
       {
         title: 'Closed-loop student wallets',
@@ -592,7 +654,10 @@ const SOLUTIONS = {
         title: 'QR & pre-ordering',
         mock: 'qr',
         desc: 'Students order ahead and skip the line entirely.',
-        points: ['Scan-to-order from anywhere on campus.', 'Pickup tokens clear the counter crowd.'],
+        points: [
+          'Scan-to-order from anywhere on campus.',
+          'Pickup tokens clear the counter crowd.',
+        ],
       },
     ],
   },
@@ -917,15 +982,30 @@ const MENU_PRODUCTS = [
     items: [
       { name: 'Mobile App', slug: 'mobile-app', icon: 'smartphone', desc: 'Branded ordering app.' },
       { name: 'QR Ordering', slug: 'qr-ordering', icon: 'qr-code', desc: 'Scan-to-order dining.' },
-      { name: 'Self Ordering Kiosk', slug: 'kiosk', icon: 'scan-line', desc: 'Line-busting terminals.' },
+      {
+        name: 'Self Ordering Kiosk',
+        slug: 'kiosk',
+        icon: 'scan-line',
+        desc: 'Line-busting terminals.',
+      },
     ],
   },
   {
     group: 'Business Management',
     items: [
-      { name: 'Business App', slug: 'business', icon: 'layout-dashboard', desc: 'Owner command centre.' },
+      {
+        name: 'Business App',
+        slug: 'business',
+        icon: 'layout-dashboard',
+        desc: 'Owner command centre.',
+      },
       { name: 'Vendor App', slug: 'vendor', icon: 'store', desc: 'Mobile POS for stalls.' },
-      { name: 'Inventory Management', slug: 'business', icon: 'package', desc: 'Stock & costing control.' },
+      {
+        name: 'Inventory Management',
+        slug: 'business',
+        icon: 'package',
+        desc: 'Stock & costing control.',
+      },
     ],
   },
 ]
@@ -942,9 +1022,32 @@ const MENU_SOLUTIONS = [
 ]
 
 const MENU_INTEGRATIONS = [
-  { group: 'Payments', icon: 'credit-card', items: [{ name: 'Easebuzz', slug: 'easebuzz' }, { name: 'Razorpay', slug: 'razorpay' }, { name: 'PhonePe', slug: 'phonepe' }] },
-  { group: 'Hardware', icon: 'printer', items: [{ name: 'Pine Labs', slug: 'pine-labs' }, { name: 'Thermal Printers', slug: 'thermal-printers' }] },
-  { group: 'Marketplaces', icon: 'shopping-bag', items: [{ name: 'Swiggy', slug: 'swiggy' }, { name: 'Zomato', slug: 'zomato' }, { name: 'ONDC', slug: 'ondc' }] },
+  {
+    group: 'Payments',
+    icon: 'credit-card',
+    items: [
+      { name: 'Easebuzz', slug: 'easebuzz' },
+      { name: 'Razorpay', slug: 'razorpay' },
+      { name: 'PhonePe', slug: 'phonepe' },
+    ],
+  },
+  {
+    group: 'Hardware',
+    icon: 'printer',
+    items: [
+      { name: 'Pine Labs', slug: 'pine-labs' },
+      { name: 'Thermal Printers', slug: 'thermal-printers' },
+    ],
+  },
+  {
+    group: 'Marketplaces',
+    icon: 'shopping-bag',
+    items: [
+      { name: 'Swiggy', slug: 'swiggy' },
+      { name: 'Zomato', slug: 'zomato' },
+      { name: 'ONDC', slug: 'ondc' },
+    ],
+  },
 ]
 
 const MENU_RESOURCES = [
@@ -953,15 +1056,20 @@ const MENU_RESOURCES = [
   { name: 'Blog', icon: 'newspaper', desc: 'Product news & F&B playbooks.' },
 ]
 
-function ItemLink({ href, icon, name, desc }) {
+function ItemLink({ href, icon, name, desc }: ItemLinkProps) {
   return (
-    <a href={href} className="group flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50">
+    <a
+      href={href}
+      className="group flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50"
+    >
       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
         <Icon name={icon} size={17} />
       </span>
       <span className="min-w-0">
         <span className="block text-[13.5px] font-semibold text-navy">{name}</span>
-        {desc && <span className="mt-0.5 block text-[12px] leading-snug text-navy-500">{desc}</span>}
+        {desc && (
+          <span className="mt-0.5 block text-[12px] leading-snug text-navy-500">{desc}</span>
+        )}
       </span>
     </a>
   )
@@ -990,7 +1098,11 @@ function SolutionsMenu() {
   return (
     <div className="grid grid-cols-2 gap-1 p-3">
       {MENU_SOLUTIONS.map((s) => (
-        <a key={s.slug} href={`#/solutions/${s.slug}`} className="group flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50">
+        <a
+          key={s.slug}
+          href={`#/solutions/${s.slug}`}
+          className="group flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50"
+        >
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600 ring-1 ring-inset ring-navy-100 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
             <Icon name={s.icon} size={16} />
           </span>
@@ -1008,7 +1120,9 @@ function IntegrationsMenu() {
         <div key={c.group}>
           <div className="mb-2 flex items-center gap-2 px-1">
             <Icon name={c.icon} size={15} className="text-kaaty-500" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-navy-500">{c.group}</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-navy-500">
+              {c.group}
+            </span>
           </div>
           <ul className="space-y-0.5">
             {c.items.map((i) => (
@@ -1038,7 +1152,8 @@ function ResourcesMenu() {
   )
 }
 
-const MENUS = {
+type MenuConfig = { width: string; render: () => React.ReactElement }
+const MENUS: Record<string, MenuConfig> = {
   Products: { width: 'w-[720px]', render: ProductsMenu },
   Solutions: { width: 'w-[520px]', render: SolutionsMenu },
   Integrations: { width: 'w-[600px]', render: IntegrationsMenu },
@@ -1064,10 +1179,10 @@ function Logo({ light = false }) {
 
 function Navbar() {
   const [scrolled, setScrolled] = React.useState(false)
-  const [open, setOpen] = React.useState(null)
+  const [open, setOpen] = React.useState<string | null>(null)
   const [mobile, setMobile] = React.useState(false)
-  const [mAcc, setMAcc] = React.useState(null)
-  const closeT = React.useRef(null)
+  const [mAcc, setMAcc] = React.useState<string | null>(null)
+  const closeT = React.useRef<number | null>(null)
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -1087,12 +1202,14 @@ function Navbar() {
     return () => window.removeEventListener('hashchange', close)
   }, [])
 
-  const enter = (k) => {
-    clearTimeout(closeT.current)
+  const enter = (k: string) => {
+    if (closeT.current !== null) {
+      clearTimeout(closeT.current)
+    }
     setOpen(k)
   }
   const leave = () => {
-    closeT.current = setTimeout(() => setOpen(null), 120)
+    closeT.current = window.setTimeout(() => setOpen(null), 120)
   }
   const dropdowns = ['Products', 'Solutions', 'Integrations']
 
@@ -1113,9 +1230,7 @@ function Navbar() {
               <div key={k} onMouseEnter={() => enter(k)} className="relative">
                 <button
                   className={`flex items-center gap-1 rounded-lg px-3.5 py-2 text-[14.5px] font-semibold transition-colors ${
-                    open === k
-                      ? 'text-kaaty-600'
-                      : 'text-navy-800 hover:text-kaaty-600'
+                    open === k ? 'text-kaaty-600' : 'text-navy-800 hover:text-kaaty-600'
                   }`}
                 >
                   {k}
@@ -1138,9 +1253,7 @@ function Navbar() {
             <div onMouseEnter={() => enter('Resources')} className="relative">
               <button
                 className={`flex items-center gap-1 rounded-lg px-3.5 py-2 text-[14.5px] font-semibold transition-colors ${
-                  open === 'Resources'
-                    ? 'text-kaaty-600'
-                    : 'text-navy-800 hover:text-kaaty-600'
+                  open === 'Resources' ? 'text-kaaty-600' : 'text-navy-800 hover:text-kaaty-600'
                 }`}
               >
                 Resources
@@ -1148,9 +1261,7 @@ function Navbar() {
                   name="chevron-down"
                   size={15}
                   className={`transition-transform duration-200 ${
-                    open === 'Resources'
-                      ? 'rotate-180 text-kaaty-500'
-                      : 'text-navy-400'
+                    open === 'Resources' ? 'rotate-180 text-kaaty-500' : 'text-navy-400'
                   }`}
                 />
               </button>
@@ -1192,7 +1303,13 @@ function Navbar() {
             >
               Sign in
             </a>
-            <Button as="a" href="#/demo" size="md" icon="arrow-right" className="hidden sm:inline-flex">
+            <Button
+              as="a"
+              href="#/demo"
+              size="md"
+              icon="arrow-right"
+              className="hidden sm:inline-flex"
+            >
               Book Demo
             </Button>
             <button
@@ -1208,7 +1325,10 @@ function Navbar() {
 
       {mobile && (
         <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-navy-950/40 backdrop-blur-sm" onClick={() => setMobile(false)} />
+          <div
+            className="absolute inset-0 bg-navy-950/40 backdrop-blur-sm"
+            onClick={() => setMobile(false)}
+          />
           <div className="absolute right-0 top-0 flex h-full w-[88%] max-w-sm flex-col bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-navy-100 px-5 py-4">
               <Logo />
@@ -1227,7 +1347,11 @@ function Navbar() {
                     className="flex w-full items-center justify-between py-3.5 text-[16px] font-bold text-navy"
                   >
                     {k}
-                    <Icon name={mAcc === k ? 'minus' : 'plus'} size={18} className="text-kaaty-500" />
+                    <Icon
+                      name={mAcc === k ? 'minus' : 'plus'}
+                      size={18}
+                      className="text-kaaty-500"
+                    />
                   </button>
                   {mAcc === k && (
                     <div className="pb-3">
@@ -1294,10 +1418,16 @@ function Navbar() {
                   )}
                 </div>
               ))}
-              <a href="#/pricing" className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy">
+              <a
+                href="#/pricing"
+                className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
+              >
                 Pricing
               </a>
-              <a href="#/about" className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy">
+              <a
+                href="#/about"
+                className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
+              >
                 About Us
               </a>
             </div>
@@ -1317,10 +1447,12 @@ function Navbar() {
    Hero
    ============================================================ */
 
-function StatusDot({ color }) {
+function StatusDot({ color }: StatusDotProps) {
   return (
     <span className="relative flex h-2 w-2">
-      <span className={`absolute inline-flex h-full w-full animate-pulseDot rounded-full ${color}`} />
+      <span
+        className={`absolute inline-flex h-full w-full animate-pulseDot rounded-full ${color}`}
+      />
       <span className={`relative inline-flex h-2 w-2 rounded-full ${color}`} />
     </span>
   )
@@ -1353,7 +1485,10 @@ function POSDevice() {
         </div>
         <div className="space-y-1.5">
           {rows.map((r) => (
-            <div key={r.n} className="flex items-center justify-between rounded-lg bg-navy-50/60 px-3 py-2">
+            <div
+              key={r.n}
+              className="flex items-center justify-between rounded-lg bg-navy-50/60 px-3 py-2"
+            >
               <div className="flex items-center gap-2.5">
                 <span className="grid h-6 w-6 place-items-center rounded-md bg-white text-[11px] font-bold text-kaaty-600 ring-1 ring-navy-100">
                   {r.q}
@@ -1371,9 +1506,15 @@ function POSDevice() {
           <span className="font-display text-[18px] font-extrabold text-navy">₹1,050</span>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2">
-          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">Hold</button>
-          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">Split</button>
-          <button className="rounded-lg bg-kaaty-500 py-2 text-[11.5px] font-bold text-white">Pay UPI</button>
+          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">
+            Hold
+          </button>
+          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">
+            Split
+          </button>
+          <button className="rounded-lg bg-kaaty-500 py-2 text-[11.5px] font-bold text-white">
+            Pay UPI
+          </button>
         </div>
       </div>
     </div>
@@ -1382,10 +1523,19 @@ function POSDevice() {
 
 function KDSDevice() {
   const tickets = [
-    { id: '#1042', t: '02:14', items: ['2× Biryani', '1× Paneer Tikka'], state: 'Preparing', tone: 'amber' },
+    {
+      id: '#1042',
+      t: '02:14',
+      items: ['2× Biryani', '1× Paneer Tikka'],
+      state: 'Preparing',
+      tone: 'amber',
+    },
     { id: '#1041', t: '00:38', items: ['3× Masala Dosa'], state: 'Ready', tone: 'emerald' },
   ]
-  const tones = { amber: 'bg-amber-100 text-amber-700', emerald: 'bg-emerald-100 text-emerald-700' }
+  const tones: Record<string, string> = {
+    amber: 'bg-amber-100 text-amber-700',
+    emerald: 'bg-emerald-100 text-emerald-700',
+  }
   return (
     <div className="w-[256px] overflow-hidden rounded-[18px] border border-navy-800 bg-navy-900 shadow-lift">
       <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-2.5">
@@ -1402,7 +1552,9 @@ function KDSDevice() {
           <div key={t.id} className="rounded-xl bg-white/5 p-3 ring-1 ring-white/10">
             <div className="mb-2 flex items-center justify-between">
               <span className="font-display text-[13px] font-bold text-white">{t.id}</span>
-              <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${tones[t.tone]}`}>{t.state}</span>
+              <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${tones[t.tone]}`}>
+                {t.state}
+              </span>
             </div>
             <ul className="space-y-1">
               {t.items.map((i) => (
@@ -1423,6 +1575,11 @@ function KDSDevice() {
 }
 
 function PhoneDevice() {
+  const steps: Array<[string, boolean]> = [
+    ['Order placed', true],
+    ['Preparing', true],
+    ['Ready for pickup', false],
+  ]
   return (
     <div className="w-[176px] overflow-hidden rounded-[28px] border-[5px] border-navy-900 bg-white shadow-lift">
       <div className="relative bg-gradient-to-b from-kaaty-500 to-kaaty-600 px-4 pb-6 pt-5 text-white">
@@ -1437,11 +1594,7 @@ function PhoneDevice() {
         </div>
       </div>
       <div className="space-y-2.5 px-4 py-4">
-        {[
-          ['Order placed', true],
-          ['Preparing', true],
-          ['Ready for pickup', false],
-        ].map(([s, done]) => (
+        {steps.map(([s, done]) => (
           <div key={s} className="flex items-center gap-2.5">
             <span
               className={`grid h-5 w-5 place-items-center rounded-full ${
@@ -1450,7 +1603,9 @@ function PhoneDevice() {
             >
               <Icon name={done ? 'check' : 'circle'} size={12} />
             </span>
-            <span className={`text-[11.5px] font-medium ${done ? 'text-navy-800' : 'text-navy-400'}`}>
+            <span
+              className={`text-[11.5px] font-medium ${done ? 'text-navy-800' : 'text-navy-400'}`}
+            >
               {s}
             </span>
           </div>
@@ -1479,12 +1634,13 @@ function Hero() {
             </div>
 
             <h1 className="mt-6 font-display text-[clamp(2.4rem,5.6vw,4.1rem)] font-extrabold leading-[1.02] tracking-[-.035em] text-navy">
-              The Complete <span className="gradient-text">Operating System</span> For Modern Food Businesses
+              The Complete <span className="gradient-text">Operating System</span> For Modern Food
+              Businesses
             </h1>
 
             <p className="mt-6 max-w-lg text-[clamp(1.02rem,1.5vw,1.2rem)] leading-relaxed text-navy-500">
-              From billing and kitchen operations to customer ordering, QR menus, kiosks, vendor management and analytics — Kaaty
-              brings everything together in one unified platform.
+              From billing and kitchen operations to customer ordering, QR menus, kiosks, vendor
+              management and analytics — Kaaty brings everything together in one unified platform.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -1498,7 +1654,10 @@ function Hero() {
                 onClick={() => {
                   const el = document.getElementById('products')
                   if (el) {
-                    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' })
+                    window.scrollTo({
+                      top: el.getBoundingClientRect().top + window.scrollY - 70,
+                      behavior: 'smooth',
+                    })
                   }
                 }}
               >
@@ -1509,8 +1668,11 @@ function Hero() {
             <div className="mt-8 flex items-start gap-2.5 text-[13.5px] text-navy-500">
               <Icon name="check-circle-2" size={18} className="mt-0.5 shrink-0 text-kaaty-500" />
               <span>
-                One unified platform for <span className="font-semibold text-navy-700">Restaurants, Cafes, Food Courts, Cloud Kitchens,</span> and{' '}
-                <span className="font-semibold text-navy-700">College Canteens.</span>
+                One unified platform for{' '}
+                <span className="font-semibold text-navy-700">
+                  Restaurants, Cafes, Food Courts, Cloud Kitchens,
+                </span>{' '}
+                and <span className="font-semibold text-navy-700">College Canteens.</span>
               </span>
             </div>
           </div>
@@ -1523,7 +1685,10 @@ function Hero() {
               <div className="absolute bottom-4 left-0 animate-floaty2">
                 <KDSDevice />
               </div>
-              <div className="absolute bottom-0 right-6 z-10 animate-floaty" style={{ animationDelay: '1.2s' }}>
+              <div
+                className="absolute bottom-0 right-6 z-10 animate-floaty"
+                style={{ animationDelay: '1.2s' }}
+              >
                 <PhoneDevice />
               </div>
               <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
@@ -1544,7 +1709,7 @@ function Hero() {
    Home Sections A + mock panels
    ============================================================ */
 
-function MockPanel({ kind }) {
+function MockPanel({ kind }: { kind: MockKind }) {
   const headers = {
     pos: ['Kaaty POS', 'monitor'],
     kds: ['Kitchen Display', 'chef-hat'],
@@ -1577,16 +1742,20 @@ function MockPanel({ kind }) {
   )
 }
 
-function renderMockBody(kind) {
+function renderMockBody(kind: MockKind) {
   if (kind === 'pos' || kind === 'vendor') {
+    const lineItems: Array<[string, string]> = [
+      ['2× Chicken Biryani', '₹360'],
+      ['1× Paneer Tikka', '₹240'],
+      ['3× Masala Dosa', '₹270'],
+    ]
     return (
       <div className="space-y-2">
-        {[
-          ['2× Chicken Biryani', '₹360'],
-          ['1× Paneer Tikka', '₹240'],
-          ['3× Masala Dosa', '₹270'],
-        ].map(([n, p]) => (
-          <div key={n} className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10">
+        {lineItems.map(([n, p]) => (
+          <div
+            key={n}
+            className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10"
+          >
             <span className="text-[13px] font-medium text-navy-100">{n}</span>
             <span className="text-[13px] font-bold text-white">{p}</span>
           </div>
@@ -1599,14 +1768,15 @@ function renderMockBody(kind) {
     )
   }
   if (kind === 'kds' || kind === 'kiosk') {
+    const tickets: Array<[string, string, string]> = [
+      ['#1042', 'Preparing', 'bg-amber-400'],
+      ['#1041', 'Ready', 'bg-emerald-400'],
+      ['#1040', 'Preparing', 'bg-amber-400'],
+      ['#1039', 'New', 'bg-kaaty-400'],
+    ]
     return (
       <div className="grid grid-cols-2 gap-2.5">
-        {[
-          ['#1042', 'Preparing', 'bg-amber-400'],
-          ['#1041', 'Ready', 'bg-emerald-400'],
-          ['#1040', 'Preparing', 'bg-amber-400'],
-          ['#1039', 'New', 'bg-kaaty-400'],
-        ].map(([id, st, dot]) => (
+        {tickets.map(([id, st, dot]) => (
           <div key={id} className="rounded-xl bg-white/5 p-3.5 ring-1 ring-white/10">
             <div className="flex items-center justify-between">
               <span className="font-display text-[13px] font-bold text-white">{id}</span>
@@ -1625,18 +1795,21 @@ function renderMockBody(kind) {
     )
   }
   if (kind === 'phone') {
+    const steps: Array<[string, boolean]> = [
+      ['Order placed', true],
+      ['Preparing', true],
+      ['Ready', false],
+    ]
     return (
       <div className="mx-auto w-[170px] rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
         <div className="text-[11px] text-navy-300">Order ready in</div>
         <div className="font-display text-[28px] font-extrabold text-white">04:30</div>
         <div className="mt-4 space-y-2.5">
-          {[
-            ['Order placed', true],
-            ['Preparing', true],
-            ['Ready', false],
-          ].map(([s, d]) => (
+          {steps.map(([s, d]) => (
             <div key={s} className="flex items-center gap-2.5">
-              <span className={`grid h-5 w-5 place-items-center rounded-full ${d ? 'bg-emerald-500 text-white' : 'bg-white/10 text-navy-400'}`}>
+              <span
+                className={`grid h-5 w-5 place-items-center rounded-full ${d ? 'bg-emerald-500 text-white' : 'bg-white/10 text-navy-400'}`}
+              >
                 <Icon name={d ? 'check' : 'circle'} size={11} />
               </span>
               <span className={`text-[11.5px] ${d ? 'text-white' : 'text-navy-400'}`}>{s}</span>
@@ -1662,13 +1835,14 @@ function renderMockBody(kind) {
       </div>
     )
   }
+  const stats: Array<[string, string]> = [
+    ['Today', '₹84,200'],
+    ['Orders', '312'],
+  ]
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-2.5">
-        {[
-          ['Today', '₹84,200'],
-          ['Orders', '312'],
-        ].map(([k, v]) => (
+        {stats.map(([k, v]) => (
           <div key={k} className="rounded-xl bg-white/5 px-4 py-3 ring-1 ring-white/10">
             <div className="text-[11px] text-navy-300">{k}</div>
             <div className="font-display text-[18px] font-extrabold text-white">{v}</div>
@@ -1678,7 +1852,11 @@ function renderMockBody(kind) {
       <div className="rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
         <div className="flex items-end justify-between gap-1.5" style={{ height: 72 }}>
           {[40, 62, 48, 78, 56, 90, 70].map((h, i) => (
-            <div key={i} className="flex-1 rounded-t bg-gradient-to-t from-kaaty-600 to-kaaty-400" style={{ height: `${h}%` }} />
+            <div
+              key={i}
+              className="flex-1 rounded-t bg-gradient-to-t from-kaaty-600 to-kaaty-400"
+              style={{ height: `${h}%` }}
+            />
           ))}
         </div>
       </div>
@@ -1709,11 +1887,16 @@ function TrustMarquee() {
       <div className="marquee-wrap marquee-mask mt-8 overflow-hidden">
         <div className="marquee-track gap-10 pr-10">
           {row.map((l, i) => (
-            <div key={i} className="flex shrink-0 items-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0">
+            <div
+              key={i}
+              className="flex shrink-0 items-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0"
+            >
               <span className="grid h-10 w-10 place-items-center rounded-lg bg-navy-200/60 text-navy-500">
                 <Icon name={l.icon} size={19} />
               </span>
-              <span className="whitespace-nowrap font-display text-[15px] font-bold text-navy-400">{l.name}</span>
+              <span className="whitespace-nowrap font-display text-[15px] font-bold text-navy-400">
+                {l.name}
+              </span>
             </div>
           ))}
         </div>
@@ -1723,14 +1906,54 @@ function TrustMarquee() {
 }
 
 const ECOSYSTEM_CARDS = [
-  { slug: 'pos', name: 'Kaaty POS', icon: 'monitor', blurb: 'Peak-hour billing with offline reliability and fraud-proof UPI.' },
-  { slug: 'kds', name: 'Kaaty KDS', icon: 'chef-hat', blurb: 'Visual kitchen display that routes every item to the right station.' },
-  { slug: 'mobile-app', name: 'Mobile App', icon: 'smartphone', blurb: 'Your branded ordering app with live tracking and notifications.' },
-  { slug: 'business', name: 'Business App', icon: 'layout-dashboard', blurb: 'Live multi-outlet analytics and settlements in your pocket.' },
-  { slug: 'vendor', name: 'Vendor App', icon: 'store', blurb: 'A full mobile POS for stalls — no expensive hardware needed.' },
-  { slug: 'qr-ordering', name: 'QR Ordering', icon: 'qr-code', blurb: 'Scan-to-order dining that lifts ticket value and clears lines.' },
-  { slug: 'kiosk', name: 'Self Kiosk', icon: 'scan-line', blurb: 'Line-busting self-service terminals that grow average orders.' },
-  { slug: 'token-board', name: 'Token Board', icon: 'tv', blurb: 'Live, kitchen-synced token displays that clear the crowd.' },
+  {
+    slug: 'pos',
+    name: 'Kaaty POS',
+    icon: 'monitor',
+    blurb: 'Peak-hour billing with offline reliability and fraud-proof UPI.',
+  },
+  {
+    slug: 'kds',
+    name: 'Kaaty KDS',
+    icon: 'chef-hat',
+    blurb: 'Visual kitchen display that routes every item to the right station.',
+  },
+  {
+    slug: 'mobile-app',
+    name: 'Mobile App',
+    icon: 'smartphone',
+    blurb: 'Your branded ordering app with live tracking and notifications.',
+  },
+  {
+    slug: 'business',
+    name: 'Business App',
+    icon: 'layout-dashboard',
+    blurb: 'Live multi-outlet analytics and settlements in your pocket.',
+  },
+  {
+    slug: 'vendor',
+    name: 'Vendor App',
+    icon: 'store',
+    blurb: 'A full mobile POS for stalls — no expensive hardware needed.',
+  },
+  {
+    slug: 'qr-ordering',
+    name: 'QR Ordering',
+    icon: 'qr-code',
+    blurb: 'Scan-to-order dining that lifts ticket value and clears lines.',
+  },
+  {
+    slug: 'kiosk',
+    name: 'Self Kiosk',
+    icon: 'scan-line',
+    blurb: 'Line-busting self-service terminals that grow average orders.',
+  },
+  {
+    slug: 'token-board',
+    name: 'Token Board',
+    icon: 'tv',
+    blurb: 'Live, kitchen-synced token displays that clear the crowd.',
+  },
 ]
 
 function ProductEcosystem() {
@@ -1741,7 +1964,8 @@ function ProductEcosystem() {
           eyebrow="One connected ecosystem"
           title={
             <>
-              Every tool your food business runs on, <span className="gradient-text">in one platform</span>
+              Every tool your food business runs on,{' '}
+              <span className="gradient-text">in one platform</span>
             </>
           }
           sub="Start with one product and add the rest as you grow — everything shares the same data, in real time."
@@ -1757,10 +1981,19 @@ function ProductEcosystem() {
               <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
                 <Icon name={c.icon} size={22} />
               </span>
-              <h3 className="relative mt-5 font-display text-[18px] font-bold text-navy">{c.name}</h3>
-              <p className="relative mt-2 flex-1 text-[13.5px] leading-relaxed text-navy-500">{c.blurb}</p>
+              <h3 className="relative mt-5 font-display text-[18px] font-bold text-navy">
+                {c.name}
+              </h3>
+              <p className="relative mt-2 flex-1 text-[13.5px] leading-relaxed text-navy-500">
+                {c.blurb}
+              </p>
               <span className="relative mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600">
-                Learn more <Icon name="arrow-right" size={14} className="transition-transform group-hover:translate-x-0.5" />
+                Learn more{' '}
+                <Icon
+                  name="arrow-right"
+                  size={14}
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
               </span>
             </a>
           ))}
@@ -1771,12 +2004,36 @@ function ProductEcosystem() {
 }
 
 const WHY_CARDS = [
-  { icon: 'refresh-cw', title: 'Real-Time Operations', desc: 'Counter, kitchen, customer apps and back office stay in sync the instant anything changes.' },
-  { icon: 'shield-check', title: 'Fraud-Proof Payments', desc: 'Real-time UPI ledger confirmations end fake-screenshot scams and revenue leakage for good.' },
-  { icon: 'printer', title: 'Pine Labs Integration', desc: 'Deep, native integration with Pine Labs smart terminals — billing, cards and receipts in one device.' },
-  { icon: 'store', title: 'Multi-Vendor Management', desc: 'Centralise dozens of stalls, brands and franchise counters under one connected parent ledger.' },
-  { icon: 'code', title: 'Custom Development', desc: 'An open feature pipeline — our engineering team builds the workflows your business actually needs.' },
-  { icon: 'cpu', title: 'Works On Any Hardware', desc: 'Run on any Android or desktop device, with thermal, kitchen and Bluetooth printers supported.' },
+  {
+    icon: 'refresh-cw',
+    title: 'Real-Time Operations',
+    desc: 'Counter, kitchen, customer apps and back office stay in sync the instant anything changes.',
+  },
+  {
+    icon: 'shield-check',
+    title: 'Fraud-Proof Payments',
+    desc: 'Real-time UPI ledger confirmations end fake-screenshot scams and revenue leakage for good.',
+  },
+  {
+    icon: 'printer',
+    title: 'Pine Labs Integration',
+    desc: 'Deep, native integration with Pine Labs smart terminals — billing, cards and receipts in one device.',
+  },
+  {
+    icon: 'store',
+    title: 'Multi-Vendor Management',
+    desc: 'Centralise dozens of stalls, brands and franchise counters under one connected parent ledger.',
+  },
+  {
+    icon: 'code',
+    title: 'Custom Development',
+    desc: 'An open feature pipeline — our engineering team builds the workflows your business actually needs.',
+  },
+  {
+    icon: 'cpu',
+    title: 'Works On Any Hardware',
+    desc: 'Run on any Android or desktop device, with thermal, kitchen and Bluetooth printers supported.',
+  },
 ]
 
 function WhyKaaty() {
@@ -1840,10 +2097,15 @@ function IntegrationsSection() {
               href={`#/integrations/${it.slug}`}
               className="flex shrink-0 items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all duration-200 hover:border-kaaty-200 hover:shadow-lift"
             >
-              <span className="grid h-8 w-8 place-items-center rounded-full text-white" style={{ background: it.dot }}>
+              <span
+                className="grid h-8 w-8 place-items-center rounded-full text-white"
+                style={{ background: it.dot }}
+              >
                 <Icon name={it.icon} size={15} />
               </span>
-              <span className="whitespace-nowrap text-[14.5px] font-semibold text-navy-800">{it.name}</span>
+              <span className="whitespace-nowrap text-[14.5px] font-semibold text-navy-800">
+                {it.name}
+              </span>
             </a>
           ))}
         </div>
@@ -1851,7 +2113,10 @@ function IntegrationsSection() {
       <Container>
         <div className="mt-12 grid gap-4 sm:grid-cols-3">
           {INTEGRATION_GROUPS.map((g) => (
-            <div key={g.label} className="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft">
+            <div
+              key={g.label}
+              className="rounded-2xl border border-navy-100 bg-white p-6 shadow-soft"
+            >
               <div className="flex items-center gap-2.5">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
                   <Icon name={g.icon} size={19} />
@@ -1865,7 +2130,7 @@ function IntegrationsSection() {
                     href={`#/integrations/${s}`}
                     className="rounded-lg bg-navy-50 px-3 py-1.5 text-[13px] font-medium text-navy-700 transition-colors hover:bg-kaaty-50 hover:text-kaaty-700"
                   >
-                    {INTEGRATION_PAGES[s].name}
+                    {(INTEGRATION_PAGES as Record<string, IntegrationValue>)[s].name}
                   </a>
                 ))}
               </div>
@@ -1904,7 +2169,12 @@ function IndustrySolutions() {
               <div>
                 <h3 className="font-display text-[16.5px] font-bold text-navy">{s.name}</h3>
                 <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600">
-                  Explore <Icon name="arrow-right" size={14} className="transition-transform group-hover:translate-x-0.5" />
+                  Explore{' '}
+                  <Icon
+                    name="arrow-right"
+                    size={14}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
                 </span>
               </div>
             </a>
@@ -1935,13 +2205,16 @@ function CustomSolutions() {
           <div className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-kaaty-600/20 blur-3xl" />
           <div className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
-              <Eyebrow className="bg-white/10 text-kaaty-300 ring-white/10">Custom development</Eyebrow>
+              <Eyebrow className="bg-white/10 text-kaaty-300 ring-white/10">
+                Custom development
+              </Eyebrow>
               <h2 className="mt-5 font-display text-[clamp(1.9rem,3.6vw,2.9rem)] font-extrabold leading-[1.06] tracking-[-.025em] text-white">
                 What You Ask. <span className="gradient-text">We Build.</span>
               </h2>
               <p className="mt-5 max-w-md text-[15px] leading-relaxed text-navy-300">
-                Unlike rigid retail software that forces you to adapt, Kaaty offers an open, highly customizable feature pipeline. Tell us what
-                your business needs — our engineering team builds it.
+                Unlike rigid retail software that forces you to adapt, Kaaty offers an open, highly
+                customizable feature pipeline. Tell us what your business needs — our engineering
+                team builds it.
               </p>
               <div className="mt-8">
                 <Button as="a" href="#/demo" size="lg" icon="arrow-right">
@@ -1951,11 +2224,16 @@ function CustomSolutions() {
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
               {CUSTOM_ITEMS.map((e) => (
-                <div key={e.t} className="flex items-center gap-3 rounded-xl bg-white/[.04] p-3.5 ring-1 ring-white/10 transition-colors hover:bg-white/[.08]">
+                <div
+                  key={e.t}
+                  className="flex items-center gap-3 rounded-xl bg-white/[.04] p-3.5 ring-1 ring-white/10 transition-colors hover:bg-white/[.08]"
+                >
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-kaaty-500/90 text-white">
                     <Icon name={e.icon} size={17} />
                   </span>
-                  <span className="text-[13.5px] font-semibold leading-snug text-navy-100">{e.t}</span>
+                  <span className="text-[13.5px] font-semibold leading-snug text-navy-100">
+                    {e.t}
+                  </span>
                 </div>
               ))}
             </div>
@@ -1967,9 +2245,27 @@ function CustomSolutions() {
 }
 
 const PLAN_COLS = [
-  { key: 'core', name: 'Core', desc: 'Single outlets moving off paper books.', cta: 'Book A Demo', popular: false },
-  { key: 'growth', name: 'Growth', desc: 'High-volume restaurants, courts & canteens.', cta: 'Book A Demo', popular: true },
-  { key: 'scale', name: 'Scale', desc: 'Multi-outlet franchise chains & campuses.', cta: 'Contact Sales', popular: false },
+  {
+    key: 'core',
+    name: 'Core',
+    desc: 'Single outlets moving off paper books.',
+    cta: 'Book A Demo',
+    popular: false,
+  },
+  {
+    key: 'growth',
+    name: 'Growth',
+    desc: 'High-volume restaurants, courts & canteens.',
+    cta: 'Book A Demo',
+    popular: true,
+  },
+  {
+    key: 'scale',
+    name: 'Scale',
+    desc: 'Multi-outlet franchise chains & campuses.',
+    cta: 'Contact Sales',
+    popular: false,
+  },
 ]
 const PRICE_FEATURES = [
   { name: 'Unlimited Users & Terminals', core: true, growth: true, scale: true },
@@ -1988,7 +2284,7 @@ const PRICE_FEATURES = [
   { name: '24/7 Dedicated Support', core: false, growth: false, scale: true },
 ]
 
-function Cell({ on }) {
+function Cell({ on }: { on: boolean }) {
   return on ? (
     <span className="mx-auto grid h-6 w-6 place-items-center rounded-full bg-kaaty-50 text-kaaty-600">
       <Icon name="check" size={14} strokeWidth={3} />
@@ -2000,11 +2296,14 @@ function Cell({ on }) {
   )
 }
 
-function Pricing({ compact = false }) {
+function Pricing({ compact = false }: { compact?: boolean }) {
   const [showAll, setShowAll] = React.useState(false)
   const rows = showAll ? PRICE_FEATURES : PRICE_FEATURES.slice(0, 9)
   return (
-    <section id="pricing" className={`border-y border-navy-100 bg-navy-50/40 ${compact ? 'pt-[128px] pb-24 sm:pt-[144px]' : 'py-24 sm:py-28'}`}>
+    <section
+      id="pricing"
+      className={`border-y border-navy-100 bg-navy-50/40 ${compact ? 'pt-[128px] pb-24 sm:pt-[144px]' : 'py-24 sm:py-28'}`}
+    >
       <Container>
         <SectionHead
           eyebrow="Plans & pricing"
@@ -2025,16 +2324,23 @@ function Pricing({ compact = false }) {
               <div className="font-display text-[14px] font-bold text-navy">Plans</div>
             </div>
             {PLAN_COLS.map((p) => (
-              <div key={p.key} className={`relative p-4 text-center sm:p-6 ${p.popular ? 'bg-navy-900 text-white' : ''}`}>
+              <div
+                key={p.key}
+                className={`relative p-4 text-center sm:p-6 ${p.popular ? 'bg-navy-900 text-white' : ''}`}
+              >
                 {p.popular && (
                   <span className="absolute right-2 top-2 rounded-full bg-kaaty-500 px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-white">
                     Popular
                   </span>
                 )}
-                <div className={`font-display text-[17px] font-extrabold sm:text-[20px] ${p.popular ? 'text-white' : 'text-navy'}`}>
+                <div
+                  className={`font-display text-[17px] font-extrabold sm:text-[20px] ${p.popular ? 'text-white' : 'text-navy'}`}
+                >
                   {p.name}
                 </div>
-                <div className={`mt-1 hidden text-[11.5px] leading-snug sm:block ${p.popular ? 'text-navy-300' : 'text-navy-400'}`}>
+                <div
+                  className={`mt-1 hidden text-[11.5px] leading-snug sm:block ${p.popular ? 'text-navy-300' : 'text-navy-400'}`}
+                >
                   {p.desc}
                 </div>
                 <a
@@ -2051,8 +2357,13 @@ function Pricing({ compact = false }) {
             ))}
           </div>
           {rows.map((f, i) => (
-            <div key={f.name} className={`grid grid-cols-[1.4fr_repeat(3,1fr)] items-center ${i % 2 ? 'bg-navy-50/40' : ''}`}>
-              <div className="px-4 py-3.5 text-[12.5px] font-medium text-navy-700 sm:px-6 sm:text-[14px]">{f.name}</div>
+            <div
+              key={f.name}
+              className={`grid grid-cols-[1.4fr_repeat(3,1fr)] items-center ${i % 2 ? 'bg-navy-50/40' : ''}`}
+            >
+              <div className="px-4 py-3.5 text-[12.5px] font-medium text-navy-700 sm:px-6 sm:text-[14px]">
+                {f.name}
+              </div>
               <div className="px-2 py-3.5">
                 <Cell on={f.core} />
               </div>
@@ -2068,11 +2379,13 @@ function Pricing({ compact = false }) {
             onClick={() => setShowAll((s) => !s)}
             className="flex w-full items-center justify-center gap-1.5 border-t border-navy-100 py-4 text-[13.5px] font-semibold text-kaaty-600 transition-colors hover:bg-kaaty-50"
           >
-            {showAll ? 'Show less' : 'Show all features'} <Icon name={showAll ? 'chevron-up' : 'chevron-down'} size={16} />
+            {showAll ? 'Show less' : 'Show all features'}{' '}
+            <Icon name={showAll ? 'chevron-up' : 'chevron-down'} size={16} />
           </button>
         </div>
         <p className="mx-auto mt-6 max-w-3xl rounded-xl bg-white px-5 py-3.5 text-center text-[13px] text-navy-500 ring-1 ring-navy-100">
-          <span className="font-semibold text-navy-700">Note:</span> Local pricing may vary based on your region & currency. Contact us for accurate, localized rates.
+          <span className="font-semibold text-navy-700">Note:</span> Local pricing may vary based on
+          your region & currency. Contact us for accurate, localized rates.
         </p>
       </Container>
     </section>
@@ -2108,15 +2421,18 @@ function AboutContent() {
             </h2>
             <div className="mt-6 space-y-4 text-[15.5px] leading-relaxed text-navy-600">
               <p>
-                Kaaty started inside high-volume college campuses to solve real operational stress: fake payment screenshots, long lines, and
-                communication bottlenecks between the front counter and the kitchen.
+                Kaaty started inside high-volume college campuses to solve real operational stress:
+                fake payment screenshots, long lines, and communication bottlenecks between the
+                front counter and the kitchen.
               </p>
               <p>
-                By building a real-time connected platform, we completely eliminated waiting times and secured revenue leakage points.
+                By building a real-time connected platform, we completely eliminated waiting times
+                and secured revenue leakage points.
               </p>
               <p>
-                Today, that same robust engine powers restaurants, cafes, multi-vendor food courts, hotels and educational institutions across
-                the region — through a single, complete food-tech ecosystem.
+                Today, that same robust engine powers restaurants, cafes, multi-vendor food courts,
+                hotels and educational institutions across the region — through a single, complete
+                food-tech ecosystem.
               </p>
             </div>
             <div className="mt-7 inline-flex items-center gap-3 rounded-2xl border border-navy-100 bg-navy-50/60 px-5 py-3.5">
@@ -2124,19 +2440,30 @@ function AboutContent() {
                 <Icon name="building-2" size={17} />
               </span>
               <div>
-                <div className="text-[11px] font-semibold uppercase tracking-wide text-navy-400">A product by</div>
-                <div className="font-display text-[15px] font-bold text-navy">Benvora Groups Private Limited</div>
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-navy-400">
+                  A product by
+                </div>
+                <div className="font-display text-[15px] font-bold text-navy">
+                  Benvora Groups Private Limited
+                </div>
               </div>
             </div>
           </div>
           <div className="reveal grid grid-cols-2 gap-4">
             {STATS.map((s, i) => (
-              <div key={s.l} className={`rounded-2xl border border-navy-100 bg-white p-6 shadow-soft ${i % 2 ? 'sm:mt-6' : ''}`}>
+              <div
+                key={s.l}
+                className={`rounded-2xl border border-navy-100 bg-white p-6 shadow-soft ${i % 2 ? 'sm:mt-6' : ''}`}
+              >
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
                   <Icon name={s.icon} size={20} />
                 </span>
-                <div className="mt-4 font-display text-[clamp(1.7rem,3vw,2.2rem)] font-extrabold tracking-tight text-navy">{s.v}</div>
-                <div className="mt-1 text-[13.5px] font-medium leading-snug text-navy-500">{s.l}</div>
+                <div className="mt-4 font-display text-[clamp(1.7rem,3vw,2.2rem)] font-extrabold tracking-tight text-navy">
+                  {s.v}
+                </div>
+                <div className="mt-1 text-[13.5px] font-medium leading-snug text-navy-500">
+                  {s.l}
+                </div>
               </div>
             ))}
           </div>
@@ -2154,10 +2481,12 @@ function AboutPage() {
         <Container className="relative pb-2 text-center">
           <Eyebrow className="mx-auto">About Kaaty</Eyebrow>
           <h1 className="mx-auto mt-5 max-w-3xl font-display text-[clamp(2.1rem,4.6vw,3.4rem)] font-extrabold leading-[1.06] tracking-[-.03em] text-navy">
-            A complete food-tech ecosystem — <span className="gradient-text">not just billing software</span>
+            A complete food-tech ecosystem —{' '}
+            <span className="gradient-text">not just billing software</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[clamp(1rem,1.4vw,1.18rem)] text-navy-500">
-            We connect every part of a food business in real time, from the counter to the kitchen to the customer phone.
+            We connect every part of a food business in real time, from the counter to the kitchen
+            to the customer phone.
           </p>
         </Container>
       </section>
@@ -2223,14 +2552,23 @@ function FAQ() {
                   onClick={() => setOpen(isOpen ? -1 : i)}
                   className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
                 >
-                  <span className="font-display text-[15.5px] font-bold text-navy sm:text-[17px]">{f.q}</span>
-                  <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors ${isOpen ? 'bg-kaaty-500 text-white' : 'bg-navy-50 text-navy-600'}`}>
+                  <span className="font-display text-[15.5px] font-bold text-navy sm:text-[17px]">
+                    {f.q}
+                  </span>
+                  <span
+                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors ${isOpen ? 'bg-kaaty-500 text-white' : 'bg-navy-50 text-navy-600'}`}
+                  >
                     <Icon name={isOpen ? 'minus' : 'plus'} size={17} />
                   </span>
                 </button>
-                <div className="grid transition-all duration-300 ease-out" style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}>
+                <div
+                  className="grid transition-all duration-300 ease-out"
+                  style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-navy-500 sm:px-6">{f.a}</p>
+                    <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-navy-500 sm:px-6">
+                      {f.a}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -2291,12 +2629,15 @@ function FinalCTA() {
       <div className="pointer-events-none absolute inset-0 dotgrid opacity-30" />
       <Container className="relative">
         <div className="border-b border-white/10 py-20 text-center sm:py-24">
-          <Eyebrow className="mx-auto bg-white/10 text-kaaty-300 ring-white/10">Get started</Eyebrow>
+          <Eyebrow className="mx-auto bg-white/10 text-kaaty-300 ring-white/10">
+            Get started
+          </Eyebrow>
           <h2 className="mx-auto mt-5 max-w-3xl font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.06] tracking-[-.03em]">
             Ready To Modernize Your <span className="gradient-text">Food Business?</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-navy-300">
-            Book your free custom demo today to minimize order friction, secure your revenue, and transform customer satisfaction.
+            Book your free custom demo today to minimize order friction, secure your revenue, and
+            transform customer satisfaction.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button as="a" href="#/demo" size="lg" icon="arrow-right">
@@ -2311,10 +2652,14 @@ function FinalCTA() {
           <div className="max-w-xs">
             <Logo light />
             <p className="mt-4 text-[14px] leading-relaxed text-navy-400">
-              The complete operating system powering restaurants, cafes, food courts, cloud kitchens, hotels and college canteens.
+              The complete operating system powering restaurants, cafes, food courts, cloud
+              kitchens, hotels and college canteens.
             </p>
             <div className="mt-6 space-y-2.5 text-[13.5px] text-navy-300">
-              <a href="mailto:support@kaaty.com" className="flex items-center gap-2.5 hover:text-white">
+              <a
+                href="mailto:support@kaaty.com"
+                className="flex items-center gap-2.5 hover:text-white"
+              >
                 <Icon name="mail" size={15} className="text-kaaty-400" /> support@kaaty.com
               </a>
               <a href="tel:+919000000000" className="flex items-center gap-2.5 hover:text-white">
@@ -2327,7 +2672,11 @@ function FinalCTA() {
                 ['instagram', '#'],
                 ['twitter', '#'],
               ].map(([ic, h]) => (
-                <a key={ic} href={h} className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 text-navy-200 transition-colors hover:bg-kaaty-500 hover:text-white">
+                <a
+                  key={ic}
+                  href={h}
+                  className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 text-navy-200 transition-colors hover:bg-kaaty-500 hover:text-white"
+                >
                   <Icon name={ic} size={16} />
                 </a>
               ))}
@@ -2335,11 +2684,16 @@ function FinalCTA() {
           </div>
           {cols.map((c) => (
             <div key={c.h}>
-              <h4 className="font-display text-[13px] font-bold uppercase tracking-wider text-navy-300">{c.h}</h4>
+              <h4 className="font-display text-[13px] font-bold uppercase tracking-wider text-navy-300">
+                {c.h}
+              </h4>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map(([l, href]) => (
                   <li key={l}>
-                    <a href={href} className="text-[14px] text-navy-400 transition-colors hover:text-white">
+                    <a
+                      href={href}
+                      className="text-[14px] text-navy-400 transition-colors hover:text-white"
+                    >
                       {l}
                     </a>
                   </li>
@@ -2350,7 +2704,9 @@ function FinalCTA() {
         </div>
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-7 text-center sm:flex-row sm:text-left">
           <p className="text-[13px] text-navy-400">
-            © {new Date().getFullYear()} <span className="font-semibold text-navy-200">Benvora Groups Private Limited.</span> All rights reserved.
+            © {new Date().getFullYear()}{' '}
+            <span className="font-semibold text-navy-200">Benvora Groups Private Limited.</span> All
+            rights reserved.
           </p>
           <div className="flex items-center gap-5 text-[13px] text-navy-400">
             <a href="#" className="hover:text-white">
@@ -2369,14 +2725,21 @@ function FinalCTA() {
   )
 }
 
-function LogoBand({ heading, logos }) {
+function LogoBand({ heading, logos }: LogoBandProps) {
   return (
     <section className="py-14">
       <Container>
-        {heading && <p className="mb-9 text-center text-[13px] font-semibold uppercase tracking-[.18em] text-navy-400">{heading}</p>}
+        {heading && (
+          <p className="mb-9 text-center text-[13px] font-semibold uppercase tracking-[.18em] text-navy-400">
+            {heading}
+          </p>
+        )}
         <div className="grid grid-cols-2 items-center gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
           {logos.map((l) => (
-            <div key={l.name} className="group flex items-center justify-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0">
+            <div
+              key={l.name}
+              className="group flex items-center justify-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0"
+            >
               <span className="grid h-9 w-9 place-items-center rounded-lg bg-navy-100 text-navy-500 transition-colors group-hover:bg-kaaty-500 group-hover:text-white">
                 <Icon name={l.icon} size={17} />
               </span>
@@ -2391,7 +2754,7 @@ function LogoBand({ heading, logos }) {
   )
 }
 
-function HeroVisual({ kind = 'pos' }) {
+function HeroVisual({ kind = 'pos' }: HeroVisualProps) {
   return (
     <div className="relative mx-auto flex min-h-[380px] max-w-[460px] items-center justify-center sm:min-h-[420px]">
       <div className="pointer-events-none absolute inset-0 rounded-[40px] bg-gradient-to-br from-kaaty-100/70 to-kaaty-50/30 blur-2xl" />
@@ -2404,7 +2767,9 @@ function HeroVisual({ kind = 'pos' }) {
             <Icon name="trending-up" size={16} />
           </span>
           <div>
-            <div className="font-display text-[14px] font-extrabold leading-none text-navy">+24%</div>
+            <div className="font-display text-[14px] font-extrabold leading-none text-navy">
+              +24%
+            </div>
             <div className="text-[10.5px] text-navy-400">avg. ticket</div>
           </div>
         </div>
@@ -2415,7 +2780,9 @@ function HeroVisual({ kind = 'pos' }) {
             <Icon name="zap" size={16} />
           </span>
           <div>
-            <div className="font-display text-[14px] font-extrabold leading-none text-navy">Real-time</div>
+            <div className="font-display text-[14px] font-extrabold leading-none text-navy">
+              Real-time
+            </div>
             <div className="text-[10.5px] text-navy-400">counter ↔ kitchen</div>
           </div>
         </div>
@@ -2424,7 +2791,7 @@ function HeroVisual({ kind = 'pos' }) {
   )
 }
 
-function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos' }) {
+function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos' }: SubHeroProps) {
   return (
     <section className="relative overflow-hidden pt-[120px] sm:pt-[136px]">
       <div className="pointer-events-none absolute inset-0 grid-bg grid-bg-fade" />
@@ -2439,7 +2806,9 @@ function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos'
             <h1 className="mt-5 font-display text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-.03em] text-navy">
               {title}
             </h1>
-            <p className="mt-5 max-w-lg text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed text-navy-500">{sub}</p>
+            <p className="mt-5 max-w-lg text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed text-navy-500">
+              {sub}
+            </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button as="a" href="#/demo" size="lg" icon="arrow-right">
                 {cta}
@@ -2458,7 +2827,7 @@ function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos'
   )
 }
 
-function FeatureRows({ rows }) {
+function FeatureRows({ rows }: FeatureRowsProps) {
   return (
     <section className="py-16 sm:py-20">
       <Container>
@@ -2466,7 +2835,10 @@ function FeatureRows({ rows }) {
           {rows.map((r, i) => {
             const flip = i % 2 === 1
             return (
-              <div key={r.title} className="reveal grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              <div
+                key={r.title}
+                className="reveal grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+              >
                 <div className={flip ? 'lg:order-2' : ''}>
                   <h3 className="font-display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold leading-[1.08] tracking-[-.02em] text-navy">
                     {r.title}
@@ -2500,7 +2872,7 @@ const TESTIMONIALS = [
     brand: "Sam's Pizza",
     icon: 'pizza',
     quote:
-      "Kaaty has been our POS across 90+ outlets for over two years. For a large chain like us, it is the single data bridge between every outlet and the owner. Kudos to the team!",
+      'Kaaty has been our POS across 90+ outlets for over two years. For a large chain like us, it is the single data bridge between every outlet and the owner. Kudos to the team!',
     name: 'Jolly Christian',
     role: 'General Manager',
   },
@@ -2523,20 +2895,27 @@ function Testimonials() {
         </h2>
         <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-2">
           {TESTIMONIALS.map((t) => (
-            <figure key={t.name} className="reveal rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8">
+            <figure
+              key={t.name}
+              className="reveal rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8"
+            >
               <div className="flex items-center gap-2.5">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
                   <Icon name={t.icon} size={20} />
                 </span>
                 <span className="font-display text-[16px] font-extrabold text-navy">{t.brand}</span>
               </div>
-              <blockquote className="mt-5 text-[15px] leading-relaxed text-navy-600">“{t.quote}”</blockquote>
+              <blockquote className="mt-5 text-[15px] leading-relaxed text-navy-600">
+                “{t.quote}”
+              </blockquote>
               <figcaption className="mt-6 flex items-center gap-3">
                 <span className="grid h-11 w-11 place-items-center rounded-full bg-navy-100 text-navy-500">
                   <Icon name="user" size={20} />
                 </span>
                 <span>
-                  <span className="block font-display text-[14.5px] font-bold text-navy">{t.name}</span>
+                  <span className="block font-display text-[14.5px] font-bold text-navy">
+                    {t.name}
+                  </span>
                   <span className="block text-[13px] text-navy-400">{t.role}</span>
                 </span>
               </figcaption>
@@ -2548,14 +2927,33 @@ function Testimonials() {
   )
 }
 
+type DemoFormData = {
+  name: string
+  business: string
+  phone: string
+  email: string
+  type: string
+  message: string
+}
+
 function DemoForm() {
-  const [form, setForm] = React.useState({ name: '', business: '', phone: '', email: '', type: '', message: '' })
+  const [form, setForm] = React.useState<DemoFormData>({
+    name: '',
+    business: '',
+    phone: '',
+    email: '',
+    type: '',
+    message: '',
+  })
   const [sent, setSent] = React.useState(false)
-  const [err, setErr] = React.useState({})
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
-  const submit = (e) => {
+  const [err, setErr] = React.useState<Partial<Record<keyof DemoFormData, number>>>({})
+  const set =
+    (k: keyof DemoFormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setForm((f) => ({ ...f, [k]: e.target.value }))
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const er = {}
+    const er: Partial<Record<keyof DemoFormData, number>> = {}
     if (!form.name.trim()) er.name = 1
     if (!form.business.trim()) er.business = 1
     if (!/^[0-9+\-\s]{8,}$/.test(form.phone)) er.phone = 1
@@ -2564,7 +2962,7 @@ function DemoForm() {
     setErr(er)
     if (Object.keys(er).length === 0) setSent(true)
   }
-  const field = (k, label, type = 'text', ph = '') => (
+  const field = (k: keyof DemoFormData, label: string, type = 'text', ph = '') => (
     <label className="block">
       <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
         {label} <span className="text-kaaty-500">*</span>
@@ -2600,7 +2998,8 @@ function DemoForm() {
               Schedule a <span className="gradient-text">free demo</span>
             </h2>
             <p className="mt-3 text-[15.5px] text-navy-500">
-              Get in touch with our team to clarify your queries and see Kaaty in action for your outlet.
+              Get in touch with our team to clarify your queries and see Kaaty in action for your
+              outlet.
             </p>
             {sent ? (
               <div className="mt-8 flex items-center gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
@@ -2608,8 +3007,12 @@ function DemoForm() {
                   <Icon name="check" size={24} strokeWidth={3} />
                 </span>
                 <div>
-                  <div className="font-display text-[17px] font-bold text-navy">Thanks, {form.name.split(' ')[0]}!</div>
-                  <div className="text-[14px] text-navy-600">Our team will reach out shortly to schedule your demo.</div>
+                  <div className="font-display text-[17px] font-bold text-navy">
+                    Thanks, {form.name.split(' ')[0]}!
+                  </div>
+                  <div className="text-[14px] text-navy-600">
+                    Our team will reach out shortly to schedule your demo.
+                  </div>
                 </div>
               </div>
             ) : (
@@ -2642,7 +3045,9 @@ function DemoForm() {
                   </select>
                 </label>
                 <label className="block">
-                  <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">Message</span>
+                  <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
+                    Message
+                  </span>
                   <textarea
                     value={form.message}
                     onChange={set('message')}
@@ -2668,7 +3073,11 @@ function DemoForm() {
               <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-kaaty-100/70 blur-2xl" />
               <div className="relative space-y-4">
                 {[
-                  ['phone-call', 'Talk to a specialist', 'Walkthrough tailored to your outlet type'],
+                  [
+                    'phone-call',
+                    'Talk to a specialist',
+                    'Walkthrough tailored to your outlet type',
+                  ],
                   ['calendar', 'Pick a time that works', 'Live 1:1 demo, no commitment'],
                   ['rocket', 'Go live fast', 'Code-free onboarding & data import'],
                 ].map(([ic, h, d]) => (
@@ -2709,7 +3118,7 @@ const BRAND_LOGOS = [
   { name: 'MLR Institute', icon: 'school' },
 ]
 
-function Accordion({ items, heading = 'Frequently asked questions' }) {
+function Accordion({ items, heading = 'Frequently asked questions' }: AccordionProps) {
   const [open, setOpen] = React.useState(0)
   return (
     <section className="border-t border-navy-100 bg-navy-50/40 py-20 sm:py-24">
@@ -2729,14 +3138,23 @@ function Accordion({ items, heading = 'Frequently asked questions' }) {
                   onClick={() => setOpen(isOpen ? -1 : i)}
                   className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
                 >
-                  <span className="font-display text-[15.5px] font-bold text-navy sm:text-[17px]">{f.q}</span>
-                  <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors ${isOpen ? 'bg-kaaty-500 text-white' : 'bg-navy-50 text-navy-600'}`}>
+                  <span className="font-display text-[15.5px] font-bold text-navy sm:text-[17px]">
+                    {f.q}
+                  </span>
+                  <span
+                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors ${isOpen ? 'bg-kaaty-500 text-white' : 'bg-navy-50 text-navy-600'}`}
+                  >
                     <Icon name={isOpen ? 'minus' : 'plus'} size={17} />
                   </span>
                 </button>
-                <div className="grid transition-all duration-300 ease-out" style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}>
+                <div
+                  className="grid transition-all duration-300 ease-out"
+                  style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                >
                   <div className="overflow-hidden">
-                    <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-navy-500 sm:px-6">{f.a}</p>
+                    <p className="px-5 pb-5 text-[14.5px] leading-relaxed text-navy-500 sm:px-6">
+                      {f.a}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -2748,18 +3166,23 @@ function Accordion({ items, heading = 'Frequently asked questions' }) {
   )
 }
 
-function BenefitStrip({ benefits, heading = 'Why teams love it' }) {
+function BenefitStrip({ benefits, heading = 'Why teams love it' }: BenefitStripProps) {
   return (
     <section className="py-20 sm:py-24">
       <Container>
         <SectionHead eyebrow="Benefits" title={heading} />
         <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {benefits.map((b) => (
-            <div key={b.label} className="flex items-center gap-3.5 rounded-2xl border border-navy-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift">
+            <div
+              key={b.label}
+              className="flex items-center gap-3.5 rounded-2xl border border-navy-100 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift"
+            >
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
                 <Icon name={b.icon} size={20} />
               </span>
-              <span className="font-display text-[14.5px] font-bold leading-tight text-navy">{b.label}</span>
+              <span className="font-display text-[14.5px] font-bold leading-tight text-navy">
+                {b.label}
+              </span>
             </div>
           ))}
         </div>
@@ -2768,21 +3191,39 @@ function BenefitStrip({ benefits, heading = 'Why teams love it' }) {
   )
 }
 
-function MiniValueGrid({ heading = 'Everything else, included', items }) {
-  const data =
-    items || [
-      { icon: 'shield-check', title: 'Anti-fraud UPI', desc: 'Real-time payment confirmations end fake-screenshot scams.' },
-      { icon: 'printer', title: 'Hardware ready', desc: 'Pine Labs, thermal & kitchen printers work out of the box.' },
-      { icon: 'refresh-cw', title: 'Always in sync', desc: 'Counter, kitchen and customer apps update in real time.' },
-      { icon: 'headphones', title: 'Dedicated support', desc: 'Onboarding, data import and a team that picks up the phone.' },
-    ]
+function MiniValueGrid({ heading = 'Everything else, included', items }: MiniValueGridProps) {
+  const data = items || [
+    {
+      icon: 'shield-check',
+      title: 'Anti-fraud UPI',
+      desc: 'Real-time payment confirmations end fake-screenshot scams.',
+    },
+    {
+      icon: 'printer',
+      title: 'Hardware ready',
+      desc: 'Pine Labs, thermal & kitchen printers work out of the box.',
+    },
+    {
+      icon: 'refresh-cw',
+      title: 'Always in sync',
+      desc: 'Counter, kitchen and customer apps update in real time.',
+    },
+    {
+      icon: 'headphones',
+      title: 'Dedicated support',
+      desc: 'Onboarding, data import and a team that picks up the phone.',
+    },
+  ]
   return (
     <section className="border-t border-navy-100 bg-navy-50/40 py-20 sm:py-24">
       <Container>
         <SectionHead eyebrow="More than a POS" title={heading} />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {data.map((c) => (
-            <div key={c.title} className="reveal rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift">
+            <div
+              key={c.title}
+              className="reveal rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift"
+            >
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
                 <Icon name={c.icon} size={20} />
               </span>
@@ -2796,14 +3237,18 @@ function MiniValueGrid({ heading = 'Everything else, included', items }) {
   )
 }
 
-function ProductPage({ slug }) {
-  const d = PRODUCTS[slug]
+type ProductValue = (typeof PRODUCTS)[keyof typeof PRODUCTS]
+type SolutionValue = (typeof SOLUTIONS)[keyof typeof SOLUTIONS]
+type IntegrationValue = (typeof INTEGRATION_PAGES)[keyof typeof INTEGRATION_PAGES]
+
+function ProductPage({ slug }: { slug: string }) {
+  const d = (PRODUCTS as Record<string, ProductValue | undefined>)[slug]
   if (!d) return <NotFound />
   return (
     <>
-      <SubHero eyebrow={d.group} title={d.title} sub={d.sub} visual={d.visual} />
+      <SubHero eyebrow={d.group} title={d.title} sub={d.sub} visual={d.visual as MockKind} />
       <LogoBand heading="Powering food businesses & institutions everywhere" logos={BRAND_LOGOS} />
-      <FeatureRows rows={d.features} />
+      <FeatureRows rows={d.features as FeatureRow[]} />
       <BenefitStrip benefits={d.benefits} heading={`Built into ${d.name}`} />
       <Testimonials />
       <Accordion items={SHARED_BENEFIT_FAQS} />
@@ -2812,14 +3257,14 @@ function ProductPage({ slug }) {
   )
 }
 
-function SolutionPage({ slug }) {
-  const d = SOLUTIONS[slug]
+function SolutionPage({ slug }: { slug: string }) {
+  const d = (SOLUTIONS as Record<string, SolutionValue | undefined>)[slug]
   if (!d) return <NotFound />
   return (
     <>
-      <SubHero eyebrow={d.name} title={d.title} sub={d.sub} visual={d.visual} />
+      <SubHero eyebrow={d.name} title={d.title} sub={d.sub} visual={d.visual as MockKind} />
       <LogoBand heading={`Trusted by leading ${d.name.toLowerCase()}`} logos={BRAND_LOGOS} />
-      <FeatureRows rows={d.rows} />
+      <FeatureRows rows={d.rows as FeatureRow[]} />
       <MiniValueGrid heading={`Built for ${d.name}, ready for everything`} />
       <Testimonials />
       <DemoForm />
@@ -2827,10 +3272,12 @@ function SolutionPage({ slug }) {
   )
 }
 
-function IntegrationPage({ slug }) {
-  const d = INTEGRATION_PAGES[slug]
+function IntegrationPage({ slug }: { slug: string }) {
+  const d = (INTEGRATION_PAGES as Record<string, IntegrationValue | undefined>)[slug]
   if (!d) return <NotFound />
-  const related = INTEGRATION_GROUPS.find((g) => g.label === d.category).items.filter((s) => s !== slug)
+  const related = (INTEGRATION_GROUPS.find((g) => g.label === d.category)?.items ?? []).filter(
+    (s) => s !== slug,
+  )
   return (
     <>
       <section className="relative overflow-hidden pt-[136px] sm:pt-[152px]">
@@ -2841,13 +3288,18 @@ function IntegrationPage({ slug }) {
               <span className="h-1.5 w-1.5 rounded-full bg-kaaty-500" />
               {d.category} Integration
             </span>
-            <div className="mx-auto mt-7 grid h-20 w-20 place-items-center rounded-3xl text-white shadow-lift" style={{ background: d.dot }}>
+            <div
+              className="mx-auto mt-7 grid h-20 w-20 place-items-center rounded-3xl text-white shadow-lift"
+              style={{ background: d.dot }}
+            >
               <Icon name={d.icon} size={36} />
             </div>
             <h1 className="mt-6 font-display text-[clamp(2.1rem,4.4vw,3.2rem)] font-extrabold leading-[1.06] tracking-[-.03em] text-navy">
               {d.title}
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed text-navy-500">{d.sub}</p>
+            <p className="mx-auto mt-5 max-w-xl text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed text-navy-500">
+              {d.sub}
+            </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button as="a" href="#/demo" size="lg" icon="arrow-right">
                 Book a Demo
@@ -2889,8 +3341,13 @@ function IntegrationPage({ slug }) {
               ['Configure', 'Map outlets, payment modes or menus — we guide you through it.'],
               ['Go live', 'Start transacting with everything reconciled automatically.'],
             ].map(([t, dd], i) => (
-              <div key={t} className="relative rounded-2xl border border-navy-100 bg-white p-7 shadow-soft">
-                <span className="font-display text-[40px] font-extrabold leading-none text-kaaty-200">0{i + 1}</span>
+              <div
+                key={t}
+                className="relative rounded-2xl border border-navy-100 bg-white p-7 shadow-soft"
+              >
+                <span className="font-display text-[40px] font-extrabold leading-none text-kaaty-200">
+                  0{i + 1}
+                </span>
                 <h3 className="mt-3 font-display text-[18px] font-bold text-navy">{t}</h3>
                 <p className="mt-2 text-[14px] leading-relaxed text-navy-500">{dd}</p>
               </div>
@@ -2902,20 +3359,28 @@ function IntegrationPage({ slug }) {
       {related.length > 0 && (
         <section className="border-t border-navy-100 bg-navy-50/40 py-16 sm:py-20">
           <Container>
-            <h2 className="font-display text-[22px] font-extrabold text-navy">More {d.category.toLowerCase()} integrations</h2>
+            <h2 className="font-display text-[22px] font-extrabold text-navy">
+              More {d.category.toLowerCase()} integrations
+            </h2>
             <div className="mt-6 flex flex-wrap gap-3">
-              {related.map((s) => (
-                <a
-                  key={s}
-                  href={`#/integrations/${s}`}
-                  className="flex items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
-                >
-                  <span className="grid h-8 w-8 place-items-center rounded-full text-white" style={{ background: INTEGRATION_PAGES[s].dot }}>
-                    <Icon name={INTEGRATION_PAGES[s].icon} size={15} />
-                  </span>
-                  <span className="text-[14.5px] font-semibold text-navy-800">{INTEGRATION_PAGES[s].name}</span>
-                </a>
-              ))}
+              {related.map((s) => {
+                const ip = (INTEGRATION_PAGES as Record<string, IntegrationValue>)[s]
+                return (
+                  <a
+                    key={s}
+                    href={`#/integrations/${s}`}
+                    className="flex items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
+                  >
+                    <span
+                      className="grid h-8 w-8 place-items-center rounded-full text-white"
+                      style={{ background: ip.dot }}
+                    >
+                      <Icon name={ip.icon} size={15} />
+                    </span>
+                    <span className="text-[14.5px] font-semibold text-navy-800">{ip.name}</span>
+                  </a>
+                )
+              })}
             </div>
           </Container>
         </section>
@@ -2945,7 +3410,8 @@ function ResourcesPage() {
             Resources to help you <span className="gradient-text">grow</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[clamp(1rem,1.4vw,1.18rem)] text-navy-500">
-            Everything you need to get the most out of Kaaty — from first setup to scaling your chain.
+            Everything you need to get the most out of Kaaty — from first setup to scaling your
+            chain.
           </p>
         </Container>
       </section>
@@ -2963,7 +3429,12 @@ function ResourcesPage() {
               <h3 className="mt-5 font-display text-[18px] font-bold text-navy">{c.t}</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-navy-500">{c.d}</p>
               <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600">
-                Explore <Icon name="arrow-right" size={14} className="transition-transform group-hover:translate-x-0.5" />
+                Explore{' '}
+                <Icon
+                  name="arrow-right"
+                  size={14}
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
               </span>
             </a>
           ))}
@@ -3007,7 +3478,10 @@ function ScrollProgress() {
   }, [])
   return (
     <div className="fixed inset-x-0 top-0 z-[70] h-[3px]">
-      <div className="h-full bg-kaaty-500 transition-[width] duration-150" style={{ width: `${p}%` }} />
+      <div
+        className="h-full bg-kaaty-500 transition-[width] duration-150"
+        style={{ width: `${p}%` }}
+      />
     </div>
   )
 }
@@ -3040,7 +3514,8 @@ function ContactPage() {
             See Kaaty in action for <span className="gradient-text">your business</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-[clamp(1rem,1.4vw,1.18rem)] text-navy-500">
-            A live, no-commitment walkthrough tailored to how you operate. Fill the form and our team will reach out.
+            A live, no-commitment walkthrough tailored to how you operate. Fill the form and our
+            team will reach out.
           </p>
         </Container>
       </section>
@@ -3050,7 +3525,7 @@ function ContactPage() {
 }
 
 function useRoute() {
-  const [route, setRoute] = React.useState(() => window.location.hash || '#/')
+  const [route, setRoute] = React.useState<string>(() => window.location.hash || '#/')
   React.useEffect(() => {
     const on = () => setRoute(window.location.hash || '#/')
     window.addEventListener('hashchange', on)
@@ -3059,7 +3534,7 @@ function useRoute() {
   return route
 }
 
-function renderRoute(route) {
+function renderRoute(route: string) {
   const path = route.replace(/^#\/?/, '').replace(/\/$/, '')
   const seg = path.split('/').filter(Boolean)
   if (seg.length === 0) return <Home />

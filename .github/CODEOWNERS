@@ -1,0 +1,14 @@
+# All files — every PR requires owner review
+* @Bhargav-byte
+
+# Source code
+/src/ @Bhargav-byte
+
+# CI/CD and GitHub config
+/.github/ @Bhargav-byte
+
+# Deployment
+/netlify.toml @Bhargav-byte
+
+# Security-sensitive files
+/SECURITY.md @Bhargav-byte

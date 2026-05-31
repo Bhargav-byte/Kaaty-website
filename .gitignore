@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ────────────────────────────────────────────────────────────────
+# SECURITY — NEVER commit these files
+# ────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+.env.*.local
+*.env
+
+# ── Tooling output ────────────────────────────────────────────────
+.lighthouseci
+.husky/_
+
+# ── OS artefacts ──────────────────────────────────────────────────
+Thumbs.db

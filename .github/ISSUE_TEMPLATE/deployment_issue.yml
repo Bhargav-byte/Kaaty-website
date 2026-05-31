@@ -1,0 +1,71 @@
+name: Deployment Issue
+description: Report a Netlify build failure, deployment error, or production incident
+labels: ["deployment", "production", "urgent"]
+assignees:
+  - Bhargav-byte
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > ⚠️ If the **production site is down**, mark this issue as HIGH severity and notify @Bhargav-byte directly.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Low — Non-critical, site still works
+        - Medium — Partial degradation
+        - High — Production site down or broken
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Issue Type
+      options:
+        - Netlify build failure
+        - Deploy preview broken
+        - Production site down
+        - Slow load times
+        - DNS / domain issue
+        - Environment variable missing
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? When did it start?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs / Build Output
+      description: Paste relevant Netlify build logs or browser console errors.
+      render: shell
+
+  - type: input
+    id: deploy-url
+    attributes:
+      label: Failing Deploy URL
+      description: Netlify deploy URL or production URL showing the issue.
+      placeholder: "https://deploy-preview-XX--kaaty.netlify.app"
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce the issue?
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Temporary Workaround
+      description: Is there a known workaround to restore service quickly?
