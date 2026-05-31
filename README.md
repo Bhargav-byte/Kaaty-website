@@ -1,16 +1,41 @@
-# React + Vite
+# Kaaty Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern landing page for Kaaty, built with React + Vite.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 18+
+- npm 9+
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Vite will print the local URL (usually http://localhost:5173).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Production build
+
+```bash
+npm run build
+```
+
+The production output is in the `dist/` folder.
+
+## Netlify (manual deploy)
+
+1) Run `npm run build`
+2) Drag and drop the `dist/` folder into https://app.netlify.com/drop
+
+## Netlify (auto deploy from GitHub)
+
+1) Open Netlify and click "Add new site" -> "Import an existing project".
+2) Connect your GitHub account and select this repo.
+3) Use these settings:
+	- Build command: `npm run build`
+	- Publish directory: `dist`
+4) Click "Deploy site".
+
+Netlify will redeploy automatically on every push to `main`.
