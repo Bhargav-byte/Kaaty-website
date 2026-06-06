@@ -125,7 +125,7 @@ function Hero() {
           {/* left copy */}
           <div className="max-w-xl">
             <div className="reveal in inline-flex items-center gap-2 rounded-full border border-navy-200 bg-white/70 px-3.5 py-1.5 text-[12.5px] font-semibold text-navy-700 backdrop-blur">
-              <span className="flex h-5 items-center gap-1 rounded-full bg-kaaty-500 px-2 text-[10.5px] font-bold uppercase tracking-wide text-white">New</span>
+              <span className="flex h-5 items-center gap-1 rounded-full bg-black px-2 text-[10.5px] font-bold uppercase tracking-wide text-white">New</span>
               The food-business OS
               <Icon name="arrow-right" size={13} className="text-kaaty-500" />
             </div>
