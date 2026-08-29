@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
       - "feature/**"
       - "fix/**"
       - "hotfix/**"
@@ -13,11 +14,10 @@ on:
   pull_request:
     branches:
       - main
+      - dev
   schedule:
-    # Run every Monday at 08:00 UTC (13:30 IST)
     - cron: "0 8 * * 1"
 
-# Least-privilege
 permissions:
   contents: read
 
@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # full history for secret scanning
+          fetch-depth: 0
 
       - name: TruffleHog OSS
         uses: trufflesecurity/trufflehog@main
