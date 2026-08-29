@@ -111,9 +111,7 @@ type HeroVisualProps = { kind?: MockKind }
 
 function Container({ className = '', children }: ContainerProps) {
   return (
-    <div
-      className={`mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-10 xl:px-12 2xl:px-16 ${className}`}
-    >
+    <div className={`mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-8 xl:px-12 ${className}`}>
       {children}
     </div>
   )
@@ -1616,9 +1614,9 @@ function Hero() {
       <div className="pointer-events-none absolute left-[-8%] top-40 h-[380px] w-[380px] rounded-full bg-kaaty-300/10 blur-3xl" />
 
       <Container className="relative pb-20 sm:pb-28">
-        <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12 xl:gap-16">
           {/* ── Left: copy ── */}
-          <div className="w-full lg:w-[54%] lg:max-w-[680px]">
+          <div className="w-full lg:w-[50%] xl:w-[52%]">
             <div className="reveal in inline-flex items-center gap-2 rounded-full border border-navy-200 bg-white/70 px-3.5 py-1.5 text-[12.5px] font-semibold text-navy-700 backdrop-blur">
               <span className="flex h-5 items-center gap-1 rounded-full bg-kaaty-500 px-2 text-[10.5px] font-bold uppercase tracking-wide text-white">
                 New
@@ -1627,12 +1625,12 @@ function Hero() {
               <Icon name="arrow-right" size={13} className="text-kaaty-500" />
             </div>
 
-            <h1 className="mt-6 font-display text-[clamp(2.2rem,4.4vw,4.25rem)] font-extrabold leading-[1.05] tracking-[-.035em] text-navy">
+            <h1 className="mt-6 font-display text-[clamp(2.2rem,4.4vw,4.5rem)] font-extrabold leading-[1.05] tracking-[-.035em] text-navy">
               The Complete <span className="gradient-text">Operating System</span> For Modern Food
               Businesses
             </h1>
 
-            <p className="mt-6 text-[clamp(0.95rem,1.4vw,1.15rem)] leading-relaxed text-navy-500">
+            <p className="mt-6 max-w-2xl text-[clamp(0.95rem,1.4vw,1.18rem)] leading-relaxed text-navy-500">
               From billing and kitchen operations to customer ordering, QR menus, kiosks, vendor
               management and analytics — Kaaty brings everything together in one unified platform.
             </p>
@@ -1672,13 +1670,13 @@ function Hero() {
           </div>
 
           {/* ── Right: devices ── */}
-          <div className="w-full lg:w-[46%]">
+          <div className="w-full lg:w-[50%] xl:w-[48%]">
             {/*
-              Aspect-ratio container: paddingBottom 90% gives stable
+              Aspect-ratio container: paddingBottom 85% gives stable
               intrinsic height that scales proportionally with width at
               every zoom level — zero fixed px heights anywhere.
             */}
-            <div className="relative mx-auto w-full max-w-[580px] 2xl:max-w-[640px]">
+            <div className="relative mx-auto w-full max-w-[640px] xl:max-w-[720px]">
               <div className="relative w-full" style={{ paddingBottom: '90%' }}>
                 {/* POS — top-right, largest card */}
                 <div className="absolute right-0 top-0 w-[64%] animate-floaty">
