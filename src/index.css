@@ -193,3 +193,20 @@ body {
 .marquee-wrap:hover .marquee-track {
   animation-play-state: paused;
 }
+
+/* ── Reduced motion accessibility support ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .animate-floaty,
+  .animate-floaty2,
+  .animate-pulseDot {
+    animation: none !important;
+  }
+}

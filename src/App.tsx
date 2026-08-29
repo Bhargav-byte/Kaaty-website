@@ -49,6 +49,7 @@ type ButtonProps = {
   icon?: string
   className?: string
   as?: 'button' | 'a'
+  type?: 'button' | 'submit' | 'reset'
   href?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
 }
@@ -123,6 +124,7 @@ function Button({
   icon,
   className = '',
   as = 'button',
+  type = 'button',
   href,
   onClick,
 }: ButtonProps) {
@@ -162,7 +164,7 @@ function Button({
     )
   }
   return (
-    <button onClick={onClick} className={cls}>
+    <button type={type} onClick={onClick} className={cls}>
       {inner}
     </button>
   )
@@ -1341,6 +1343,7 @@ function Navbar() {
                               <a
                                 key={it.name}
                                 href={`#/products/${it.slug}`}
+                                onClick={() => setMobile(false)}
                                 className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                               >
                                 <Icon name={it.icon} size={16} className="text-kaaty-500" />
@@ -1354,6 +1357,7 @@ function Navbar() {
                           <a
                             key={s.slug}
                             href={`#/solutions/${s.slug}`}
+                            onClick={() => setMobile(false)}
                             className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                           >
                             <Icon name={s.icon} size={16} className="text-kaaty-500" />
@@ -1371,6 +1375,7 @@ function Navbar() {
                                 <a
                                   key={i.slug}
                                   href={`#/integrations/${i.slug}`}
+                                  onClick={() => setMobile(false)}
                                   className="rounded-md bg-navy-50 px-2 py-1 text-[12.5px] text-navy-700"
                                 >
                                   {i.name}
@@ -1384,6 +1389,7 @@ function Navbar() {
                           <a
                             key={r.name}
                             href="#/resources"
+                            onClick={() => setMobile(false)}
                             className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                           >
                             <Icon name={r.icon} size={16} className="text-kaaty-500" />
@@ -1396,19 +1402,28 @@ function Navbar() {
               ))}
               <a
                 href="#/pricing"
+                onClick={() => setMobile(false)}
                 className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
               >
                 Pricing
               </a>
               <a
                 href="#/about"
+                onClick={() => setMobile(false)}
                 className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
               >
                 About Us
               </a>
             </div>
             <div className="border-t border-navy-100 p-4">
-              <Button as="a" href="#/demo" size="lg" icon="arrow-right" className="w-full">
+              <Button
+                as="a"
+                href="#/demo"
+                onClick={() => setMobile(false)}
+                size="lg"
+                icon="arrow-right"
+                className="w-full"
+              >
                 Book Demo
               </Button>
             </div>
@@ -1465,11 +1480,11 @@ function POSDevice() {
               key={r.n}
               className="flex items-center justify-between rounded-lg bg-navy-50/60 px-3 py-2"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="grid h-6 w-6 place-items-center rounded-md bg-white text-[11px] font-bold text-kaaty-600 ring-1 ring-navy-100">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-white text-[11px] font-bold text-kaaty-600 ring-1 ring-navy-100">
                   {r.q}
                 </span>
-                <span className="text-[13px] font-medium text-navy-800">{r.n}</span>
+                <span className="truncate text-[13px] font-medium text-navy-800">{r.n}</span>
               </div>
               <span className="text-[13px] font-semibold text-navy">{r.p}</span>
             </div>
@@ -2052,7 +2067,7 @@ function WhyKaaty() {
             <div
               key={c.title}
               className="reveal group rounded-2xl border border-navy-100 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift"
-              style={{ transitionDelay: `${(i % 3) * 60}ms` }}
+              style={{ transitionDelay: `${(i % 2) * 60}ms` }}
             >
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
                 <Icon name={c.icon} size={22} />
@@ -2235,7 +2250,7 @@ function CustomSolutions() {
                 </Button>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {CUSTOM_ITEMS.map((e) => (
                 <div
                   key={e.t}
@@ -2661,7 +2676,7 @@ function FinalCTA() {
             </Button>
           </div>
         </div>
-        <div className="grid gap-10 py-16 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="max-w-xs">
             <Logo light />
             <p className="mt-4 text-[14px] leading-relaxed text-navy-400">
@@ -3530,6 +3545,7 @@ function DemoForm() {
                 {submitError && <p className="text-[13px] text-red-500">{submitError}</p>}
                 <Button
                   as="button"
+                  type="submit"
                   size="lg"
                   icon={loading ? undefined : 'arrow-right'}
                   className={loading ? 'opacity-70 cursor-not-allowed' : ''}
