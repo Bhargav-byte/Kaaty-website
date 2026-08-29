@@ -67,7 +67,7 @@ export const sendConfirmationEmail = action({
             </div>
 
             <div class="cta-box">
-              <p class="cta-text">Need immediate assistance? Call us directly at <strong>+91 83741 38823</strong></p>
+              <p class="cta-text">Need immediate assistance? Call us directly at <strong>+91 93923 65308</strong></p>
             </div>
           </div>
           <div class="footer">

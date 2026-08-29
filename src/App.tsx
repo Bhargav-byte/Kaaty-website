@@ -2691,8 +2691,8 @@ function FinalCTA() {
                 <Icon name="mail" size={15} className="text-kaaty-400" />{' '}
                 kaatybusinessindia@gmail.com
               </a>
-              <a href="tel:+918374138823" className="flex items-center gap-2.5 hover:text-white">
-                <Icon name="phone" size={15} className="text-kaaty-400" /> +91 83741 38823
+              <a href="tel:+919392365308" className="flex items-center gap-2.5 hover:text-white">
+                <Icon name="phone" size={15} className="text-kaaty-400" /> +91 93923 65308
               </a>
             </div>
             <div className="mt-6 flex items-center gap-2.5">
@@ -3579,12 +3579,12 @@ function DemoForm() {
                   </div>
                 ))}
                 <a
-                  href="tel:+918374138823"
+                  href="tel:+919392365308"
                   className="flex items-center justify-between rounded-2xl bg-navy-900 p-5 text-white transition-opacity hover:opacity-90"
                 >
                   <div>
                     <div className="text-[12px] text-navy-300">Prefer to call?</div>
-                    <div className="font-display text-[18px] font-extrabold">+91 83741 38823</div>
+                    <div className="font-display text-[18px] font-extrabold">+91 93923 65308</div>
                   </div>
                   <span className="grid h-11 w-11 place-items-center rounded-full bg-kaaty-500">
                     <Icon name="phone" size={18} />
