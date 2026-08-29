@@ -3,8 +3,8 @@
 > Official production repository for the KAATY landing page — an all-in-one food-tech platform for restaurants, cloud kitchens, and food courts.
 > **`main` = production. Every merge deploys live.**
 
-[![CI](https://github.com/Benvora/Kaaty.co.in/actions/workflows/ci.yml/badge.svg)](https://github.com/Benvora/Kaaty.co.in/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/Benvora/Kaaty.co.in/actions/workflows/security.yml/badge.svg)](https://github.com/Benvora/Kaaty.co.in/actions/workflows/security.yml)
+[![CI](https://github.com/Bhargav-byte/Kaaty-website/actions/workflows/ci.yml/badge.svg)](https://github.com/Bhargav-byte/Kaaty-website/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Bhargav-byte/Kaaty-website/actions/workflows/security.yml/badge.svg)](https://github.com/Bhargav-byte/Kaaty-website/actions/workflows/security.yml)
 
 ---
 
@@ -84,8 +84,8 @@ Browser
 ### Installation
 
 ```bash
-git clone https://github.com/Benvora/Kaaty.co.in.git
-cd Kaaty.co.in
+git clone https://github.com/Bhargav-byte/Kaaty-website.git
+cd Kaaty-website
 npm install        # also installs Husky git hooks automatically
 ```
 
