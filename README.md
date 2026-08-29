@@ -1,10 +1,10 @@
 # Kaaty Website
 
-> Official production repository for the Kaaty marketing website and product ecosystem platform.
+> Official production repository for the KAATY landing page — an all-in-one food-tech platform for restaurants, cloud kitchens, and food courts.
 > **`main` = production. Every merge deploys live.**
 
-[![CI](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/ci.yml/badge.svg)](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/security.yml/badge.svg)](https://github.com/Bhargav-byte/kaaty-website/actions/workflows/security.yml)
+[![CI](https://github.com/Benvora/Kaaty.co.in/actions/workflows/ci.yml/badge.svg)](https://github.com/Benvora/Kaaty.co.in/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/Benvora/Kaaty.co.in/actions/workflows/security.yml/badge.svg)](https://github.com/Benvora/Kaaty.co.in/actions/workflows/security.yml)
 
 ---
 
@@ -20,18 +20,57 @@ main branch = live production website
 
 ---
 
+## What is KAATY?
+
+KAATY is a food-tech platform built for the Indian restaurant and food service industry. It provides:
+
+- **POS billing** — Fast, offline-first billing for restaurants and counters
+- **Kitchen Display System (KDS)** — Real-time order routing to the kitchen
+- **QR Ordering** — Contactless table ordering via QR code
+- **Kiosk** — Self-service ordering terminals
+- **Integrations** — Swiggy, Zomato, ONDC, Razorpay, PhonePe, Easebuzz, Pine Labs
+
+KAATY is developed by **Benvora Groups Pvt Ltd** and is deployed across outlets in India.
+
+---
+
 ## Tech Stack
 
-| Tool                | Version | Purpose                   |
-| ------------------- | ------- | ------------------------- |
-| React               | 19      | UI framework              |
-| TypeScript          | 5       | Type safety (strict mode) |
-| Vite                | 8       | Build tool & dev server   |
-| Tailwind CSS        | CDN     | Styling                   |
-| Netlify             | —       | Hosting & deployment      |
-| ESLint + Prettier   | 10 / 3  | Code quality              |
-| Husky + lint-staged | 9 / 15  | Git hooks                 |
-| GitHub Actions      | —       | CI/CD pipeline            |
+| Tool                | Version  | Purpose                                      |
+| ------------------- | -------- | -------------------------------------------- |
+| React               | 19       | UI framework                                 |
+| TypeScript          | 5        | Type safety (strict mode)                    |
+| Vite                | 8        | Build tool & dev server                      |
+| Tailwind CSS        | v4 (npm) | Styling (via @tailwindcss/vite)              |
+| Lucide React        | npm      | Icons (tree-shaken)                          |
+| Convex              | 1.x      | Backend / database / real-time               |
+| Resend              | 6.x      | Transactional email (server-side via Convex) |
+| Netlify             | —        | Hosting & deployment                         |
+| ESLint + Prettier   | 10 / 3   | Code quality                                 |
+| Husky + lint-staged | 9 / 15   | Git hooks                                    |
+| GitHub Actions      | —        | CI/CD pipeline                               |
+
+---
+
+## Architecture
+
+```
+Browser
+   │
+   └── VITE_CONVEX_URL (public)
+            ↓
+         Convex (serverless backend)
+            │
+            ├── demoRequests (database)
+            ├── testimonials (database)
+            ├── integrations (database)
+            ├── trustLogos (database)
+            └── RESEND_API_KEY (server-side only)
+                     ↓
+                   Resend (email)
+```
+
+> **Security:** `RESEND_API_KEY` is stored **only** in the Convex Dashboard environment variables. It never touches the browser, Netlify, or Git.
 
 ---
 
@@ -45,9 +84,19 @@ main branch = live production website
 ### Installation
 
 ```bash
-git clone https://github.com/Bhargav-byte/kaaty-website.git
-cd kaaty-website
+git clone https://github.com/Benvora/Kaaty.co.in.git
+cd Kaaty.co.in
 npm install        # also installs Husky git hooks automatically
+```
+
+### Environment Setup
+
+```bash
+cp .env.example .env.local
+# Edit .env.local and fill in your Convex URL from the Convex dashboard
+```
+
+```bash
 npm run dev        # http://localhost:5173
 ```
 
@@ -65,8 +114,31 @@ npm run dev        # http://localhost:5173
 | `npm run lint:fix`     | ESLint auto-fix                                |
 | `npm run format`       | Prettier format all source files               |
 | `npm run format:check` | Prettier check (used in CI)                    |
-| `npm run size`         | Check JS bundle stays ≤ 350 kB                 |
+| `npm run size`         | Check JS bundle stays ≤ 350 kB (gzipped)       |
 | `npm test`             | Run test suite                                 |
+
+---
+
+## Environment Variables
+
+### Frontend (Netlify + local)
+
+| Variable               | Where set              | Description                  |
+| ---------------------- | ---------------------- | ---------------------------- |
+| `VITE_CONVEX_URL`      | Netlify + `.env.local` | Public Convex deployment URL |
+| `CONVEX_DEPLOYMENT`    | `.env.local` only      | Used by `npx convex dev` CLI |
+| `VITE_CONVEX_SITE_URL` | `.env.local` only      | Convex HTTP actions URL      |
+
+### Server-side (Convex Dashboard only)
+
+| Variable         | Where set                 | Description                                 |
+| ---------------- | ------------------------- | ------------------------------------------- |
+| `RESEND_API_KEY` | **Convex Dashboard only** | Email API key — **never expose to browser** |
+
+> ⚠️ `RESEND_API_KEY` must be configured at:
+> [https://dashboard.convex.dev](https://dashboard.convex.dev) → your project → Settings → Environment Variables
+
+See `.env.example` for the complete template.
 
 ---
 
@@ -82,7 +154,7 @@ git pull origin main
 ### Step 2 — Create a feature branch
 
 ```bash
-# Pattern: feature/* | fix/* | hotfix/*
+# Pattern: feature/* | fix/* | hotfix/* | refactor/* | docs/* | chore/*
 git checkout -b feature/navbar-redesign
 git checkout -b fix/mobile-menu-overflow
 git checkout -b hotfix/netlify-build-failure
@@ -103,7 +175,7 @@ npm run typecheck    # must be zero errors
 npm run lint         # must be zero errors
 npm run format:check # must be zero diffs
 npm run build        # must succeed
-npm run size         # bundle must be ≤ 350 kB
+npm run size         # JS bundle must be ≤ 350 kB gzipped
 ```
 
 ### Step 5 — Commit with a clear message
@@ -112,7 +184,7 @@ npm run size         # bundle must be ≤ 350 kB
 # Conventional commit format
 git commit -m "feat(hero): add animated product showcase"
 git commit -m "fix(navbar): resolve mobile overflow on small screens"
-git commit -m "style(pricing): improve card spacing on mobile"
+git commit -m "chore(deps): update convex to 1.45"
 ```
 
 ### Step 6 — Push and open a Pull Request
@@ -120,19 +192,21 @@ git commit -m "style(pricing): improve card spacing on mobile"
 ```bash
 git push origin feature/your-branch-name
 # Open a PR on GitHub → base: main
-# Fill the PR template completely including screenshots
 ```
 
 ---
 
 ## Branching Strategy
 
-| Branch      | Purpose                                               |
-| ----------- | ----------------------------------------------------- |
-| `main`      | Production — always deployable                        |
-| `feature/*` | New features (e.g. `feature/pricing-page`)            |
-| `fix/*`     | Bug fixes (e.g. `fix/mobile-menu`)                    |
-| `hotfix/*`  | Urgent production fixes (e.g. `hotfix/netlify-build`) |
+| Branch       | Purpose                                               |
+| ------------ | ----------------------------------------------------- |
+| `main`       | Production — always deployable                        |
+| `feature/*`  | New features (e.g. `feature/pricing-page`)            |
+| `fix/*`      | Bug fixes (e.g. `fix/mobile-menu`)                    |
+| `hotfix/*`   | Urgent production fixes (e.g. `hotfix/netlify-build`) |
+| `refactor/*` | Code improvements without feature changes             |
+| `docs/*`     | Documentation updates                                 |
+| `chore/*`    | Dependency updates, tooling changes                   |
 
 ---
 
@@ -145,7 +219,7 @@ Before a PR can merge into `main`:
 - [ ] Tested on mobile AND desktop
 - [ ] No console errors
 - [ ] No secrets committed
-- [ ] Approved by **@Bhargav-byte**
+- [ ] Approved by **@Benvora**
 
 ---
 
@@ -159,6 +233,14 @@ Deployment is automatic via **Netlify**:
 
 **Do not** deploy manually or bypass Netlify.
 
+### Rollback
+
+If a bad deployment reaches production:
+
+1. In Netlify → **Deploys** → find the last good deploy → **Publish deploy**
+2. This instantly rolls back without any code changes
+3. Then fix the issue in a hotfix branch and go through the normal PR flow
+
 ---
 
 ## CI/CD Pipelines
@@ -166,7 +248,7 @@ Deployment is automatic via **Netlify**:
 | Workflow         | Trigger            | Checks                                      |
 | ---------------- | ------------------ | ------------------------------------------- |
 | `ci.yml`         | push / PR          | format, lint, typecheck, build, bundle size |
-| `security.yml`   | push / PR / weekly | Gitleaks secret scan, npm audit             |
+| `security.yml`   | push / PR / weekly | TruffleHog secret scan, npm audit           |
 | `lighthouse.yml` | push to main / PR  | Performance ≥ 85, A11y ≥ 90, SEO ≥ 90       |
 
 ---
@@ -185,32 +267,18 @@ Deployment is automatic via **Netlify**:
 
 ### NEVER hardcode:
 
-- API Keys (Razorpay, Easebuzz, PhonePe, etc.)
+- `RESEND_API_KEY` anywhere outside the Convex Dashboard
 - Netlify tokens or deploy hooks
 - Authentication tokens or passwords
 - Database credentials
 
-All secrets are stored in **Netlify Environment Variables** only.
-
 If you accidentally commit a secret:
 
 1. **Immediately rotate the leaked credential**
-2. Contact @Bhargav-byte
+2. Contact the repository owner
 3. Use `git filter-repo` to scrub history
 
 See [SECURITY.md](./SECURITY.md) for the full security policy.
-
----
-
-## Environment Variables
-
-This site currently has **no runtime environment variables**.
-
-If you add one:
-
-- Add it to Netlify → Site Settings → Environment Variables
-- Document it in [CONTRIBUTING.md](./CONTRIBUTING.md)
-- **Never add it to any `.env` file that gets committed**
 
 ---
 
@@ -223,4 +291,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full contribution guide includi
 ## License
 
 Private repository. All rights reserved.
-© 2025 Benvora Groups Private Limited.
+© 2026 Benvora Groups Private Limited.

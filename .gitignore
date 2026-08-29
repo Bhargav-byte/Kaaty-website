@@ -39,5 +39,8 @@ dist-ssr
 .lighthouseci/
 .husky/_
 
+# ── Convex local cache (NOT the same as convex/_generated/ which IS committed) ──
+.convex/
+
 # ── OS artefacts ──────────────────────────────────────────────────
 Thumbs.db

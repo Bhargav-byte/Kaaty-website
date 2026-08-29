@@ -1,13 +1,92 @@
+@import 'tailwindcss';
+
+/* ── Tailwind v4 theme tokens ─────────────────────────────────────────────── */
+@theme {
+  /* Fonts */
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Manrope, ui-sans-serif, system-ui, sans-serif;
+
+  /* Kaaty brand palette */
+  --color-kaaty-50: #fff3eb;
+  --color-kaaty-100: #ffe3cc;
+  --color-kaaty-200: #ffc499;
+  --color-kaaty-300: #ffa266;
+  --color-kaaty-400: #ff8533;
+  --color-kaaty-500: #ff6b00;
+  --color-kaaty-600: #e65f00;
+  --color-kaaty-700: #c24f00;
+  --color-kaaty-800: #993e00;
+  --color-kaaty-900: #7a3200;
+
+  /* Navy palette */
+  --color-navy: #111827;
+  --color-navy-50: #f8fafc;
+  --color-navy-100: #f1f5f9;
+  --color-navy-200: #e2e8f0;
+  --color-navy-300: #cbd5e1;
+  --color-navy-400: #94a3b8;
+  --color-navy-500: #64748b;
+  --color-navy-600: #475569;
+  --color-navy-700: #334155;
+  --color-navy-800: #1e293b;
+  --color-navy-900: #0f172a;
+  --color-navy-950: #0b1120;
+
+  /* Box shadows */
+  --shadow-soft: 0 1px 2px rgba(16, 24, 40, 0.04), 0 12px 32px -12px rgba(16, 24, 40, 0.18);
+  --shadow-lift: 0 24px 60px -20px rgba(16, 24, 40, 0.28);
+  --shadow-glow: 0 0 0 1px rgba(255, 107, 0, 0.35), 0 0 40px -4px rgba(255, 107, 0, 0.45);
+
+  /* Animation shorthands — reference @keyframes defined below */
+  --animate-floaty: floaty 6s ease-in-out infinite;
+  --animate-floaty2: floaty2 7s ease-in-out infinite;
+  --animate-pulseDot: pulseDot 1.8s ease-in-out infinite;
+}
+
+/* ── Animation keyframes (must be outside @theme in Tailwind v4) ─────────── */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes floaty2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ── Base reset ───────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  overflow-x: hidden;
   background: #ffffff;
   color: #111827;
   font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
@@ -16,6 +95,8 @@ body {
 }
 
 #root {
+  width: 100%;
+  min-width: 0;
   min-height: 100vh;
 }
 

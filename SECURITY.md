@@ -6,7 +6,7 @@ If you discover a security vulnerability in this repository or on the live Kaaty
 
 **Contact us privately:**
 
-- Email: [support@kaaty.com](mailto:support@kaaty.com)
+- Email: [support@kaaty.online](mailto:support@kaaty.online)
 - Subject line: `[SECURITY] <short description>`
 
 We aim to acknowledge all security reports within **48 hours** and provide a resolution or mitigation within **7 days** for critical issues.
@@ -35,19 +35,38 @@ We aim to acknowledge all security reports within **48 hours** and provide a res
 .env.*.local
 ```
 
-These files may contain:
+### Where secrets live
 
-- API Keys (Razorpay, Easebuzz, PhonePe, etc.)
-- Netlify tokens or build hooks
-- Supabase service-role keys
-- Any authentication tokens or passwords
+| Secret            | Where it must be set            | Where it must NOT be                   |
+| ----------------- | ------------------------------- | -------------------------------------- |
+| `VITE_CONVEX_URL` | Netlify env vars + `.env.local` | Never hardcoded in source              |
+| `RESEND_API_KEY`  | **Convex Dashboard only**       | Never in Git, Netlify, or `.env` files |
+
+### Convex Secret Architecture
+
+```
+Browser
+   │
+   └── VITE_CONVEX_URL (public — safe)
+            ↓
+         Convex (server-side)
+            │
+            └── RESEND_API_KEY ← set in Convex Dashboard only
+                     ↓
+                   Resend (email delivery)
+```
+
+`RESEND_API_KEY` **never reaches the browser**. It is used only inside a Convex action (`convex/sendConfirmationEmail.ts`) which runs server-side. Set it at:
+
+> **Convex Dashboard** → your project → Settings → Environment Variables
 
 ### Rules
 
-1. **All secrets live in Netlify environment variables** — never in code.
-2. **Secret scanning runs on every push** via the Gitleaks GitHub Action.
-3. If a secret is accidentally committed, **immediately rotate it** and report to @Bhargav-byte.
-4. Use `git filter-repo` or `BFG Repo Cleaner` to scrub a leaked secret from history.
+1. **Frontend secrets** (e.g., `VITE_CONVEX_URL`) live in Netlify environment variables.
+2. **Server-side secrets** (e.g., `RESEND_API_KEY`) live in Convex Dashboard environment variables only.
+3. **Secret scanning runs on every push** via TruffleHog (free, open-source).
+4. If a secret is accidentally committed, **immediately rotate it** and contact the repository owner.
+5. Use `git filter-repo` or `BFG Repo Cleaner` to scrub a leaked secret from history.
 
 ---
 
@@ -61,7 +80,15 @@ These files may contain:
 
 ## Content Security Policy
 
-The Netlify deployment enforces a strict `Content-Security-Policy` header defined in `netlify.toml`. Any PR that adds a new external resource (CDN, font, script) **must** update the CSP accordingly and document the reason.
+The Netlify deployment enforces a strict `Content-Security-Policy` header defined in `netlify.toml`.
+
+Current policy allows:
+
+- `connect-src`: `self`, `https://*.convex.cloud`, `wss://*.convex.cloud` (Convex real-time)
+- `script-src`: `self`, `unsafe-inline` (required for Vite-injected module scripts)
+- `font-src`: Google Fonts
+
+Any PR that adds a new external resource (CDN, script, API endpoint) **must** update the CSP accordingly and document the reason.
 
 ---
 
@@ -84,3 +111,4 @@ Before submitting a PR, confirm:
 - [ ] `npm audit` passes locally
 - [ ] No `console.log` statements left in production code
 - [ ] No hardcoded URLs that expose internal infrastructure
+- [ ] `RESEND_API_KEY` is not in any `.env` file, README, or Netlify variables

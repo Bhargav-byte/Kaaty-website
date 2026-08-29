@@ -1,13 +1,7 @@
 import React from 'react'
-
-type LucideNode = [string, Record<string, unknown>?, LucideNode[]?]
-type LucideIcons = Record<string, LucideNode>
-
-declare global {
-  interface Window {
-    lucide?: { icons: LucideIcons }
-  }
-}
+import { useMutation, useQuery } from 'convex/react'
+import { api } from '../convex/_generated/api'
+import * as LucideIcons from 'lucide-react'
 
 type IconProps = {
   name: string
@@ -15,6 +9,30 @@ type IconProps = {
   strokeWidth?: number
   className?: string
   style?: React.CSSProperties
+}
+
+function toPascal(s: string) {
+  return String(s)
+    .split('-')
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join('')
+}
+
+function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
+  const iconName = toPascal(name)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const icons = LucideIcons as unknown as Record<string, React.ComponentType<any>>
+  const LucideIcon = icons[iconName]
+  if (!LucideIcon) return null
+  return (
+    <LucideIcon
+      size={size}
+      strokeWidth={strokeWidth}
+      className={className}
+      style={style}
+      aria-hidden="true"
+    />
+  )
 }
 
 type ContainerProps = {
@@ -87,53 +105,15 @@ type MiniValueGridProps = {
 type HeroVisualProps = { kind?: MockKind }
 
 /* ============================================================
-   Kaaty — Shared primitives & Lucide icon renderer
+   Kaaty — Shared primitives
    ============================================================ */
 
-function lucideChild(child: LucideNode, i: number): React.ReactElement {
-  const tag = child[0]
-  const attrs = child[1] || {}
-  const kids = child[2]
-  return React.createElement(
-    tag,
-    { key: i, ...attrs },
-    Array.isArray(kids) ? kids.map(lucideChild) : null,
-  )
-}
-
-function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
-  const L = typeof window !== 'undefined' ? window.lucide : null
-  const icons = (L && L.icons ? L.icons : null) as LucideIcons | null
-  const node = icons ? icons[toPascal(name)] || icons[name] : null
-  const children = node && Array.isArray(node[2]) ? node[2] : []
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      style={style}
-      aria-hidden="true"
-    >
-      {children.map(lucideChild)}
-    </svg>
-  )
-}
-function toPascal(s: string) {
-  return String(s)
-    .split('-')
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join('')
-}
-
 function Container({ className = '', children }: ContainerProps) {
-  return <div className={`mx-auto w-full max-w-7xl px-5 sm:px-8 ${className}`}>{children}</div>
+  return (
+    <div className={`mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8 xl:px-12 ${className}`}>
+      {children}
+    </div>
+  )
 }
 
 function Button({
@@ -1163,9 +1143,11 @@ const MENUS: Record<string, MenuConfig> = {
 function Logo({ light = false }) {
   return (
     <a href="#/" className="flex items-center gap-2.5">
-      <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-kaaty-500 shadow-[0_8px_18px_-6px_rgba(255,107,0,.7)]">
-        <Icon name="utensils" size={19} className="text-white" strokeWidth={2.4} />
-      </span>
+      <img
+        src="/logo.jpg"
+        alt="Kaaty Logo"
+        className="h-9 w-9 rounded-xl shadow-[0_8px_18px_-6px_rgba(255,107,0,.7)] object-cover"
+      />
       <span
         className={`font-display text-[22px] font-extrabold tracking-[-.03em] ${
           light ? 'text-white' : 'text-navy'
@@ -1214,9 +1196,9 @@ function Navbar() {
   const dropdowns = ['Products', 'Solutions', 'Integrations']
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="fixed inset-x-0 top-0 z-50 w-full">
       <div
-        className={`border-b transition-all duration-300 ${
+        className={`w-full border-b transition-all duration-300 ${
           scrolled
             ? 'border-navy-200/70 bg-white/85 backdrop-blur-xl shadow-[0_6px_24px_-16px_rgba(16,24,40,.3)]'
             : 'border-transparent bg-transparent'
@@ -1297,12 +1279,6 @@ function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2.5">
-            <a
-              href="#/demo"
-              className="hidden text-[14.5px] font-semibold text-navy-800 transition-colors hover:text-kaaty-600 lg:block"
-            >
-              Sign in
-            </a>
             <Button
               as="a"
               href="#/demo"
@@ -1466,7 +1442,7 @@ function POSDevice() {
     { n: 'Cold Coffee', q: 2, p: '₹180' },
   ]
   return (
-    <div className="w-[340px] overflow-hidden rounded-[22px] border border-navy-200/70 bg-white shadow-lift ring-1 ring-black/5">
+    <div className="w-full overflow-hidden rounded-[22px] border border-navy-200/70 bg-white shadow-lift ring-1 ring-black/5">
       <div className="flex items-center justify-between border-b border-navy-100 bg-navy-50/70 px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-kaaty-500 text-white">
@@ -1537,7 +1513,7 @@ function KDSDevice() {
     emerald: 'bg-emerald-100 text-emerald-700',
   }
   return (
-    <div className="w-[256px] overflow-hidden rounded-[18px] border border-navy-800 bg-navy-900 shadow-lift">
+    <div className="w-full overflow-hidden rounded-[18px] border border-navy-800 bg-navy-900 shadow-lift">
       <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-2.5">
         <div className="flex items-center gap-2">
           <span className="grid h-6 w-6 place-items-center rounded-md bg-kaaty-500 text-white">
@@ -1581,7 +1557,7 @@ function PhoneDevice() {
     ['Ready for pickup', false],
   ]
   return (
-    <div className="w-[176px] overflow-hidden rounded-[28px] border-[5px] border-navy-900 bg-white shadow-lift">
+    <div className="w-full overflow-hidden rounded-[28px] border-[5px] border-navy-900 bg-white shadow-lift">
       <div className="relative bg-gradient-to-b from-kaaty-500 to-kaaty-600 px-4 pb-6 pt-5 text-white">
         <div className="absolute left-1/2 top-1.5 h-1 w-12 -translate-x-1/2 rounded-full bg-white/40" />
         <div className="mt-1 text-[10.5px] font-medium text-white/80">Order ready in</div>
@@ -1623,8 +1599,9 @@ function Hero() {
       <div className="pointer-events-none absolute left-[-8%] top-40 h-[380px] w-[380px] rounded-full bg-kaaty-300/10 blur-3xl" />
 
       <Container className="relative pb-20 sm:pb-28">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.02fr_1fr] lg:gap-8">
-          <div className="max-w-xl">
+        <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-12">
+          {/* ── Left: copy ── */}
+          <div className="w-full lg:w-1/2 lg:max-w-xl">
             <div className="reveal in inline-flex items-center gap-2 rounded-full border border-navy-200 bg-white/70 px-3.5 py-1.5 text-[12.5px] font-semibold text-navy-700 backdrop-blur">
               <span className="flex h-5 items-center gap-1 rounded-full bg-kaaty-500 px-2 text-[10.5px] font-bold uppercase tracking-wide text-white">
                 New
@@ -1633,12 +1610,12 @@ function Hero() {
               <Icon name="arrow-right" size={13} className="text-kaaty-500" />
             </div>
 
-            <h1 className="mt-6 font-display text-[clamp(2.4rem,5.6vw,4.1rem)] font-extrabold leading-[1.02] tracking-[-.035em] text-navy">
+            <h1 className="mt-6 font-display text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-[-.035em] text-navy">
               The Complete <span className="gradient-text">Operating System</span> For Modern Food
               Businesses
             </h1>
 
-            <p className="mt-6 max-w-lg text-[clamp(1.02rem,1.5vw,1.2rem)] leading-relaxed text-navy-500">
+            <p className="mt-6 text-[clamp(0.95rem,1.4vw,1.15rem)] leading-relaxed text-navy-500">
               From billing and kitchen operations to customer ordering, QR menus, kiosks, vendor
               management and analytics — Kaaty brings everything together in one unified platform.
             </p>
@@ -1677,24 +1654,41 @@ function Hero() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="relative mx-auto flex min-h-[440px] max-w-[520px] items-center justify-center">
-              <div className="absolute right-2 top-2 animate-floaty">
-                <POSDevice />
-              </div>
-              <div className="absolute bottom-4 left-0 animate-floaty2">
-                <KDSDevice />
-              </div>
-              <div
-                className="absolute bottom-0 right-6 z-10 animate-floaty"
-                style={{ animationDelay: '1.2s' }}
-              >
-                <PhoneDevice />
-              </div>
-              <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
-                <div className="flex items-center gap-2 rounded-full bg-navy-900 px-3.5 py-2 text-white shadow-lift">
-                  <Icon name="refresh-cw" size={14} className="text-kaaty-400" />
-                  <span className="text-[11.5px] font-bold">Synced · real-time</span>
+          {/* ── Right: devices ── */}
+          <div className="w-full lg:w-1/2">
+            {/*
+              Aspect-ratio container: paddingBottom 90% gives stable
+              intrinsic height that scales proportionally with width at
+              every zoom level — zero fixed px heights anywhere.
+            */}
+            <div className="relative mx-auto w-full max-w-[520px]">
+              <div className="relative w-full" style={{ paddingBottom: '90%' }}>
+                {/* POS — top-right, largest card */}
+                <div className="absolute right-0 top-0 w-[64%] animate-floaty">
+                  <POSDevice />
+                </div>
+
+                {/* KDS — left, overlapping POS */}
+                <div className="absolute left-0 top-[18%] w-[48%] animate-floaty2">
+                  <KDSDevice />
+                </div>
+
+                {/* Phone — bottom-right */}
+                <div
+                  className="absolute bottom-0 right-[8%] z-10 w-[30%] animate-floaty"
+                  style={{ animationDelay: '1.2s' }}
+                >
+                  <PhoneDevice />
+                </div>
+
+                {/* Synced badge — center */}
+                <div className="absolute left-1/2 top-[44%] z-20 -translate-x-1/2 -translate-y-1/2">
+                  <div className="flex items-center gap-2 rounded-full bg-navy-900 px-3.5 py-2 text-white shadow-lift">
+                    <Icon name="refresh-cw" size={14} className="text-kaaty-400" />
+                    <span className="whitespace-nowrap text-[11.5px] font-bold">
+                      Synced · real-time
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1866,17 +1860,18 @@ function renderMockBody(kind: MockKind) {
 
 const TRUST_LOGOS = [
   { name: 'KG Reddy College', icon: 'graduation-cap' },
-  { name: 'CMR Group', icon: 'building-2' },
-  { name: 'MLR Institute', icon: 'school' },
-  { name: 'MGIT', icon: 'landmark' },
-  { name: "St. Peter's", icon: 'book-open-check' },
-  { name: 'G Fried Chicken', icon: 'drumstick' },
-  { name: "Sam's Pizza", icon: 'pizza' },
-  { name: 'United Farmers', icon: 'wheat' },
+  { name: 'Siddhartha Institution', icon: 'book-open' },
+  { name: 'KL University', icon: 'building-2' },
+  { name: 'MLR Institution', icon: 'landmark' },
+  { name: 'CMR Groups', icon: 'library' },
 ]
 
 function TrustMarquee() {
-  const row = [...TRUST_LOGOS, ...TRUST_LOGOS]
+  const convexLogos = useQuery(api.trustLogos.get)
+  const logos = convexLogos || TRUST_LOGOS
+  // Duplicate logos multiple times to ensure the marquee loop fills ultra-wide screens
+  const row = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos]
+
   return (
     <section className="border-y border-navy-100 bg-navy-50/50 py-12">
       <Container>
@@ -1885,7 +1880,10 @@ function TrustMarquee() {
         </p>
       </Container>
       <div className="marquee-wrap marquee-mask mt-8 overflow-hidden">
-        <div className="marquee-track gap-10 pr-10">
+        <div
+          className="marquee-track gap-10 pr-10"
+          style={{ animationDuration: `${row.length * 3.8}s` }}
+        >
           {row.map((l, i) => (
             <div
               key={i}
@@ -2074,8 +2072,20 @@ function WhyKaaty() {
    ============================================================ */
 
 function IntegrationsSection() {
-  const all = Object.entries(INTEGRATION_PAGES).map(([slug, v]) => ({ slug, ...v }))
-  const row = [...all, ...all]
+  const convexIntegrations = useQuery(api.integrations.get)
+  const allStatic = Object.entries(INTEGRATION_PAGES).map(([slug, v]) => ({ slug, ...v }))
+  const integrationsList = convexIntegrations || allStatic
+
+  // Duplicate items to ensure the marquee fills wide screens
+  const row = [
+    ...integrationsList,
+    ...integrationsList,
+    ...integrationsList,
+    ...integrationsList,
+    ...integrationsList,
+    ...integrationsList,
+  ]
+
   return (
     <section id="integrations" className="py-24 sm:py-28">
       <Container>
@@ -2090,7 +2100,10 @@ function IntegrationsSection() {
         />
       </Container>
       <div className="marquee-wrap marquee-mask mt-12 overflow-hidden">
-        <div className="marquee-track gap-4 pr-4">
+        <div
+          className="marquee-track gap-4 pr-4"
+          style={{ animationDuration: `${row.length * 2.5}s` }}
+        >
           {row.map((it, i) => (
             <a
               key={i}
@@ -2657,19 +2670,20 @@ function FinalCTA() {
             </p>
             <div className="mt-6 space-y-2.5 text-[13.5px] text-navy-300">
               <a
-                href="mailto:support@kaaty.com"
+                href="mailto:kaatybusinessindia@gmail.com"
                 className="flex items-center gap-2.5 hover:text-white"
               >
-                <Icon name="mail" size={15} className="text-kaaty-400" /> support@kaaty.com
+                <Icon name="mail" size={15} className="text-kaaty-400" />{' '}
+                kaatybusinessindia@gmail.com
               </a>
-              <a href="tel:+919000000000" className="flex items-center gap-2.5 hover:text-white">
-                <Icon name="phone" size={15} className="text-kaaty-400" /> +91 90000 00000
+              <a href="tel:+918374138823" className="flex items-center gap-2.5 hover:text-white">
+                <Icon name="phone" size={15} className="text-kaaty-400" /> +91 83741 38823
               </a>
             </div>
             <div className="mt-6 flex items-center gap-2.5">
               {[
-                ['linkedin', '#'],
-                ['instagram', '#'],
+                ['linkedin', 'https://www.linkedin.com/company/kaaty/posts/?feedView=all'],
+                ['instagram', 'https://www.instagram.com/kaaty.india/?__pwa=1#'],
                 ['twitter', '#'],
               ].map(([ic, h]) => (
                 <a
@@ -2887,17 +2901,43 @@ const TESTIMONIALS = [
 ]
 
 function Testimonials() {
+  const convexTestimonials = useQuery(api.testimonials.get)
+  const testimonialsList = convexTestimonials || TESTIMONIALS
+
+  React.useEffect(() => {
+    // Reveal elements locally when data loads
+    const t = setTimeout(() => {
+      document.querySelectorAll('#testimonials-grid .reveal:not(.in)').forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in')
+        // Also observe for scrolling
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in')
+                io.disconnect()
+              }
+            })
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+        )
+        io.observe(el)
+      })
+    }, 100)
+    return () => clearTimeout(t)
+  }, [testimonialsList])
+
   return (
     <section className="py-20 sm:py-24">
       <Container>
         <h2 className="text-center font-display text-[clamp(1.7rem,3.4vw,2.6rem)] font-extrabold tracking-[-.02em] text-navy">
           Real Restaurants · Real Results · <span className="gradient-text">Real Stories</span>
         </h2>
-        <div className="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-2">
-          {TESTIMONIALS.map((t) => (
+        <div id="testimonials-grid" className="mx-auto mt-14 flex flex-wrap justify-center gap-6">
+          {testimonialsList.map((t, i) => (
             <figure
-              key={t.name}
-              className="reveal rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8"
+              key={t.name || i}
+              className="reveal w-full max-w-[480px] rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8"
             >
               <div className="flex items-center gap-2.5">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
@@ -2927,6 +2967,161 @@ function Testimonials() {
   )
 }
 
+function CountryFlag({ iso, country }: { iso: string; country: string }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w20/${iso.toLowerCase()}.png`}
+      srcSet={`https://flagcdn.com/w40/${iso.toLowerCase()}.png 2x`}
+      width="20"
+      height="15"
+      alt={country}
+      className="shrink-0 rounded-[2px] object-cover shadow-sm"
+      loading="lazy"
+    />
+  )
+}
+
+const COUNTRY_CODES = [
+  { iso: 'IN', code: '+91', country: 'India', flag: '🇮🇳', digits: [10, 11] },
+  { iso: 'AF', code: '+93', country: 'Afghanistan', flag: '🇦🇫', digits: [9] },
+  { iso: 'AL', code: '+355', country: 'Albania', flag: '🇦🇱', digits: [9] },
+  { iso: 'DZ', code: '+213', country: 'Algeria', flag: '🇩🇿', digits: [9] },
+  { iso: 'AD', code: '+376', country: 'Andorra', flag: '🇦🇩', digits: [6] },
+  { iso: 'AO', code: '+244', country: 'Angola', flag: '🇦🇴', digits: [9] },
+  { iso: 'AR', code: '+54', country: 'Argentina', flag: '🇦🇷', digits: [10] },
+  { iso: 'AM', code: '+374', country: 'Armenia', flag: '🇦🇲', digits: [8] },
+  { iso: 'AU', code: '+61', country: 'Australia', flag: '🇦🇺', digits: [9] },
+  { iso: 'AT', code: '+43', country: 'Austria', flag: '🇦🇹', digits: [10, 11] },
+  { iso: 'AZ', code: '+994', country: 'Azerbaijan', flag: '🇦🇿', digits: [9] },
+  { iso: 'BH', code: '+973', country: 'Bahrain', flag: '🇧🇭', digits: [8] },
+  { iso: 'BD', code: '+880', country: 'Bangladesh', flag: '🇧🇩', digits: [10] },
+  { iso: 'BY', code: '+375', country: 'Belarus', flag: '🇧🇾', digits: [9] },
+  { iso: 'BE', code: '+32', country: 'Belgium', flag: '🇧🇪', digits: [9] },
+  { iso: 'BZ', code: '+501', country: 'Belize', flag: '🇧🇿', digits: [7] },
+  { iso: 'BJ', code: '+229', country: 'Benin', flag: '🇧🇯', digits: [8] },
+  { iso: 'BT', code: '+975', country: 'Bhutan', flag: '🇧🇹', digits: [8] },
+  { iso: 'BO', code: '+591', country: 'Bolivia', flag: '🇧🇴', digits: [8] },
+  { iso: 'BA', code: '+387', country: 'Bosnia & Herzegovina', flag: '🇧🇦', digits: [8] },
+  { iso: 'BW', code: '+267', country: 'Botswana', flag: '🇧🇼', digits: [8] },
+  { iso: 'BR', code: '+55', country: 'Brazil', flag: '🇧🇷', digits: [10, 11] },
+  { iso: 'BN', code: '+673', country: 'Brunei', flag: '🇧🇳', digits: [7] },
+  { iso: 'BG', code: '+359', country: 'Bulgaria', flag: '🇧🇬', digits: [9] },
+  { iso: 'KH', code: '+855', country: 'Cambodia', flag: '🇰🇭', digits: [8, 9] },
+  { iso: 'CM', code: '+237', country: 'Cameroon', flag: '🇨🇲', digits: [9] },
+  { iso: 'CA', code: '+1', country: 'Canada', flag: '🇨🇦', digits: [10] },
+  { iso: 'CL', code: '+56', country: 'Chile', flag: '🇨🇱', digits: [9] },
+  { iso: 'CN', code: '+86', country: 'China', flag: '🇨🇳', digits: [11] },
+  { iso: 'CO', code: '+57', country: 'Colombia', flag: '🇨🇴', digits: [10] },
+  { iso: 'CR', code: '+506', country: 'Costa Rica', flag: '🇨🇷', digits: [8] },
+  { iso: 'HR', code: '+385', country: 'Croatia', flag: '🇭🇷', digits: [9] },
+  { iso: 'CU', code: '+53', country: 'Cuba', flag: '🇨🇺', digits: [8] },
+  { iso: 'CY', code: '+357', country: 'Cyprus', flag: '🇨🇾', digits: [8] },
+  { iso: 'CZ', code: '+420', country: 'Czech Republic', flag: '🇨🇿', digits: [9] },
+  { iso: 'DK', code: '+45', country: 'Denmark', flag: '🇩🇰', digits: [8] },
+  { iso: 'EC', code: '+593', country: 'Ecuador', flag: '🇪🇨', digits: [9] },
+  { iso: 'EG', code: '+20', country: 'Egypt', flag: '🇪🇬', digits: [10] },
+  { iso: 'SV', code: '+503', country: 'El Salvador', flag: '🇸🇻', digits: [8] },
+  { iso: 'EE', code: '+372', country: 'Estonia', flag: '🇪🇪', digits: [7, 8] },
+  { iso: 'ET', code: '+251', country: 'Ethiopia', flag: '🇪🇹', digits: [9] },
+  { iso: 'FJ', code: '+679', country: 'Fiji', flag: '🇫🇯', digits: [7] },
+  { iso: 'FI', code: '+358', country: 'Finland', flag: '🇫🇮', digits: [9, 10] },
+  { iso: 'FR', code: '+33', country: 'France', flag: '🇫🇷', digits: [9] },
+  { iso: 'GE', code: '+995', country: 'Georgia', flag: '🇬🇪', digits: [9] },
+  { iso: 'DE', code: '+49', country: 'Germany', flag: '🇩🇪', digits: [10, 11] },
+  { iso: 'GH', code: '+233', country: 'Ghana', flag: '🇬🇭', digits: [9] },
+  { iso: 'GR', code: '+30', country: 'Greece', flag: '🇬🇷', digits: [10] },
+  { iso: 'GT', code: '+502', country: 'Guatemala', flag: '🇬🇹', digits: [8] },
+  { iso: 'HN', code: '+504', country: 'Honduras', flag: '🇭🇳', digits: [8] },
+  { iso: 'HK', code: '+852', country: 'Hong Kong', flag: '🇭🇰', digits: [8] },
+  { iso: 'HU', code: '+36', country: 'Hungary', flag: '🇭🇺', digits: [9] },
+  { iso: 'IS', code: '+354', country: 'Iceland', flag: '🇮🇸', digits: [7] },
+  { iso: 'ID', code: '+62', country: 'Indonesia', flag: '🇮🇩', digits: [10, 11] },
+  { iso: 'IR', code: '+98', country: 'Iran', flag: '🇮🇷', digits: [10] },
+  { iso: 'IQ', code: '+964', country: 'Iraq', flag: '🇮🇶', digits: [10] },
+  { iso: 'IE', code: '+353', country: 'Ireland', flag: '🇮🇪', digits: [9] },
+  { iso: 'IL', code: '+972', country: 'Israel', flag: '🇮🇱', digits: [9] },
+  { iso: 'IT', code: '+39', country: 'Italy', flag: '🇮🇹', digits: [10] },
+  { iso: 'JM', code: '+1876', country: 'Jamaica', flag: '🇯🇲', digits: [7] },
+  { iso: 'JP', code: '+81', country: 'Japan', flag: '🇯🇵', digits: [10, 11] },
+  { iso: 'JO', code: '+962', country: 'Jordan', flag: '🇯🇴', digits: [9] },
+  { iso: 'KZ', code: '+7', country: 'Kazakhstan', flag: '🇰🇿', digits: [10] },
+  { iso: 'KE', code: '+254', country: 'Kenya', flag: '🇰🇪', digits: [9] },
+  { iso: 'KW', code: '+965', country: 'Kuwait', flag: '🇰🇼', digits: [8] },
+  { iso: 'KG', code: '+996', country: 'Kyrgyzstan', flag: '🇰🇬', digits: [9] },
+  { iso: 'LA', code: '+856', country: 'Laos', flag: '🇱🇦', digits: [9, 10] },
+  { iso: 'LV', code: '+371', country: 'Latvia', flag: '🇱🇻', digits: [8] },
+  { iso: 'LB', code: '+961', country: 'Lebanon', flag: '🇱🇧', digits: [7, 8] },
+  { iso: 'LY', code: '+218', country: 'Libya', flag: '🇱🇾', digits: [9] },
+  { iso: 'LT', code: '+370', country: 'Lithuania', flag: '🇱🇹', digits: [8] },
+  { iso: 'LU', code: '+352', country: 'Luxembourg', flag: '🇱🇺', digits: [9] },
+  { iso: 'MO', code: '+853', country: 'Macao', flag: '🇲🇴', digits: [8] },
+  { iso: 'MY', code: '+60', country: 'Malaysia', flag: '🇲🇾', digits: [9, 10] },
+  { iso: 'MV', code: '+960', country: 'Maldives', flag: '🇲🇻', digits: [7] },
+  { iso: 'MT', code: '+356', country: 'Malta', flag: '🇲🇹', digits: [8] },
+  { iso: 'MX', code: '+52', country: 'Mexico', flag: '🇲🇽', digits: [10] },
+  { iso: 'MD', code: '+373', country: 'Moldova', flag: '🇲🇩', digits: [8] },
+  { iso: 'MC', code: '+377', country: 'Monaco', flag: '🇲🇨', digits: [8, 9] },
+  { iso: 'MN', code: '+976', country: 'Mongolia', flag: '🇲🇳', digits: [8] },
+  { iso: 'ME', code: '+382', country: 'Montenegro', flag: '🇲🇪', digits: [8] },
+  { iso: 'MA', code: '+212', country: 'Morocco', flag: '🇲🇦', digits: [9] },
+  { iso: 'MZ', code: '+258', country: 'Mozambique', flag: '🇲🇿', digits: [9] },
+  { iso: 'MM', code: '+95', country: 'Myanmar', flag: '🇲🇲', digits: [8, 9] },
+  { iso: 'NA', code: '+264', country: 'Namibia', flag: '🇳🇦', digits: [9] },
+  { iso: 'NP', code: '+977', country: 'Nepal', flag: '🇳🇵', digits: [10] },
+  { iso: 'NL', code: '+31', country: 'Netherlands', flag: '🇳🇱', digits: [9] },
+  { iso: 'NZ', code: '+64', country: 'New Zealand', flag: '🇳🇿', digits: [8, 9] },
+  { iso: 'NI', code: '+505', country: 'Nicaragua', flag: '🇳🇮', digits: [8] },
+  { iso: 'NG', code: '+234', country: 'Nigeria', flag: '🇳🇬', digits: [10] },
+  { iso: 'MK', code: '+389', country: 'North Macedonia', flag: '🇲🇰', digits: [8] },
+  { iso: 'NO', code: '+47', country: 'Norway', flag: '🇳🇴', digits: [8] },
+  { iso: 'OM', code: '+968', country: 'Oman', flag: '🇴🇲', digits: [8] },
+  { iso: 'PK', code: '+92', country: 'Pakistan', flag: '🇵🇰', digits: [10] },
+  { iso: 'PS', code: '+970', country: 'Palestine', flag: '🇵🇸', digits: [9] },
+  { iso: 'PA', code: '+507', country: 'Panama', flag: '🇵🇦', digits: [8] },
+  { iso: 'PG', code: '+675', country: 'Papua New Guinea', flag: '🇵🇬', digits: [8] },
+  { iso: 'PY', code: '+595', country: 'Paraguay', flag: '🇵🇾', digits: [9] },
+  { iso: 'PE', code: '+51', country: 'Peru', flag: '🇵🇪', digits: [9] },
+  { iso: 'PH', code: '+63', country: 'Philippines', flag: '🇵🇭', digits: [10] },
+  { iso: 'PL', code: '+48', country: 'Poland', flag: '🇵🇱', digits: [9] },
+  { iso: 'PT', code: '+351', country: 'Portugal', flag: '🇵🇹', digits: [9] },
+  { iso: 'QA', code: '+974', country: 'Qatar', flag: '🇶🇦', digits: [8] },
+  { iso: 'RO', code: '+40', country: 'Romania', flag: '🇷🇴', digits: [9] },
+  { iso: 'RU', code: '+7', country: 'Russia', flag: '🇷🇺', digits: [10] },
+  { iso: 'RW', code: '+250', country: 'Rwanda', flag: '🇷🇼', digits: [9] },
+  { iso: 'SA', code: '+966', country: 'Saudi Arabia', flag: '🇸🇦', digits: [9] },
+  { iso: 'SN', code: '+221', country: 'Senegal', flag: '🇸🇳', digits: [9] },
+  { iso: 'RS', code: '+381', country: 'Serbia', flag: '🇷🇸', digits: [9] },
+  { iso: 'SG', code: '+65', country: 'Singapore', flag: '🇸🇬', digits: [8] },
+  { iso: 'SK', code: '+421', country: 'Slovakia', flag: '🇸🇰', digits: [9] },
+  { iso: 'SI', code: '+386', country: 'Slovenia', flag: '🇸🇮', digits: [8] },
+  { iso: 'ZA', code: '+27', country: 'South Africa', flag: '🇿🇦', digits: [9] },
+  { iso: 'KR', code: '+82', country: 'South Korea', flag: '🇰🇷', digits: [9, 10] },
+  { iso: 'ES', code: '+34', country: 'Spain', flag: '🇪🇸', digits: [9] },
+  { iso: 'LK', code: '+94', country: 'Sri Lanka', flag: '🇱🇰', digits: [9] },
+  { iso: 'SD', code: '+249', country: 'Sudan', flag: '🇸🇩', digits: [9] },
+  { iso: 'SE', code: '+46', country: 'Sweden', flag: '🇸🇪', digits: [9] },
+  { iso: 'CH', code: '+41', country: 'Switzerland', flag: '🇨🇭', digits: [9] },
+  { iso: 'TW', code: '+886', country: 'Taiwan', flag: '🇹🇼', digits: [9] },
+  { iso: 'TJ', code: '+992', country: 'Tajikistan', flag: '🇹🇯', digits: [9] },
+  { iso: 'TZ', code: '+255', country: 'Tanzania', flag: '🇹🇿', digits: [9] },
+  { iso: 'TH', code: '+66', country: 'Thailand', flag: '🇹🇭', digits: [9] },
+  { iso: 'TN', code: '+216', country: 'Tunisia', flag: '🇹🇳', digits: [8] },
+  { iso: 'TR', code: '+90', country: 'Turkey', flag: '🇹🇷', digits: [10] },
+  { iso: 'TM', code: '+993', country: 'Turkmenistan', flag: '🇹🇲', digits: [8] },
+  { iso: 'AE', code: '+971', country: 'UAE', flag: '🇦🇪', digits: [9] },
+  { iso: 'UG', code: '+256', country: 'Uganda', flag: '🇺🇬', digits: [9] },
+  { iso: 'GB', code: '+44', country: 'UK', flag: '🇬🇧', digits: [10, 11] },
+  { iso: 'UA', code: '+380', country: 'Ukraine', flag: '🇺🇦', digits: [9] },
+  { iso: 'UY', code: '+598', country: 'Uruguay', flag: '🇺🇾', digits: [8] },
+  { iso: 'US', code: '+1', country: 'USA', flag: '🇺🇸', digits: [10] },
+  { iso: 'UZ', code: '+998', country: 'Uzbekistan', flag: '🇺🇿', digits: [9] },
+  { iso: 'VE', code: '+58', country: 'Venezuela', flag: '🇻🇪', digits: [10] },
+  { iso: 'VN', code: '+84', country: 'Vietnam', flag: '🇻🇳', digits: [9, 10] },
+  { iso: 'YE', code: '+967', country: 'Yemen', flag: '🇾🇪', digits: [9] },
+  { iso: 'ZM', code: '+260', country: 'Zambia', flag: '🇿🇲', digits: [9] },
+  { iso: 'ZW', code: '+263', country: 'Zimbabwe', flag: '🇿🇼', digits: [9] },
+]
+
 type DemoFormData = {
   name: string
   business: string
@@ -2937,6 +3132,44 @@ type DemoFormData = {
 }
 
 function DemoForm() {
+  const submitToConvex = useMutation(api.demoRequests.submitDemoRequest)
+  const [countryCode, setCountryCode] = React.useState('+91')
+  const [countryDropdownOpen, setCountryDropdownOpen] = React.useState(false)
+  const [countrySearch, setCountrySearch] = React.useState('')
+  const countryPickerRef = React.useRef<HTMLDivElement>(null)
+
+  const [btypeDropdownOpen, setBtypeDropdownOpen] = React.useState(false)
+  const btypePickerRef = React.useRef<HTMLDivElement>(null)
+
+  const selectedCountry = React.useMemo(
+    () => COUNTRY_CODES.find((c) => c.code === countryCode) || COUNTRY_CODES[0],
+    [countryCode],
+  )
+
+  const filteredCountries = React.useMemo(() => {
+    const q = countrySearch.trim().toLowerCase()
+    if (!q) return COUNTRY_CODES
+    return COUNTRY_CODES.filter(
+      (c) =>
+        c.country.toLowerCase().includes(q) ||
+        c.code.toLowerCase().includes(q) ||
+        c.iso.toLowerCase().includes(q),
+    )
+  }, [countrySearch])
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (countryPickerRef.current && !countryPickerRef.current.contains(e.target as Node)) {
+        setCountryDropdownOpen(false)
+        setCountrySearch('')
+      }
+      if (btypePickerRef.current && !btypePickerRef.current.contains(e.target as Node)) {
+        setBtypeDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
   const [form, setForm] = React.useState<DemoFormData>({
     name: '',
     business: '',
@@ -2946,21 +3179,52 @@ function DemoForm() {
     message: '',
   })
   const [sent, setSent] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
+  const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [err, setErr] = React.useState<Partial<Record<keyof DemoFormData, number>>>({})
   const set =
     (k: keyof DemoFormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }))
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const er: Partial<Record<keyof DemoFormData, number>> = {}
     if (!form.name.trim()) er.name = 1
     if (!form.business.trim()) er.business = 1
-    if (!/^[0-9+\-\s]{8,}$/.test(form.phone)) er.phone = 1
+    // Per-country phone digit validation
+    const digits = form.phone.replace(/\D/g, '')
+    const phoneOk =
+      countryCode === '+91'
+        ? digits.length === (digits.startsWith('0') ? 11 : 10)
+        : (() => {
+            const selected = COUNTRY_CODES.find((c) => c.code === countryCode)
+            const validLengths = selected ? selected.digits : null
+            return validLengths
+              ? validLengths.includes(digits.length)
+              : digits.length >= 6 && digits.length <= 15
+          })()
+    if (!phoneOk) er.phone = 1
     if (!/^\S+@\S+\.\S+$/.test(form.email)) er.email = 1
     if (!form.type) er.type = 1
     setErr(er)
-    if (Object.keys(er).length === 0) setSent(true)
+    if (Object.keys(er).length > 0) return
+    setLoading(true)
+    setSubmitError(null)
+    try {
+      await submitToConvex({
+        name: form.name.trim(),
+        business: form.business.trim(),
+        phone: `${countryCode} ${form.phone.trim()}`,
+        email: form.email.trim(),
+        type: form.type,
+        message: form.message.trim() || undefined,
+      })
+      setSent(true)
+    } catch {
+      setSubmitError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
   const field = (k: keyof DemoFormData, label: string, type = 'text', ph = '') => (
     <label className="block">
@@ -3008,7 +3272,7 @@ function DemoForm() {
                 </span>
                 <div>
                   <div className="font-display text-[17px] font-bold text-navy">
-                    Thanks, {form.name.split(' ')[0]}!
+                    Your request is confirmed, {form.name.split(' ')[0]}!
                   </div>
                   <div className="text-[14px] text-navy-600">
                     Our team will reach out shortly to schedule your demo.
@@ -3022,27 +3286,228 @@ function DemoForm() {
                   {field('business', 'Business Name', 'text', 'Outlet / brand name')}
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {field('phone', 'Phone', 'tel', '+91 …')}
+                  {/* Phone with custom country code dropdown + search */}
+                  <label className="block">
+                    <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
+                      Phone <span className="text-kaaty-500">*</span>
+                    </span>
+                    <div className="relative" ref={countryPickerRef}>
+                      <div
+                        className={`flex h-11 w-full overflow-hidden rounded-xl border bg-navy-50/50 transition-all focus-within:border-kaaty-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-kaaty-500/10 ${
+                          err.phone ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
+                        }`}
+                      >
+                        {/* Custom Dropdown Trigger Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCountryDropdownOpen((v) => !v)
+                            setCountrySearch('')
+                          }}
+                          className="flex h-full shrink-0 items-center gap-1.5 border-r border-navy-200 bg-transparent px-3 text-[13.5px] font-bold text-navy outline-none hover:bg-navy-100/40 transition-colors"
+                        >
+                          {selectedCountry && (
+                            <CountryFlag
+                              iso={selectedCountry.iso}
+                              country={selectedCountry.country}
+                            />
+                          )}
+                          <span>
+                            {selectedCountry
+                              ? `${selectedCountry.iso} ${selectedCountry.code}`
+                              : countryCode}
+                          </span>
+                          <Icon
+                            name="chevron-down"
+                            size={14}
+                            className={`shrink-0 text-navy-500 transition-transform duration-200 ${
+                              countryDropdownOpen ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+
+                        <input
+                          type="tel"
+                          value={form.phone}
+                          onChange={(e) => {
+                            const digitsOnly = e.target.value.replace(/\D/g, '')
+                            let maxDigits = 10
+                            if (countryCode === '+91') {
+                              maxDigits = digitsOnly.startsWith('0') ? 11 : 10
+                            } else {
+                              const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
+                              maxDigits = sel ? Math.max(...sel.digits) : 15
+                            }
+                            setForm((f) => ({ ...f, phone: digitsOnly.slice(0, maxDigits) }))
+                            if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
+                          }}
+                          placeholder={(() => {
+                            if (countryCode === '+91') {
+                              return form.phone.startsWith('0')
+                                ? '11 digits (landline)'
+                                : '10 digits (mobile)'
+                            }
+                            const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
+                            return sel ? `${sel.digits.join(' or ')} digits` : 'Phone number'
+                          })()}
+                          className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-navy outline-none placeholder:text-navy-300"
+                        />
+                      </div>
+
+                      {/* Dropdown Popup Menu with Search */}
+                      {countryDropdownOpen && (
+                        <div className="absolute left-0 top-full z-50 mt-1.5 flex w-80 max-w-[92vw] flex-col overflow-hidden rounded-2xl border border-navy-200 bg-white p-2 shadow-2xl ring-1 ring-black/5">
+                          {/* Search Input */}
+                          <div className="relative mb-2 px-0.5">
+                            <Icon
+                              name="search"
+                              size={15}
+                              className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400"
+                            />
+                            <input
+                              type="text"
+                              value={countrySearch}
+                              onChange={(e) => setCountrySearch(e.target.value)}
+                              placeholder="Search country or code..."
+                              autoFocus
+                              className="h-9 w-full rounded-xl border border-navy-200 bg-navy-50/70 pl-8 pr-3 text-[13px] text-navy outline-none placeholder:text-navy-400 focus:border-navy-400 focus:bg-white focus:ring-2 focus:ring-navy-900/5"
+                            />
+                          </div>
+
+                          {/* Country List - fits ~10 items */}
+                          <div className="max-h-[380px] overflow-y-auto space-y-0.5 pr-0.5">
+                            {filteredCountries.length === 0 ? (
+                              <div className="py-5 text-center text-[13px] text-navy-400">
+                                No country found
+                              </div>
+                            ) : (
+                              filteredCountries.map((c) => {
+                                const isSelected =
+                                  c.code === countryCode && c.iso === selectedCountry?.iso
+                                return (
+                                  <button
+                                    key={c.iso + c.code}
+                                    type="button"
+                                    onClick={() => {
+                                      setCountryCode(c.code)
+                                      setCountryDropdownOpen(false)
+                                      setCountrySearch('')
+                                      if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
+                                    }}
+                                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] transition-colors ${
+                                      isSelected
+                                        ? 'bg-navy-900 font-bold text-white shadow-sm'
+                                        : 'hover:bg-navy-50 text-navy-700'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                      <CountryFlag iso={c.iso} country={c.country} />
+                                      <span
+                                        className={`font-semibold shrink-0 ${isSelected ? 'text-white' : 'text-navy-800'}`}
+                                      >
+                                        {c.iso} {c.code}
+                                      </span>
+                                      <span
+                                        className={`truncate text-[12px] ${isSelected ? 'text-navy-300' : 'text-navy-400'}`}
+                                      >
+                                        — {c.country}
+                                      </span>
+                                    </div>
+                                    {isSelected && (
+                                      <Icon
+                                        name="check"
+                                        size={15}
+                                        strokeWidth={2.5}
+                                        className="text-emerald-400 shrink-0 ml-1.5"
+                                      />
+                                    )}
+                                  </button>
+                                )
+                              })
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {err.phone ? (
+                      <span className="mt-1 block text-[12px] text-red-500">
+                        {(() => {
+                          if (countryCode === '+91') {
+                            return form.phone.startsWith('0')
+                              ? 'Enter a valid 11-digit landline number'
+                              : 'Enter a valid 10-digit mobile number'
+                          }
+                          const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
+                          return sel
+                            ? `Enter a valid ${sel.country} number (${sel.digits.join(' or ')} digits)`
+                            : 'Enter a valid phone number'
+                        })()}
+                      </span>
+                    ) : null}
+                  </label>
                   {field('email', 'Email', 'email', 'you@business.com')}
                 </div>
+                {/* Custom Business Type Dropdown */}
                 <label className="block">
                   <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
                     Business Type <span className="text-kaaty-500">*</span>
                   </span>
-                  <select
-                    value={form.type}
-                    onChange={set('type')}
-                    className={`h-11 w-full rounded-xl border bg-navy-50/50 px-3 text-[14px] text-navy outline-none transition-all focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10 ${
-                      err.type ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
-                    }`}
-                  >
-                    <option value="">Select your business type…</option>
-                    {BTYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={btypePickerRef}>
+                    <button
+                      type="button"
+                      onClick={() => setBtypeDropdownOpen((v) => !v)}
+                      className={`h-11 w-full rounded-xl border bg-navy-50/50 px-3.5 text-[14px] text-left outline-none transition-all flex items-center justify-between cursor-pointer focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10 ${
+                        err.type ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
+                      }`}
+                    >
+                      <span className={form.type ? 'text-navy font-medium' : 'text-navy-300'}>
+                        {form.type || 'Select your business type…'}
+                      </span>
+                      <Icon
+                        name="chevron-down"
+                        size={16}
+                        className={`shrink-0 text-navy-500 transition-transform duration-200 ${
+                          btypeDropdownOpen ? 'rotate-180 text-kaaty-500' : ''
+                        }`}
+                      />
+                    </button>
+
+                    {btypeDropdownOpen && (
+                      <div className="absolute left-0 top-full z-50 mt-1.5 w-full overflow-hidden rounded-2xl border border-navy-200 bg-white p-1.5 shadow-2xl ring-1 ring-black/5">
+                        <div className="max-h-60 overflow-y-auto space-y-0.5 pr-0.5">
+                          {BTYPES.map((t) => {
+                            const isSelected = form.type === t
+                            return (
+                              <button
+                                key={t}
+                                type="button"
+                                onClick={() => {
+                                  setForm((f) => ({ ...f, type: t }))
+                                  setBtypeDropdownOpen(false)
+                                  if (err.type) setErr((er) => ({ ...er, type: undefined }))
+                                }}
+                                className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-[13.5px] transition-colors ${
+                                  isSelected
+                                    ? 'bg-navy-900 font-bold text-white shadow-sm'
+                                    : 'hover:bg-navy-50 text-navy-700 font-medium'
+                                }`}
+                              >
+                                <span>{t}</span>
+                                {isSelected && (
+                                  <Icon
+                                    name="check"
+                                    size={15}
+                                    strokeWidth={2.5}
+                                    className="text-emerald-400 shrink-0 ml-2"
+                                  />
+                                )}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </label>
                 <label className="block">
                   <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
@@ -3062,8 +3527,14 @@ function DemoForm() {
                   </span>
                   Protected — we never share your details.
                 </div>
-                <Button as="button" size="lg" icon="arrow-right">
-                  Submit
+                {submitError && <p className="text-[13px] text-red-500">{submitError}</p>}
+                <Button
+                  as="button"
+                  size="lg"
+                  icon={loading ? undefined : 'arrow-right'}
+                  className={loading ? 'opacity-70 cursor-not-allowed' : ''}
+                >
+                  {loading ? 'Submitting…' : 'Submit'}
                 </Button>
               </form>
             )}
@@ -3091,15 +3562,18 @@ function DemoForm() {
                     </div>
                   </div>
                 ))}
-                <div className="flex items-center justify-between rounded-2xl bg-navy-900 p-5 text-white">
+                <a
+                  href="tel:+918374138823"
+                  className="flex items-center justify-between rounded-2xl bg-navy-900 p-5 text-white transition-opacity hover:opacity-90"
+                >
                   <div>
                     <div className="text-[12px] text-navy-300">Prefer to call?</div>
-                    <div className="font-display text-[18px] font-extrabold">+91 90000 00000</div>
+                    <div className="font-display text-[18px] font-extrabold">+91 83741 38823</div>
                   </div>
                   <span className="grid h-11 w-11 place-items-center rounded-full bg-kaaty-500">
                     <Icon name="phone" size={18} />
                   </span>
-                </div>
+                </a>
               </div>
             </div>
           </div>

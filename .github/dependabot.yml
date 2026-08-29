@@ -1,6 +1,9 @@
+# Dependabot configuration � automated dependency updates
+# Docs: https://docs.github.com/en/code-security/dependabot
+
 version: 2
 updates:
-  # ── npm packages ─────────────────────────────────────────────────────────────
+  # npm dependencies
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -8,29 +11,33 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     labels:
       - "dependencies"
-      - "automated"
-    commit-message:
-      prefix: "chore(deps)"
-    ignore:
-      # Only allow patch and minor updates automatically — major is manual
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
     groups:
-      eslint-plugins:
+      # Group minor/patch updates together to reduce PR noise
+      dev-tools:
         patterns:
           - "eslint*"
-          - "@eslint*"
-          - "typescript-eslint"
-      react:
+          - "prettier*"
+          - "typescript*"
+          - "@types/*"
+          - "husky"
+          - "lint-staged"
+        update-types:
+          - "minor"
+          - "patch"
+      vite-build:
         patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react*"
+          - "vite"
+          - "@vitejs/*"
+          - "@tailwindcss/*"
+          - "tailwindcss"
+        update-types:
+          - "minor"
+          - "patch"
 
-  # ── GitHub Actions ────────────────────────────────────────────────────────────
+  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -38,9 +45,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "github-actions"
-      - "automated"
-    commit-message:
-      prefix: "chore(actions)"

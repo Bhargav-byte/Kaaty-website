@@ -4,74 +4,43 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary meta -->
     <title>Kaaty — One Platform. Every Food Business.</title>
     <meta
       name="description"
+      content="Kaaty is the all-in-one food-tech platform for POS billing, kitchen operations, QR ordering, kiosks, and analytics. Built for restaurants, cloud kitchens, and food courts."
+    />
+    <link rel="canonical" href="https://kaaty.online/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kaaty.online/" />
+    <meta property="og:title" content="Kaaty — One Platform. Every Food Business." />
+    <meta
+      property="og:description"
       content="Kaaty is the all-in-one food-tech platform for POS billing, kitchen operations, QR ordering, kiosks, and analytics."
     />
+    <meta property="og:image" content="https://kaaty.online/logo.jpg" />
+    <meta property="og:site_name" content="Kaaty" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kaaty — One Platform. Every Food Business." />
+    <meta
+      name="twitter:description"
+      content="Kaaty is the all-in-one food-tech platform for POS billing, kitchen operations, QR ordering, kiosks, and analytics."
+    />
+    <meta name="twitter:image" content="https://kaaty.online/logo.jpg" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              display: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-              sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-            },
-            colors: {
-              kaaty: {
-                50: '#FFF3EB',
-                100: '#FFE3CC',
-                200: '#FFC499',
-                300: '#FFA266',
-                400: '#FF8533',
-                500: '#FF6B00',
-                600: '#E65F00',
-                700: '#C24F00',
-                800: '#993E00',
-                900: '#7A3200',
-              },
-              navy: {
-                DEFAULT: '#111827',
-                50: '#F8FAFC',
-                100: '#F1F5F9',
-                200: '#E2E8F0',
-                300: '#CBD5E1',
-                400: '#94A3B8',
-                500: '#64748B',
-                600: '#475569',
-                700: '#334155',
-                800: '#1E293B',
-                900: '#0F172A',
-                950: '#0B1120',
-              },
-            },
-            boxShadow: {
-              soft: '0 1px 2px rgba(16,24,40,.04), 0 12px 32px -12px rgba(16,24,40,.18)',
-              lift: '0 24px 60px -20px rgba(16,24,40,.28)',
-              glow: '0 0 0 1px rgba(255,107,0,.35), 0 0 40px -4px rgba(255,107,0,.45)',
-            },
-            keyframes: {
-              floaty: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-              floaty2: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(8px)' } },
-              pulseDot: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.35 } },
-            },
-            animation: {
-              floaty: 'floaty 6s ease-in-out infinite',
-              floaty2: 'floaty2 7s ease-in-out infinite',
-              pulseDot: 'pulseDot 1.8s ease-in-out infinite',
-            },
-          },
-        },
-      };
-    </script>
-    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   </head>
   <body>
     <div id="root"></div>
