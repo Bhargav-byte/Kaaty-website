@@ -53,3 +53,26 @@ export const update = mutation({
     await ctx.db.patch(id, updates)
   },
 })
+
+export const add = mutation({
+  args: {
+    brand: v.string(),
+    icon: v.string(),
+    quote: v.string(),
+    name: v.string(),
+    role: v.string(),
+    order: v.number(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert('testimonials', args)
+  },
+})
+
+export const remove = mutation({
+  args: {
+    id: v.id('testimonials'),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id)
+  },
+})

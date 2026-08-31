@@ -11,7 +11,7 @@ export default defineSchema({
     message: v.optional(v.string()),
     submittedAt: v.number(),
   }),
-  trustLogos: defineTable({
+  collegeLogos: defineTable({
     name: v.string(),
     icon: v.string(),
     order: v.number(),
@@ -20,6 +20,8 @@ export default defineSchema({
     name: v.string(),
     slug: v.string(),
     icon: v.string(),
+    image: v.optional(v.string()),
+    imageStorageId: v.optional(v.id('_storage')),
     dot: v.string(),
     order: v.number(),
   }),

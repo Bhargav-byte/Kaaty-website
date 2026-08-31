@@ -19,6 +19,71 @@ function toPascal(s: string) {
 }
 
 function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
+  if (name === 'whatsapp') {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        stroke="none"
+        className={className}
+        style={style}
+      >
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+      </svg>
+    )
+  }
+
+  const brandIcons: Record<string, React.ReactNode> = {
+    linkedin: (
+      <>
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+        <rect x="2" y="9" width="4" height="12"></rect>
+        <circle cx="4" cy="4" r="2"></circle>
+      </>
+    ),
+    instagram: (
+      <>
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </>
+    ),
+    twitter: (
+      <>
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+      </>
+    ),
+    youtube: (
+      <>
+        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+      </>
+    ),
+  }
+
+  if (brandIcons[name]) {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        style={style}
+      >
+        {brandIcons[name]}
+      </svg>
+    )
+  }
+
   const iconName = toPascal(name)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const icons = LucideIcons as unknown as Record<string, React.ComponentType<any>>
@@ -40,10 +105,10 @@ type ContainerProps = {
   children: React.ReactNode
 }
 
-type ButtonVariant = 'primary' | 'dark' | 'outline' | 'ghostLight' | 'soft'
+type ButtonVariant = 'primary' | 'dark' | 'outline' | 'ghostLight' | 'soft' | 'whatsapp'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonProps = {
-  children: React.ReactNode
+  children?: React.ReactNode
   variant?: ButtonVariant
   size?: ButtonSize
   icon?: string
@@ -127,7 +192,9 @@ function Button({
   type = 'button',
   href,
   onClick,
-}: ButtonProps) {
+  target,
+  rel,
+}: ButtonProps & { target?: string; rel?: string }) {
   const sizes = {
     sm: 'h-9 px-4 text-[13px]',
     md: 'h-11 px-5 text-[14px]',
@@ -142,6 +209,8 @@ function Button({
     ghostLight:
       'bg-white/10 text-white ring-1 ring-inset ring-white/25 hover:bg-white/20 hover:-translate-y-0.5 backdrop-blur',
     soft: 'bg-kaaty-50 text-kaaty-700 hover:bg-kaaty-100',
+    whatsapp:
+      'bg-[#25D366] text-white shadow-[0_8px_22px_-8px_rgba(37,211,102,.7)] hover:bg-[#20bd5c] hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-10px_rgba(37,211,102,.65)]',
   }
   const cls = `group inline-flex items-center justify-center gap-2 rounded-xl font-semibold font-display tracking-tight transition-all duration-200 ${sizes[size]} ${variants[variant]} ${className}`
   const inner = (
@@ -150,15 +219,15 @@ function Button({
       {icon && (
         <Icon
           name={icon}
-          size={size === 'lg' ? 18 : 16}
-          className="transition-transform duration-200 group-hover:translate-x-0.5"
+          size={children ? (size === 'lg' ? 18 : 16) : size === 'lg' ? 24 : 20}
+          className={`transition-transform duration-200 ${children ? 'group-hover:translate-x-0.5' : 'group-hover:scale-110'}`}
         />
       )}
     </>
   )
   if (as === 'a') {
     return (
-      <a href={href} onClick={onClick} className={cls}>
+      <a href={href} onClick={onClick} className={cls} target={target} rel={rel}>
         {inner}
       </a>
     )
@@ -1882,7 +1951,7 @@ const TRUST_LOGOS = [
 ]
 
 function TrustMarquee() {
-  const convexLogos = useQuery(api.trustLogos.get)
+  const convexLogos = useQuery(api.collegeLogos.get)
   const logos = convexLogos || TRUST_LOGOS
   // Duplicate logos multiple times to ensure the marquee loop fills ultra-wide screens
   const row = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos]
@@ -1902,10 +1971,18 @@ function TrustMarquee() {
           {row.map((l, i) => (
             <div
               key={i}
-              className="flex shrink-0 items-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0"
+              className="flex shrink-0 items-center gap-2.5 transition-all duration-300 hover:opacity-80"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-lg bg-navy-200/60 text-navy-500">
-                <Icon name={l.icon} size={19} />
+              <span className="grid h-10 w-10 place-items-center rounded-lg bg-white border border-navy-100 text-navy-500 overflow-hidden p-1">
+                {'imageUrl' in l && l.imageUrl ? (
+                  <img
+                    src={l.imageUrl as string}
+                    alt={l.name}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <Icon name={l.icon} size={19} />
+                )}
               </span>
               <span className="whitespace-nowrap font-display text-[15px] font-bold text-navy-400">
                 {l.name}
@@ -2125,12 +2202,25 @@ function IntegrationsSection() {
               href={`#/integrations/${it.slug}`}
               className="flex shrink-0 items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all duration-200 hover:border-kaaty-200 hover:shadow-lift"
             >
-              <span
-                className="grid h-8 w-8 place-items-center rounded-full text-white"
-                style={{ background: it.dot }}
-              >
-                <Icon name={it.icon} size={15} />
-              </span>
+              {'image' in it && it.image ? (
+                <span
+                  className="grid h-8 w-8 place-items-center rounded-full text-white overflow-hidden"
+                  style={{ background: it.dot }}
+                >
+                  <img
+                    src={it.image as string}
+                    alt={it.name}
+                    className="h-full w-full object-cover"
+                  />
+                </span>
+              ) : (
+                <span
+                  className="grid h-8 w-8 place-items-center rounded-full text-white"
+                  style={{ background: it.dot }}
+                >
+                  <Icon name={it.icon} size={15} />
+                </span>
+              )}
               <span className="whitespace-nowrap text-[14.5px] font-semibold text-navy-800">
                 {it.name}
               </span>
@@ -2671,9 +2761,16 @@ function FinalCTA() {
             <Button as="a" href="#/demo" size="lg" icon="arrow-right">
               Book Free Demo
             </Button>
-            <Button as="a" href="#/demo" size="lg" variant="ghostLight" icon="phone">
-              Talk To Sales Team
-            </Button>
+            <Button
+              as="a"
+              href="https://wa.me/919392365308"
+              target="_blank"
+              rel="noopener noreferrer"
+              size="lg"
+              variant="whatsapp"
+              icon="whatsapp"
+              className="!px-0 w-[52px]"
+            />
           </div>
         </div>
         <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
@@ -2700,6 +2797,7 @@ function FinalCTA() {
                 ['linkedin', 'https://www.linkedin.com/company/kaaty/posts/?feedView=all'],
                 ['instagram', 'https://www.instagram.com/kaaty.india/?__pwa=1#'],
                 ['twitter', '#'],
+                ['youtube', 'https://www.youtube.com/@Kaatyindia'],
               ].map(([ic, h]) => (
                 <a
                   key={ic}
@@ -3763,8 +3861,13 @@ function SolutionPage({ slug }: { slug: string }) {
 }
 
 function IntegrationPage({ slug }: { slug: string }) {
-  const d = (INTEGRATION_PAGES as Record<string, IntegrationValue | undefined>)[slug]
-  if (!d) return <NotFound />
+  const convexIntegrations = useQuery(api.integrations.get)
+  const staticData = (INTEGRATION_PAGES as Record<string, IntegrationValue | undefined>)[slug]
+  if (!staticData) return <NotFound />
+
+  const convexData = convexIntegrations?.find((it) => it.slug === slug)
+  const d = { ...staticData, ...convexData }
+
   const related = (INTEGRATION_GROUPS.find((g) => g.label === d.category)?.items ?? []).filter(
     (s) => s !== slug,
   )
@@ -3779,10 +3882,14 @@ function IntegrationPage({ slug }: { slug: string }) {
               {d.category} Integration
             </span>
             <div
-              className="mx-auto mt-7 grid h-20 w-20 place-items-center rounded-3xl text-white shadow-lift"
+              className="mx-auto mt-7 grid h-20 w-20 place-items-center rounded-3xl text-white shadow-lift overflow-hidden"
               style={{ background: d.dot }}
             >
-              <Icon name={d.icon} size={36} />
+              {'image' in d && d.image ? (
+                <img src={d.image} alt={d.name} className="h-full w-full object-cover" />
+              ) : (
+                <Icon name={d.icon} size={36} />
+              )}
             </div>
             <h1 className="mt-6 font-display text-[clamp(2.1rem,4.4vw,3.2rem)] font-extrabold leading-[1.06] tracking-[-.03em] text-navy">
               {d.title}
@@ -3854,19 +3961,37 @@ function IntegrationPage({ slug }: { slug: string }) {
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
               {related.map((s) => {
-                const ip = (INTEGRATION_PAGES as Record<string, IntegrationValue>)[s]
+                const ipStatic = (
+                  INTEGRATION_PAGES as Record<string, IntegrationValue | undefined>
+                )[s]
+                if (!ipStatic) return null
+                const ipConvex = convexIntegrations?.find((it) => it.slug === s)
+                const ip = { ...ipStatic, ...ipConvex }
                 return (
                   <a
                     key={s}
                     href={`#/integrations/${s}`}
                     className="flex items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
                   >
-                    <span
-                      className="grid h-8 w-8 place-items-center rounded-full text-white"
-                      style={{ background: ip.dot }}
-                    >
-                      <Icon name={ip.icon} size={15} />
-                    </span>
+                    {'image' in ip && ip.image ? (
+                      <span
+                        className="grid h-8 w-8 place-items-center rounded-full text-white overflow-hidden"
+                        style={{ background: ip.dot }}
+                      >
+                        <img
+                          src={ip.image as string}
+                          alt={ip.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </span>
+                    ) : (
+                      <span
+                        className="grid h-8 w-8 place-items-center rounded-full text-white"
+                        style={{ background: ip.dot }}
+                      >
+                        <Icon name={ip.icon} size={15} />
+                      </span>
+                    )}
                     <span className="text-[14.5px] font-semibold text-navy-800">{ip.name}</span>
                   </a>
                 )
