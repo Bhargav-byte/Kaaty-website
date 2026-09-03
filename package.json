@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -13,7 +13,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"*.{json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"*.{json,md}\"",
     "size": "size-limit",
-    "test": "echo \"No tests configured yet\" && exit 0",
+    "test": "playwright test",
+    "test:e2e": "playwright test",
     "prepare": "husky"
   },
   "size-limit": [
@@ -29,6 +30,7 @@
     }
   ],
   "dependencies": {
+    "@sentry/react": "^10.73.0",
     "convex": "^1.45.0",
     "lucide-react": "^1.37.0",
     "react": "^19.2.8",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@size-limit/file": "^13.0.3",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^26.4.1",
