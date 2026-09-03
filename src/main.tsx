@@ -39,25 +39,9 @@ class RootErrorBoundary extends Component<{ children: React.ReactNode }, { error
   }
 }
 
-/* ── Convex URL guard ────────────────────────────────────────────────────── */
-const convexUrl = import.meta.env.VITE_CONVEX_URL as string | undefined
-
-if (!convexUrl) {
-  // Render a visible error instead of a blank page
-  const root = document.getElementById('root')
-  if (root) {
-    root.innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
-                  min-height:100vh;font-family:sans-serif;padding:2rem;text-align:center;background:#fff8f5">
-        <h1 style="color:#0f172a">Configuration Error</h1>
-        <p style="color:#64748b;max-width:480px">
-          <code>VITE_CONVEX_URL</code> is not set.<br/>
-          Add it in your Vercel project → Settings → Environment Variables.
-        </p>
-      </div>`
-  }
-  throw new Error('VITE_CONVEX_URL is not defined. Set it in Vercel Environment Variables.')
-}
+/* ── Convex URL resolution with fallback ─────────────────────────────────── */
+const convexUrl =
+  (import.meta.env.VITE_CONVEX_URL as string | undefined) || 'https://savory-crab-961.convex.cloud'
 
 /* ── Bootstrap ───────────────────────────────────────────────────────────── */
 const convex = new ConvexReactClient(convexUrl)
