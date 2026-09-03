@@ -1,108 +1,10 @@
 import React from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '../convex/_generated/api'
-import * as LucideIcons from 'lucide-react'
-
-type IconProps = {
-  name: string
-  size?: number
-  strokeWidth?: number
-  className?: string
-  style?: React.CSSProperties
-}
-
-function toPascal(s: string) {
-  return String(s)
-    .split('-')
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join('')
-}
-
-function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
-  if (name === 'whatsapp') {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        stroke="none"
-        className={className}
-        style={style}
-      >
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
-      </svg>
-    )
-  }
-
-  const brandIcons: Record<string, React.ReactNode> = {
-    linkedin: (
-      <>
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-        <rect x="2" y="9" width="4" height="12"></rect>
-        <circle cx="4" cy="4" r="2"></circle>
-      </>
-    ),
-    instagram: (
-      <>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-      </>
-    ),
-    x: (
-      <>
-        <path
-          fill="currentColor"
-          stroke="none"
-          d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
-        ></path>
-      </>
-    ),
-    youtube: (
-      <>
-        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-      </>
-    ),
-  }
-
-  if (brandIcons[name]) {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={className}
-        style={style}
-      >
-        {brandIcons[name]}
-      </svg>
-    )
-  }
-
-  const iconName = toPascal(name)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const icons = LucideIcons as unknown as Record<string, React.ComponentType<any>>
-  const LucideIcon = icons[iconName]
-  if (!LucideIcon) return null
-  return (
-    <LucideIcon
-      size={size}
-      strokeWidth={strokeWidth}
-      className={className}
-      style={style}
-      aria-hidden="true"
-    />
-  )
-}
+import { Icon } from './components/Icon'
+import { useRouter } from './lib/router'
+import { updatePageMetadata } from './lib/seo'
+import { trackEvent, setupScrollDepthTracking } from './lib/analytics'
 
 type ContainerProps = {
   className?: string
@@ -229,15 +131,35 @@ function Button({
       )}
     </>
   )
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    onClick?.(e)
+    if (href) {
+      if (href.includes('wa.me')) {
+        trackEvent('whatsapp_click')
+      } else if (href.startsWith('tel:')) {
+        trackEvent('phone_click')
+      } else {
+        trackEvent('cta_click', {
+          cta_text: typeof children === 'string' ? children : undefined,
+          cta_target: href,
+        })
+      }
+    } else {
+      trackEvent('cta_click', {
+        cta_text: typeof children === 'string' ? children : undefined,
+      })
+    }
+  }
+
   if (as === 'a') {
     return (
-      <a href={href} onClick={onClick} className={cls} target={target} rel={rel}>
+      <a href={href} onClick={handleClick} className={cls} target={target} rel={rel}>
         {inner}
       </a>
     )
   }
   return (
-    <button type={type} onClick={onClick} className={cls}>
+    <button type={type} onClick={handleClick} className={cls}>
       {inner}
     </button>
   )
@@ -1140,7 +1062,7 @@ function ProductsMenu() {
           </div>
           <div className="flex flex-col gap-0.5">
             {col.items.map((it) => (
-              <ItemLink key={it.name} href={`#/products/${it.slug}`} {...it} />
+              <ItemLink key={it.name} href={`/products/${it.slug}`} {...it} />
             ))}
           </div>
         </div>
@@ -1155,7 +1077,7 @@ function SolutionsMenu() {
       {MENU_SOLUTIONS.map((s) => (
         <a
           key={s.slug}
-          href={`#/solutions/${s.slug}`}
+          href={`/solutions/${s.slug}`}
           className="group flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50"
         >
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600 ring-1 ring-inset ring-navy-100 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
@@ -1183,7 +1105,7 @@ function IntegrationsMenu() {
             {c.items.map((i) => (
               <li key={i.slug}>
                 <a
-                  href={`#/integrations/${i.slug}`}
+                  href={`/integrations/${i.slug}`}
                   className="block rounded-lg px-2.5 py-1.5 text-[13.5px] font-medium text-navy-700 transition-colors hover:bg-kaaty-50 hover:text-kaaty-700"
                 >
                   {i.name}
@@ -1201,7 +1123,7 @@ function ResourcesMenu() {
   return (
     <div className="flex flex-col gap-1 p-3">
       {MENU_RESOURCES.map((r) => (
-        <ItemLink key={r.name} href="#/resources" {...r} />
+        <ItemLink key={r.name} href="/resources" {...r} />
       ))}
     </div>
   )
@@ -1217,7 +1139,7 @@ const MENUS: Record<string, MenuConfig> = {
 
 function Logo({ light = false }) {
   return (
-    <a href="#/" className="flex items-center gap-2.5">
+    <a href="/" className="flex items-center gap-2.5">
       <img
         src="/logo.jpg"
         alt="Kaaty Logo"
@@ -1302,14 +1224,14 @@ function Navbar() {
               </div>
             ))}
             <a
-              href="#/pricing"
+              href="/pricing"
               className="rounded-lg px-3.5 py-2 text-[14.5px] font-semibold text-navy-800 transition-colors hover:text-kaaty-600"
             >
               Pricing
             </a>
 
             <a
-              href="#/about"
+              href="/about"
               className="rounded-lg px-3.5 py-2 text-[14.5px] font-semibold text-navy-800 transition-colors hover:text-kaaty-600"
             >
               About Us
@@ -1328,7 +1250,7 @@ function Navbar() {
                     The complete operating system for food businesses.
                   </span>
                   <a
-                    href="#/demo?source=mobile_menu"
+                    href="/demo?source=mobile_menu"
                     className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-kaaty-600 hover:text-kaaty-700"
                   >
                     Book a demo <Icon name="arrow-right" size={14} />
@@ -1341,7 +1263,7 @@ function Navbar() {
           <div className="flex items-center gap-2.5">
             <Button
               as="a"
-              href="#/demo?source=header_nav"
+              href="/demo?source=header_nav"
               size="md"
               icon="arrow-right"
               className="hidden sm:inline-flex"
@@ -1371,6 +1293,7 @@ function Navbar() {
               <button
                 onClick={() => setMobile(false)}
                 className="grid h-10 w-10 place-items-center rounded-xl text-navy ring-1 ring-inset ring-navy-200"
+                aria-label="Close menu"
               >
                 <Icon name="x" size={20} />
               </button>
@@ -1400,7 +1323,7 @@ function Navbar() {
                             {col.items.map((it) => (
                               <a
                                 key={it.name}
-                                href={`#/products/${it.slug}`}
+                                href={`/products/${it.slug}`}
                                 onClick={() => setMobile(false)}
                                 className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                               >
@@ -1414,7 +1337,7 @@ function Navbar() {
                         MENU_SOLUTIONS.map((s) => (
                           <a
                             key={s.slug}
-                            href={`#/solutions/${s.slug}`}
+                            href={`/solutions/${s.slug}`}
                             onClick={() => setMobile(false)}
                             className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                           >
@@ -1432,7 +1355,7 @@ function Navbar() {
                               {c.items.map((i) => (
                                 <a
                                   key={i.slug}
-                                  href={`#/integrations/${i.slug}`}
+                                  href={`/integrations/${i.slug}`}
                                   onClick={() => setMobile(false)}
                                   className="rounded-md bg-navy-50 px-2 py-1 text-[12.5px] text-navy-700"
                                 >
@@ -1446,7 +1369,7 @@ function Navbar() {
                         MENU_RESOURCES.map((r) => (
                           <a
                             key={r.name}
-                            href="#/resources"
+                            href="/resources"
                             onClick={() => setMobile(false)}
                             className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
                           >
@@ -1459,14 +1382,14 @@ function Navbar() {
                 </div>
               ))}
               <a
-                href="#/pricing"
+                href="/pricing"
                 onClick={() => setMobile(false)}
                 className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
               >
                 Pricing
               </a>
               <a
-                href="#/about"
+                href="/about"
                 onClick={() => setMobile(false)}
                 className="block border-b border-navy-100 py-3.5 text-[16px] font-bold text-navy"
               >
@@ -1476,7 +1399,7 @@ function Navbar() {
             <div className="border-t border-navy-100 p-4">
               <Button
                 as="a"
-                href="#/demo?source=mobile_menu"
+                href="/demo?source=mobile_menu"
                 onClick={() => setMobile(false)}
                 size="lg"
                 icon="arrow-right"
@@ -1694,7 +1617,7 @@ function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button as="a" href="#/demo?source=hero" size="lg" icon="arrow-right">
+              <Button as="a" href="/demo?source=hero" size="lg" icon="arrow-right">
                 Book Free Demo
               </Button>
               <Button
@@ -2053,7 +1976,7 @@ function ProductEcosystem() {
           {ECOSYSTEM_CARDS.map((c) => (
             <a
               key={c.slug}
-              href={`#/products/${c.slug}`}
+              href={`/products/${c.slug}`}
               className="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
             >
               <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-kaaty-50 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
@@ -2188,7 +2111,7 @@ function IntegrationsSection() {
           {row.map((it, i) => (
             <a
               key={i}
-              href={`#/integrations/${it.slug}`}
+              href={`/integrations/${it.slug}`}
               className="flex shrink-0 items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all duration-200 hover:border-kaaty-200 hover:shadow-lift"
             >
               {'image' in it && it.image ? (
@@ -2234,7 +2157,7 @@ function IntegrationsSection() {
                 {g.items.map((s) => (
                   <a
                     key={s}
-                    href={`#/integrations/${s}`}
+                    href={`/integrations/${s}`}
                     className="rounded-lg bg-navy-50 px-3 py-1.5 text-[13px] font-medium text-navy-700 transition-colors hover:bg-kaaty-50 hover:text-kaaty-700"
                   >
                     {(INTEGRATION_PAGES as Record<string, IntegrationValue>)[s].name}
@@ -2267,7 +2190,7 @@ function IndustrySolutions() {
           {all.map((s) => (
             <a
               key={s.slug}
-              href={`#/solutions/${s.slug}`}
+              href={`/solutions/${s.slug}`}
               className="reveal group flex flex-col items-start gap-4 rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
             >
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
@@ -2326,7 +2249,7 @@ function CustomSolutions() {
               <div className="mt-8">
                 <Button
                   as="a"
-                  href="#/demo?source=engineering_consultation"
+                  href="/demo?source=engineering_consultation"
                   size="lg"
                   icon="arrow-right"
                 >
@@ -2456,7 +2379,7 @@ function Pricing({ compact = false }: { compact?: boolean }) {
                   {p.desc}
                 </div>
                 <a
-                  href={`#/demo?source=pricing_${p.key}`}
+                  href={`/demo?source=pricing_${p.key}`}
                   className={`mt-3 inline-flex w-full items-center justify-center rounded-lg px-3 py-2 text-[12px] font-bold transition-all ${
                     p.popular
                       ? 'bg-kaaty-500 text-white hover:bg-kaaty-400'
@@ -2697,41 +2620,41 @@ function FinalCTA() {
     {
       h: 'Products',
       links: [
-        ['Kaaty POS', '#/products/pos'],
-        ['Kaaty KDS', '#/products/kds'],
-        ['Mobile App', '#/products/mobile-app'],
-        ['Business App', '#/products/business'],
-        ['QR Ordering', '#/products/qr-ordering'],
-        ['Self Kiosk', '#/products/kiosk'],
+        ['Kaaty POS', '/products/pos'],
+        ['Kaaty KDS', '/products/kds'],
+        ['Mobile App', '/products/mobile-app'],
+        ['Business App', '/products/business'],
+        ['QR Ordering', '/products/qr-ordering'],
+        ['Self Kiosk', '/products/kiosk'],
       ],
     },
     {
       h: 'Solutions',
       links: [
-        ['Restaurants', '#/solutions/restaurants'],
-        ['Cafes', '#/solutions/cafes'],
-        ['College Canteens', '#/solutions/college-canteens'],
-        ['Cloud Kitchens', '#/solutions/cloud-kitchens'],
-        ['Hotels', '#/solutions/hotels'],
+        ['Restaurants', '/solutions/restaurants'],
+        ['Cafes', '/solutions/cafes'],
+        ['College Canteens', '/solutions/college-canteens'],
+        ['Cloud Kitchens', '/solutions/cloud-kitchens'],
+        ['Hotels', '/solutions/hotels'],
       ],
     },
     {
       h: 'Company',
       links: [
-        ['About Us', '#/about'],
-        ['Pricing', '#/pricing'],
-        ['Resources', '#/resources'],
-        ['Book a Demo', '#/demo?source=footer'],
+        ['About Us', '/about'],
+        ['Pricing', '/pricing'],
+        ['Resources', '/resources'],
+        ['Book a Demo', '/demo?source=footer'],
       ],
     },
     {
       h: 'Integrations',
       links: [
-        ['Pine Labs', '#/integrations/pine-labs'],
-        ['Razorpay', '#/integrations/razorpay'],
-        ['Swiggy', '#/integrations/swiggy'],
-        ['Zomato', '#/integrations/zomato'],
-        ['ONDC', '#/integrations/ondc'],
+        ['Pine Labs', '/integrations/pine-labs'],
+        ['Razorpay', '/integrations/razorpay'],
+        ['Swiggy', '/integrations/swiggy'],
+        ['Zomato', '/integrations/zomato'],
+        ['ONDC', '/integrations/ondc'],
       ],
     },
   ]
@@ -2752,7 +2675,7 @@ function FinalCTA() {
             transform customer satisfaction.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button as="a" href="#/demo?source=bottom_cta" size="lg" icon="arrow-right">
+            <Button as="a" href="/demo?source=bottom_cta" size="lg" icon="arrow-right">
               Book Free Demo
             </Button>
           </div>
@@ -2932,10 +2855,10 @@ function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos'
               {sub}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button as="a" href="#/demo?source=subhero" size="lg" icon="arrow-right">
+              <Button as="a" href="/demo?source=subhero" size="lg" icon="arrow-right">
                 {cta}
               </Button>
-              <Button as="a" href="#/pricing" size="lg" variant="outline">
+              <Button as="a" href="/pricing" size="lg" variant="outline">
                 View Pricing
               </Button>
             </div>
@@ -3334,9 +3257,11 @@ function DemoForm() {
     const timer = setTimeout(async () => {
       try {
         let sourceStr = 'Direct Book Demo'
-        const hash = window.location.hash
-        if (hash.includes('?source=')) {
-          const match = hash.match(/\?source=([^&]*)/)
+        const queryStr =
+          window.location.search ||
+          (window.location.hash.includes('?') ? '?' + window.location.hash.split('?')[1] : '')
+        if (queryStr.includes('source=')) {
+          const match = queryStr.match(/[?&]source=([^&]*)/)
           if (match) {
             const val = decodeURIComponent(match[1])
             const map: Record<string, string> = {
@@ -3374,10 +3299,18 @@ function DemoForm() {
     return () => clearTimeout(timer)
   }, [form, partialId, sent, countryCode, savePartialToConvex])
 
+  const startedRef = React.useRef(false)
+
   const set =
     (k: keyof DemoFormData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      if (!startedRef.current) {
+        startedRef.current = true
+        trackEvent('demo_form_start')
+      }
       setForm((f) => ({ ...f, [k]: e.target.value }))
+    }
+
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const er: Partial<Record<keyof DemoFormData, number>> = {}
@@ -3399,15 +3332,20 @@ function DemoForm() {
     if (!/^\S+@\S+\.\S+$/.test(form.email)) er.email = 1
     if (!form.type) er.type = 1
     setErr(er)
-    if (Object.keys(er).length > 0) return
+    if (Object.keys(er).length > 0) {
+      trackEvent('demo_form_error', { error_fields: Object.keys(er) })
+      return
+    }
     setLoading(true)
     setSubmitError(null)
 
-    // Parse source from hash if it exists
+    // Parse source from search query or legacy hash if it exists
     let sourceStr = 'Direct Book Demo'
-    const hash = window.location.hash
-    if (hash.includes('?source=')) {
-      const match = hash.match(/\?source=([^&]*)/)
+    const queryStr =
+      window.location.search ||
+      (window.location.hash.includes('?') ? '?' + window.location.hash.split('?')[1] : '')
+    if (queryStr.includes('source=')) {
+      const match = queryStr.match(/[?&]source=([^&]*)/)
       if (match) {
         const val = decodeURIComponent(match[1])
         const map: Record<string, string> = {
@@ -3438,6 +3376,7 @@ function DemoForm() {
         message: form.message.trim() || undefined,
         source: sourceStr,
       })
+      trackEvent('demo_form_submit', { business_type: form.type })
       setSent(true)
     } catch {
       setSubmitError('Something went wrong. Please try again.')
@@ -3876,7 +3815,12 @@ function Accordion({ items, heading = 'Frequently asked questions' }: AccordionP
                 }`}
               >
                 <button
-                  onClick={() => setOpen(isOpen ? -1 : i)}
+                  onClick={() => {
+                    if (!isOpen) {
+                      trackEvent('faq_expand', { faq_question: f.q })
+                    }
+                    setOpen(isOpen ? -1 : i)
+                  }}
                   className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
                 >
                   <span className="font-display text-[15.5px] font-bold text-navy sm:text-[17px]">
@@ -4051,10 +3995,10 @@ function IntegrationPage({ slug }: { slug: string }) {
               {d.sub}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button as="a" href="#/demo?source=integration_page" size="lg" icon="arrow-right">
+              <Button as="a" href="/demo?source=integration_page" size="lg" icon="arrow-right">
                 Book a Demo
               </Button>
-              <Button as="a" href="#/integrations/easebuzz" size="lg" variant="outline">
+              <Button as="a" href="/integrations/easebuzz" size="lg" variant="outline">
                 All Integrations
               </Button>
             </div>
@@ -4123,7 +4067,7 @@ function IntegrationPage({ slug }: { slug: string }) {
                 return (
                   <a
                     key={s}
-                    href={`#/integrations/${s}`}
+                    href={`/integrations/${s}`}
                     className="flex items-center gap-2.5 rounded-full border border-navy-100 bg-white px-5 py-3 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
                   >
                     {'image' in ip && ip.image ? (
@@ -4163,37 +4107,37 @@ const RESOURCE_CARDS = [
     icon: 'book-open',
     t: 'Documentation',
     d: 'Setup guides, API references and how-tos.',
-    href: '#/resources',
+    href: '/resources',
   },
   {
     icon: 'award',
     t: 'Startup Journey',
     d: 'Read how we evolved from a campus project to an ecosystem.',
-    href: '#/resources/journey',
+    href: '/resources/journey',
   },
   {
     icon: 'newspaper',
     t: 'Blog',
     d: 'Product news and F&B operations playbooks.',
-    href: '#/resources',
+    href: '/resources',
   },
   {
     icon: 'life-buoy',
     t: 'Help Center',
     d: 'Answers, troubleshooting and best practices.',
-    href: '#/resources',
+    href: '/resources',
   },
   {
     icon: 'code',
     t: 'API & Webhooks',
     d: 'Build on top of Kaaty with our developer tools.',
-    href: '#/resources',
+    href: '/resources',
   },
   {
     icon: 'users',
     t: 'Community',
     d: 'Join other operators scaling with Kaaty.',
-    href: '#/resources',
+    href: '/resources',
   },
 ]
 
@@ -4259,7 +4203,7 @@ function NotFound() {
         <div className="font-display text-[80px] font-extrabold text-kaaty-500">404</div>
         <p className="mt-2 text-navy-500">That page does not exist yet.</p>
         <div className="mt-6">
-          <Button as="a" href="#/" icon="arrow-left">
+          <Button as="a" href="/" icon="arrow-left">
             Back home
           </Button>
         </div>
@@ -4439,36 +4383,56 @@ function ContactPage() {
   )
 }
 
-function useRoute() {
-  const [route, setRoute] = React.useState<string>(() => window.location.hash || '#/')
-  React.useEffect(() => {
-    const on = () => setRoute(window.location.hash || '#/')
-    window.addEventListener('hashchange', on)
-    return () => window.removeEventListener('hashchange', on)
-  }, [])
-  return route
-}
-
-function renderRoute(route: string) {
-  const [routePath] = route.split('?')
-  const path = routePath.replace(/^#\/?/, '').replace(/\/$/, '')
-  const seg = path.split('/').filter(Boolean)
+function renderRoute(pathname: string) {
+  const cleanPath = pathname.replace(/\/$/, '') || '/'
+  const seg = cleanPath.split('/').filter(Boolean)
   if (seg.length === 0) return <Home />
-  if (seg[0] === 'pricing') return <PricingPage />
+  if (seg[0] === 'pricing') {
+    trackEvent('pricing_view')
+    return <PricingPage />
+  }
   if (seg[0] === 'resources') return <ResourcesPage />
   if (seg[0] === 'about') return <AboutPage />
   if (seg[0] === 'demo') return <ContactPage />
-  if (seg[0] === 'products' && seg[1]) return <ProductPage slug={seg[1]} />
-  if (seg[0] === 'solutions' && seg[1]) return <SolutionPage slug={seg[1]} />
-  if (seg[0] === 'integrations' && seg[1]) return <IntegrationPage slug={seg[1]} />
+  if (seg[0] === 'products' && seg[1] && PRODUCTS[seg[1] as keyof typeof PRODUCTS]) {
+    trackEvent('product_page_view', { product_slug: seg[1] })
+    return <ProductPage slug={seg[1]} />
+  }
+  if (seg[0] === 'solutions' && seg[1] && SOLUTIONS[seg[1] as keyof typeof SOLUTIONS]) {
+    trackEvent('solution_page_view', { solution_slug: seg[1] })
+    return <SolutionPage slug={seg[1]} />
+  }
+  if (
+    seg[0] === 'integrations' &&
+    seg[1] &&
+    INTEGRATION_PAGES[seg[1] as keyof typeof INTEGRATION_PAGES]
+  ) {
+    trackEvent('integration_page_view', { integration_slug: seg[1] })
+    return <IntegrationPage slug={seg[1]} />
+  }
   return <NotFound />
 }
 
 function App() {
-  const route = useRoute()
+  const { pathname } = useRouter()
+
+  // Dynamic SEO metadata on route change
+  React.useEffect(() => {
+    updatePageMetadata(pathname)
+  }, [pathname])
+
+  // Analytics page_view & scroll depth tracking
+  React.useEffect(() => {
+    trackEvent('page_view', { path: pathname })
+    const cleanupScroll = setupScrollDepthTracking(pathname)
+    return () => cleanupScroll()
+  }, [pathname])
+
+  // Scroll to top on navigation
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [route])
+  }, [pathname])
+
   useReveal()
   React.useEffect(() => {
     const t = setTimeout(() => {
@@ -4477,13 +4441,13 @@ function App() {
       })
     }, 60)
     return () => clearTimeout(t)
-  }, [route])
+  }, [pathname])
 
   return (
     <>
       <ScrollProgress />
       <Navbar />
-      <main key={route}>{renderRoute(route)}</main>
+      <main key={pathname}>{renderRoute(pathname)}</main>
       <FinalCTA />
     </>
   )
