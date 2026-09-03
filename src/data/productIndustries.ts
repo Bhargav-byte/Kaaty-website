@@ -224,3 +224,43 @@ export const PRODUCT_INDUSTRIES: Record<string, ProductIndustryRef[]> = {
     },
   ],
 }
+
+export const INDUSTRY_VALUE_PROPS: Record<string, string> = {
+  restaurants:
+    'Run faster during peak hours with connected billing, kitchen KOT routing, and table management.',
+  cafes:
+    'Fast counter ordering with beverage modifiers, barista display screens, and pickup token alerts.',
+  'cloud-kitchens':
+    'Operate virtual brands on one screen with station prep lines and organized rider dispatch.',
+  'food-courts':
+    'Unified kiosk ordering, multi-vendor settlement ledger, and common TV token pickup boards.',
+  'college-canteens':
+    'Clear 15-minute lecture breaks with student ID wallets, queue-free ordering, and anti-fraud UPI.',
+  hotels:
+    'Connect fine dining, banquets, and in-room QR dining with guest room folio charge posting.',
+  bakeries: 'Dual piece and weight-scale billing with custom celebration cake advance booking.',
+  'ice-cream-parlours':
+    'Quick scoop calculations, sundae topping modifiers, and self-order kiosks for evening rushes.',
+}
+
+export const MATRIX_COLUMNS = [
+  { key: 'pos', label: 'POS Billing' },
+  { key: 'kds', label: 'KDS System' },
+  { key: 'qr', label: 'QR Ordering' },
+  { key: 'kiosk', label: 'Kiosks' },
+  { key: 'token', label: 'Token Board' },
+  { key: 'vendor', label: 'Multi-Vendor' },
+  { key: 'wallet', label: 'Campus Wallets' },
+  { key: 'analytics', label: 'Analytics' },
+] as const
+
+export const INDUSTRY_CAPABILITIES_MAP: Record<string, string[]> = {
+  restaurants: ['POS Billing', 'KDS System', 'QR Ordering', 'Analytics'],
+  cafes: ['POS Billing', 'KDS System', 'QR Ordering', 'Token Board'],
+  'cloud-kitchens': ['POS Billing', 'KDS System', 'Token Board', 'Analytics'],
+  'food-courts': ['POS Billing', 'Kiosks', 'Token Board', 'Multi-Vendor'],
+  'college-canteens': ['POS Billing', 'QR Ordering', 'Token Board', 'Campus Wallets'],
+  hotels: ['POS Billing', 'KDS System', 'QR Ordering', 'Analytics'],
+  bakeries: ['POS Billing', 'KDS System', 'Analytics'],
+  'ice-cream-parlours': ['POS Billing', 'Kiosks', 'Token Board', 'Analytics'],
+}

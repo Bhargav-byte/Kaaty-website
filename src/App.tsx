@@ -8,7 +8,9 @@ import { trackEvent, setupScrollDepthTracking } from './lib/analytics'
 import { SolutionsHubPage } from './components/SolutionsHubPage'
 import { IndustrySolutionPage } from './components/IndustrySolutionPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
+import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
+import { INDUSTRY_VALUE_PROPS, INDUSTRY_CAPABILITIES_MAP } from './data/productIndustries'
 
 type ContainerProps = {
   className?: string
@@ -2191,33 +2193,17 @@ function IndustrySolutions() {
           }
           sub="From a single espresso bar to a multi-outlet franchise — Kaaty adapts to exactly how you operate."
         />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {all.map((s) => (
-            <a
+            <IndustrySolutionCard
               key={s.slug}
-              href={`/solutions/${s.slug}`}
-              className="reveal group flex flex-col justify-between rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
-            >
-              <div>
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
-                  <Icon name={s.icon} size={22} />
-                </span>
-                <div className="mt-4">
-                  <h3 className="font-display text-[16.5px] font-bold text-navy">{s.name}</h3>
-                  <p className="mt-1 text-[12.5px] text-navy-500 line-clamp-2">{s.tagline}</p>
-                </div>
-              </div>
-              <div className="mt-4 pt-3 border-t border-navy-100/70">
-                <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600 group-hover:text-kaaty-700">
-                  Explore solution{' '}
-                  <Icon
-                    name="arrow-right"
-                    size={14}
-                    className="transition-transform group-hover:translate-x-0.5"
-                  />
-                </span>
-              </div>
-            </a>
+              slug={s.slug}
+              name={s.name}
+              badge={s.badge}
+              icon={s.icon}
+              valueProp={INDUSTRY_VALUE_PROPS[s.slug] || s.tagline}
+              capabilities={INDUSTRY_CAPABILITIES_MAP[s.slug] || []}
+            />
           ))}
         </div>
         <div className="mt-12 text-center">

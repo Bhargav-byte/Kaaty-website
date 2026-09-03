@@ -1,29 +1,14 @@
 import { Container, Button, SectionHead, Eyebrow } from './Primitives'
 import { Icon } from './Icon'
 import { INDUSTRY_SOLUTIONS } from '../data/industrySolutions'
+import {
+  MATRIX_COLUMNS,
+  INDUSTRY_CAPABILITIES_MAP,
+  INDUSTRY_VALUE_PROPS,
+} from '../data/productIndustries'
 import { VERIFIED_BRAND_LOGOS } from '../data/proofData'
-
-const MATRIX_COLUMNS = [
-  { key: 'pos', label: 'POS Billing' },
-  { key: 'kds', label: 'KDS System' },
-  { key: 'qr', label: 'QR Ordering' },
-  { key: 'kiosk', label: 'Kiosks' },
-  { key: 'token', label: 'Token Board' },
-  { key: 'vendor', label: 'Multi-Vendor' },
-  { key: 'wallet', label: 'Campus Wallets' },
-  { key: 'analytics', label: 'Analytics' },
-]
-
-const MATRIX_CAPABILITIES: Record<string, string[]> = {
-  restaurants: ['pos', 'kds', 'qr', 'analytics'],
-  cafes: ['pos', 'kds', 'qr', 'token', 'analytics'],
-  'cloud-kitchens': ['pos', 'kds', 'token', 'analytics'],
-  'food-courts': ['pos', 'token', 'kiosk', 'vendor', 'analytics'],
-  'college-canteens': ['pos', 'qr', 'token', 'vendor', 'wallet', 'analytics'],
-  hotels: ['pos', 'kds', 'qr', 'analytics'],
-  bakeries: ['pos', 'kds', 'analytics'],
-  'ice-cream-parlours': ['pos', 'kiosk', 'token', 'analytics'],
-}
+import { IndustrySolutionCard } from './IndustrySolutionCard'
+import { trackEvent } from '../lib/analytics'
 
 export function SolutionsHubPage() {
   const solutions = Object.values(INDUSTRY_SOLUTIONS)
@@ -59,152 +44,134 @@ export function SolutionsHubPage() {
         </Container>
       </section>
 
-      {/* ── 2. Industry Cards Grid ── */}
-      <section className="py-12 sm:py-16">
+      {/* ── 2. Primary UX: Industry Cards Grid ── */}
+      <section id="industry-cards" className="py-12 sm:py-16">
         <Container>
           <SectionHead
-            eyebrow="Target Verticals"
+            eyebrow="Industry Solutions"
             title={
               <>
-                Select your <span className="gradient-text">business category</span>
+                Built for <span className="gradient-text">Every Food Business</span>
               </>
             }
-            sub="Explore dedicated workflows, recommended product modules, and operational answers built for your outlet type."
+            sub="Select your business model to explore tailored workflows, station configurations, and recommended product modules."
           />
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {solutions.map((sol) => (
-              <a
+              <IndustrySolutionCard
                 key={sol.slug}
-                href={`/solutions/${sol.slug}`}
-                className="group flex flex-col justify-between rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
-                      <Icon name={sol.icon} size={22} />
-                    </span>
-                    <span className="rounded-full bg-kaaty-50 px-2.5 py-1 text-[11px] font-semibold text-kaaty-700">
-                      {sol.badge}
-                    </span>
-                  </div>
-
-                  <h2 className="mt-5 font-display text-[18px] font-bold text-navy">{sol.name}</h2>
-                  <p className="mt-1 text-[13px] font-medium text-navy-400">{sol.tagline}</p>
-
-                  <div className="mt-4 space-y-2 border-t border-navy-100/70 pt-4">
-                    {sol.painPoints.slice(0, 2).map((p, i) => (
-                      <div key={i} className="flex items-start gap-2 text-[12.5px] text-navy-600">
-                        <Icon
-                          name="check-circle-2"
-                          size={14}
-                          className="mt-0.5 shrink-0 text-emerald-500"
-                        />
-                        <span className="line-clamp-2">{p.title}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Modules Pills */}
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {sol.recommendedProducts.map((p) => (
-                      <span
-                        key={p.slug}
-                        className="rounded-md bg-navy-50 px-2 py-0.5 text-[11px] font-medium text-navy-600"
-                      >
-                        {p.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-6 border-t border-navy-100 pt-4">
-                  <span className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-kaaty-600 transition-colors group-hover:text-kaaty-700">
-                    Explore {sol.name}{' '}
-                    <Icon
-                      name="arrow-right"
-                      size={14}
-                      className="transition-transform group-hover:translate-x-1"
-                    />
-                  </span>
-                </div>
-              </a>
+                slug={sol.slug}
+                name={sol.name}
+                badge={sol.badge}
+                icon={sol.icon}
+                valueProp={INDUSTRY_VALUE_PROPS[sol.slug] || sol.tagline}
+                capabilities={INDUSTRY_CAPABILITIES_MAP[sol.slug] || []}
+              />
             ))}
           </div>
         </Container>
       </section>
 
-      {/* ── 3. Capability Matrix ── */}
-      <section className="border-y border-navy-100 bg-navy-50/40 py-20 sm:py-24">
+      {/* ── 3. Secondary UX: Detailed Comparison Matrix ── */}
+      <section
+        id="industry-comparison"
+        className="border-y border-navy-100 bg-navy-50/40 py-20 sm:py-24"
+      >
         <Container>
           <SectionHead
             eyebrow="Capability Breakdown"
             title={
               <>
-                How Kaaty adapts to <span className="gradient-text">every operation</span>
+                Compare Kaaty by <span className="gradient-text">Industry</span>
               </>
             }
-            sub="No two food businesses operate the same way. You only activate the modules relevant to your concept."
+            sub="See which core modules power each food business model — from single-counter billing to multi-vendor campus dining."
           />
 
-          <div className="mt-14 overflow-x-auto">
-            <table className="w-full min-w-[760px] border-collapse text-left">
-              <thead>
-                <tr className="border-b border-navy-200 bg-white">
-                  <th className="p-4 font-display text-[14px] font-bold text-navy">
-                    Industry Vertical
-                  </th>
-                  {MATRIX_COLUMNS.map((col) => (
+          {/* Mobile scroll hint */}
+          <div className="mt-8 flex items-center justify-end gap-1.5 text-[12px] font-medium text-navy-400 sm:hidden">
+            <Icon name="arrow-right" size={13} className="text-kaaty-500 animate-pulse" />
+            <span>Scroll horizontally to compare modules</span>
+          </div>
+
+          <div className="mt-4 sm:mt-12 relative rounded-2xl border border-navy-200/80 bg-white shadow-soft overflow-hidden">
+            <div
+              className="overflow-x-auto touch-pan-x"
+              onScroll={() => {
+                trackEvent('industry_comparison_interaction', {
+                  cta_text: 'Table Horizontal Scroll',
+                })
+              }}
+            >
+              <table
+                className="w-full min-w-[740px] border-collapse text-left"
+                aria-label="Kaaty capability comparison across food industries"
+              >
+                <thead>
+                  <tr className="border-b border-navy-200 bg-navy-50/70">
                     <th
-                      key={col.key}
-                      className="p-4 text-center font-display text-[13px] font-bold text-navy-700"
+                      scope="col"
+                      className="sticky left-0 z-10 bg-navy-50/95 backdrop-blur-xs p-4 font-display text-[13.5px] font-bold text-navy shadow-[2px_0_5px_-2px_rgba(0,0,0,0.06)]"
                     >
-                      {col.label}
+                      Industry Vertical
                     </th>
-                  ))}
-                  <th className="p-4 text-right font-display text-[13px] font-bold text-navy-700">
-                    Details
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-navy-100 bg-white">
-                {solutions.map((sol) => {
-                  const caps = MATRIX_CAPABILITIES[sol.slug] || []
-                  return (
-                    <tr key={sol.slug} className="hover:bg-navy-50/50 transition-colors">
-                      <td className="p-4 font-display text-[14px] font-bold text-navy">
-                        <div className="flex items-center gap-2.5">
-                          <Icon name={sol.icon} size={18} className="text-kaaty-500" />
-                          <span>{sol.name}</span>
-                        </div>
-                      </td>
-                      {MATRIX_COLUMNS.map((col) => {
-                        const hasCap = caps.includes(col.key)
-                        return (
-                          <td key={col.key} className="p-4 text-center">
-                            {hasCap ? (
-                              <span className="inline-grid h-6 w-6 place-items-center rounded-full bg-emerald-50 text-emerald-600 mx-auto">
-                                <Icon name="check" size={14} strokeWidth={3} />
-                              </span>
-                            ) : (
-                              <span className="text-navy-300">—</span>
-                            )}
-                          </td>
-                        )
-                      })}
-                      <td className="p-4 text-right">
-                        <a
-                          href={`/solutions/${sol.slug}`}
-                          className="inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600 hover:text-kaaty-700"
+                    {MATRIX_COLUMNS.map((col) => (
+                      <th
+                        key={col.key}
+                        scope="col"
+                        className="p-4 text-center font-display text-[13px] font-bold text-navy-700"
+                      >
+                        {col.label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-navy-100">
+                  {solutions.map((sol) => {
+                    const activeCaps = INDUSTRY_CAPABILITIES_MAP[sol.slug] || []
+                    return (
+                      <tr key={sol.slug} className="hover:bg-navy-50/40 transition-colors">
+                        {/* Sticky Industry Name Cell */}
+                        <th
+                          scope="row"
+                          className="sticky left-0 z-10 bg-white p-4 font-display text-[14px] font-bold text-navy shadow-[2px_0_5px_-2px_rgba(0,0,0,0.06)]"
                         >
-                          View <Icon name="arrow-right" size={13} />
-                        </a>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+                          <a
+                            href={`/solutions/${sol.slug}`}
+                            className="group flex items-center gap-2.5 text-navy hover:text-kaaty-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kaaty-500 rounded"
+                          >
+                            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600 transition-colors group-hover:bg-kaaty-500 group-hover:text-white">
+                              <Icon name={sol.icon} size={15} />
+                            </span>
+                            <span className="truncate">{sol.name}</span>
+                          </a>
+                        </th>
+
+                        {/* Capability Checkmark Cells */}
+                        {MATRIX_COLUMNS.map((col) => {
+                          const hasCap = activeCaps.includes(col.label)
+                          return (
+                            <td key={col.key} className="p-4 text-center">
+                              {hasCap ? (
+                                <span className="inline-grid h-6 w-6 place-items-center rounded-full bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-200/60 mx-auto">
+                                  <Icon name="check" size={13} strokeWidth={3} />
+                                  <span className="sr-only">
+                                    {col.label} supported in {sol.name}
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className="text-navy-300 font-medium select-none">—</span>
+                              )}
+                            </td>
+                          )
+                        })}
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </Container>
       </section>

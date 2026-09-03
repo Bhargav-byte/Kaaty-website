@@ -32,15 +32,21 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
   test('3. /demo loads directly with demo request form', async ({ page }) => {
     await page.goto('/demo')
     await expect(page).toHaveTitle(/Book a Free Demo/i)
-    await expect(page.locator('input[placeholder*="Name" i], input[type="text"]').first()).toBeVisible()
-    await expect(page.locator('button[type="submit"]', { hasText: /Book Free Demo|Submit/i })).toBeVisible()
+    await expect(
+      page.locator('input[placeholder*="Name" i], input[type="text"]').first(),
+    ).toBeVisible()
+    await expect(
+      page.locator('button[type="submit"]', { hasText: /Book Free Demo|Submit/i }),
+    ).toBeVisible()
   })
 
   // 4. Direct navigation to /solutions/college-canteens
   test('4. /solutions/college-canteens loads directly with campus specifics', async ({ page }) => {
     await page.goto('/solutions/college-canteens')
     await expect(page).toHaveTitle(/College Canteens/i)
-    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
+    await expect(
+      page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i }),
+    ).toBeVisible()
     await expect(page.locator('text=Campus Dining & Institutions').first()).toBeVisible()
   })
 
@@ -61,9 +67,13 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
   // 7. Refresh on a deep route works
   test('7. Refreshing deep route preserves page state and URL', async ({ page }) => {
     await page.goto('/solutions/college-canteens')
-    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
+    await expect(
+      page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i }),
+    ).toBeVisible()
     await page.reload()
-    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
+    await expect(
+      page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i }),
+    ).toBeVisible()
     expect(page.url()).toContain('/solutions/college-canteens')
   })
 
@@ -120,6 +130,7 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     await page.goto('/solutions')
     await expect(page).toHaveTitle(/Industry Solutions/i)
     await expect(page.locator('h1', { hasText: /Purpose-Built For Every/i })).toBeVisible()
+    await expect(page.locator('h2', { hasText: 'Built for Every Food Business' })).toBeVisible()
     await expect(page.locator('text=Restaurants').first()).toBeVisible()
     await expect(page.locator('text=Cafes & QSRs').first()).toBeVisible()
     await expect(page.locator('text=Cloud Kitchens').first()).toBeVisible()
@@ -175,13 +186,64 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     await expect(page.locator('text=Restaurant').first()).toBeVisible()
   })
 
-  // 19. Phase 3: Mobile responsiveness check (no horizontal overflow)
-  test('19. Mobile view on /solutions has zero horizontal overflow', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 })
+  // 19. Phase 3: Mobile responsiveness check (no horizontal overflow) across breakpoints
+  test('19. Mobile view on /solutions has zero horizontal overflow across 320px, 375px, 390px, 414px', async ({
+    page,
+  }) => {
+    for (const width of [320, 375, 390, 414]) {
+      await page.setViewportSize({ width, height: 700 })
+      await page.goto('/solutions')
+      const isOverflowing = await page.evaluate(() => {
+        return document.documentElement.scrollWidth > document.documentElement.clientWidth
+      })
+      expect(isOverflowing).toBe(false)
+    }
+  })
+
+  // 20. Phase 3 Refinement: IndustrySolutionCard renders 8 cards with verified chips
+  test('20. Solutions hub renders all 8 IndustrySolutionCards with verified capability chips', async ({
+    page,
+  }) => {
     await page.goto('/solutions')
-    const isOverflowing = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth
-    })
-    expect(isOverflowing).toBe(false)
+    const cards = page.locator('[data-testid^="industry-card-"]')
+    await expect(cards).toHaveCount(8)
+
+    // Verify restaurant card chips match INDUSTRY_CAPABILITIES_MAP exactly
+    const restaurantCard = page.locator('[data-testid="industry-card-restaurants"]')
+    await expect(restaurantCard).toBeVisible()
+    await expect(restaurantCard.locator('text=POS Billing')).toBeVisible()
+    await expect(restaurantCard.locator('text=KDS System')).toBeVisible()
+    await expect(restaurantCard.locator('text=QR Ordering')).toBeVisible()
+    await expect(restaurantCard.locator('text=Analytics')).toBeVisible()
+
+    // Verify CTA navigates to /solutions/restaurants
+    const cta = restaurantCard.locator('a:has-text("Explore Solution")')
+    await expect(cta).toHaveAttribute('href', '/solutions/restaurants')
+  })
+
+  // 21. Phase 3 Refinement: Comparison matrix heading and no Details column
+  test('21. Comparison matrix renders under "Compare Kaaty by Industry" without Details column', async ({
+    page,
+  }) => {
+    await page.goto('/solutions')
+    await expect(page.locator('h2', { hasText: /Compare Kaaty by/i })).toBeVisible()
+
+    // Assert that the old weak 'Details' column is completely removed
+    const detailsTh = page.locator('th:has-text("Details")')
+    await expect(detailsTh).toHaveCount(0)
+
+    // Assert that sticky industry name headers exist
+    const industryRows = page.locator('tbody tr')
+    await expect(industryRows).toHaveCount(8)
+  })
+
+  // 22. Phase 3 Refinement: Keyboard navigation to card link
+  test('22. Keyboard tab navigation reaches industry card links with visible focus', async ({
+    page,
+  }) => {
+    await page.goto('/solutions')
+    const firstCta = page.locator('[data-testid="industry-card-restaurants"] a').first()
+    await firstCta.focus()
+    await expect(firstCta).toBeFocused()
   })
 })

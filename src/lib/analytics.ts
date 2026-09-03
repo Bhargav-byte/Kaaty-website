@@ -24,6 +24,9 @@ export type AnalyticsEventName =
   | 'faq_expand'
   | 'industry_cta_click'
   | 'product_industry_click'
+  | 'industry_card_view'
+  | 'industry_card_click'
+  | 'industry_comparison_interaction'
   | 'scroll_depth_50'
   | 'scroll_depth_100'
 
@@ -35,6 +38,8 @@ export type SafeEventProperties = {
   product_slug?: string
   solution_slug?: string
   industry_slug?: string
+  industry?: string
+  product?: string
   integration_slug?: string
   plan_tier?: string
   faq_question?: string
