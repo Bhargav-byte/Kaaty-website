@@ -40,8 +40,8 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
   test('4. /solutions/college-canteens loads directly with campus specifics', async ({ page }) => {
     await page.goto('/solutions/college-canteens')
     await expect(page).toHaveTitle(/College Canteens/i)
-    await expect(page.locator('text=Built for high-volume campus dining')).toBeVisible()
-    await expect(page.locator('text=College Canteens').first()).toBeVisible()
+    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
+    await expect(page.locator('text=Campus Dining & Institutions').first()).toBeVisible()
   })
 
   // 5. Direct navigation to /products/pos
@@ -61,9 +61,9 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
   // 7. Refresh on a deep route works
   test('7. Refreshing deep route preserves page state and URL', async ({ page }) => {
     await page.goto('/solutions/college-canteens')
-    await expect(page.locator('text=Built for high-volume campus dining')).toBeVisible()
+    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
     await page.reload()
-    await expect(page.locator('text=Built for high-volume campus dining')).toBeVisible()
+    await expect(page.locator('h1', { hasText: /Conquer the 15-minute lecture break rush/i })).toBeVisible()
     expect(page.url()).toContain('/solutions/college-canteens')
   })
 
@@ -80,7 +80,6 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
   // 9. Primary CTA navigation works
   test('9. Clicking primary CTA navigates without full reload', async ({ page }) => {
     await page.goto('/')
-    // Find the primary hero CTA
     const demoCta = page.locator('a[href*="/demo"]').first()
     await demoCta.click()
     await expect(page).toHaveURL(/\/demo/)
@@ -94,10 +93,8 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     const openBtn = page.locator('button[aria-label="Open menu"]')
     await expect(openBtn).toBeVisible()
     await openBtn.click()
-    // Expect mobile drawer to be open and pricing link visible
     const mobilePricingLink = page.locator('.shadow-2xl a[href="/pricing"]')
     await expect(mobilePricingLink).toBeVisible()
-    // Click close
     await page.locator('button[aria-label="Close menu"]').click()
     await expect(mobilePricingLink).not.toBeVisible()
   })
@@ -107,7 +104,6 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     await page.goto('/demo')
     const submitBtn = page.locator('button[type="submit"]')
     await submitBtn.click()
-    // Inputs should highlight error state or show indicators
     const inputsWithErrors = page.locator('input.border-red-300')
     await expect(inputsWithErrors.first()).toBeVisible()
   })
@@ -117,5 +113,75 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     await page.goto('/#/pricing')
     await expect(page).toHaveURL(/\/pricing$/)
     await expect(page.locator('text=Core').first()).toBeVisible()
+  })
+
+  // 13. Phase 3: Top-level /solutions hub loads with all 8 industry categories
+  test('13. /solutions hub displays all 8 industry verticals and capability matrix', async ({ page }) => {
+    await page.goto('/solutions')
+    await expect(page).toHaveTitle(/Industry Solutions/i)
+    await expect(page.locator('h1', { hasText: /Purpose-Built For Every/i })).toBeVisible()
+    await expect(page.locator('text=Restaurants').first()).toBeVisible()
+    await expect(page.locator('text=Cafes & QSRs').first()).toBeVisible()
+    await expect(page.locator('text=Cloud Kitchens').first()).toBeVisible()
+    await expect(page.locator('text=Food Courts').first()).toBeVisible()
+    await expect(page.locator('text=College Canteens').first()).toBeVisible()
+    await expect(page.locator('text=Hotels & Resorts').first()).toBeVisible()
+    await expect(page.locator('text=Bakeries & Confectioneries').first()).toBeVisible()
+    await expect(page.locator('text=Ice Cream Parlours').first()).toBeVisible()
+  })
+
+  // 14. Phase 3: Homepage "Explore Solutions" CTA links to /solutions
+  test('14. Homepage Explore Solutions button links directly to /solutions', async ({ page }) => {
+    await page.goto('/')
+    const exploreBtn = page.locator('a:has-text("Explore Solutions")').first()
+    await expect(exploreBtn).toBeVisible()
+    await exploreBtn.click()
+    await expect(page).toHaveURL(/\/solutions$/)
+    await expect(page.locator('h1', { hasText: /Purpose-Built For Every/i })).toBeVisible()
+  })
+
+  // 15. Phase 3: Dedicated Restaurant solution page loads with workflow
+  test('15. /solutions/restaurants loads with operational workflow and FAQs', async ({ page }) => {
+    await page.goto('/solutions/restaurants')
+    await expect(page).toHaveTitle(/Restaurants/i)
+    await expect(page.locator('h1', { hasText: /High-speed dining operations/i })).toBeVisible()
+    await expect(page.locator('text=How an order flows through Restaurants')).toBeVisible()
+    await expect(page.locator('text=Floor plan & table management')).toBeVisible()
+  })
+
+  // 16. Phase 3: Cross-linking Product -> Industry works
+  test('16. Product page /products/pos cross-links to relevant industries', async ({ page }) => {
+    await page.goto('/products/pos')
+    await expect(page.locator('text=Who powers operations with Kaaty POS?')).toBeVisible()
+    const restLink = page.locator('a[href="/solutions/restaurants"]').first()
+    await expect(restLink).toBeVisible()
+    await restLink.click()
+    await expect(page).toHaveURL(/\/solutions\/restaurants/)
+  })
+
+  // 17. Phase 3: Cross-linking Industry -> Product works
+  test('17. Industry page /solutions/restaurants cross-links to recommended products', async ({ page }) => {
+    await page.goto('/solutions/restaurants')
+    const posLink = page.locator('a[href="/products/pos"]').first()
+    await expect(posLink).toBeVisible()
+    await posLink.click()
+    await expect(page).toHaveURL(/\/products\/pos/)
+  })
+
+  // 18. Phase 3: Demo context pre-selection via ?industry=...
+  test('18. /demo?industry=restaurant pre-populates Restaurant and shows tailored badge', async ({ page }) => {
+    await page.goto('/demo?industry=restaurant')
+    await expect(page.locator('text=Tailored walkthrough configured for')).toBeVisible()
+    await expect(page.locator('text=Restaurant').first()).toBeVisible()
+  })
+
+  // 19. Phase 3: Mobile responsiveness check (no horizontal overflow)
+  test('19. Mobile view on /solutions has zero horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 })
+    await page.goto('/solutions')
+    const isOverflowing = await page.evaluate(() => {
+      return document.documentElement.scrollWidth > document.documentElement.clientWidth
+    })
+    expect(isOverflowing).toBe(false)
   })
 })

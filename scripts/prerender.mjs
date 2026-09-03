@@ -14,15 +14,15 @@ if (!fs.existsSync(distDir)) {
 
 const templateHtml = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8')
 
-// Import route metadata
-const { ROUTE_METADATA } = await import('../src/lib/seo.ts')
+// Import route metadata and JSON-LD generator
+const { ROUTE_METADATA, generateJsonLd } = await import('../src/lib/seo.ts')
 
 // Static content snippets for key routes so search bots receive meaningful HTML
 const ROUTE_CONTENT = {
   '/': {
     heading: 'The Complete Operating System For Modern Food Businesses',
     subheading:
-      'Kaaty unifies POS billing, kitchen display systems (KDS), QR ordering, self-service kiosks, and business analytics into a single platform.',
+      'Kaaty unifies POS billing, kitchen operations (KDS), QR ordering, kiosks, and business analytics into a single platform built for speed.',
     cta: 'Book a Free Demo',
   },
   '/pricing': {
@@ -40,7 +40,7 @@ const ROUTE_CONTENT = {
   '/about': {
     heading: 'Built in Campus Canteens to Modernize Food Operations',
     subheading:
-      'Founded at KG Reddy College to solve lunch rush queues, Kaaty has evolved into a full-scale restaurant and campus food-tech platform.',
+      'Founded to solve high-volume peak rush queues, Kaaty has evolved into a horizontal F&B operating platform.',
     cta: 'Learn Our Story',
   },
   '/resources': {
@@ -49,23 +49,59 @@ const ROUTE_CONTENT = {
       'Discover real-world canteen case studies, peak-hour queue reduction strategies, and F&B operational playbooks.',
     cta: 'Read Journey',
   },
+  '/solutions': {
+    heading: 'Industry Solutions — Purpose-Built for Every Food Business Model',
+    subheading:
+      'From multi-station dining rooms to high-rush espresso bars, multi-brand cloud kitchens, and institutional dining halls — explore how Kaaty unifies operations.',
+    cta: 'Explore All Solutions',
+  },
   '/solutions/college-canteens': {
     heading: 'Kaaty for College Canteens — Campus Smart Food OS',
     subheading:
-      'Reduce break-time waiting queues by 40%, enable cashless student ID card wallets, and manage multi-stall campus food courts.',
+      'Conquer the 15-minute lecture break rush with zero queue chaos. Eliminate fake screenshot scams, enable cashless student wallets, and manage multi-stall dining.',
     cta: 'Book Canteen Demo',
   },
   '/solutions/restaurants': {
     heading: 'Kaaty for Restaurants — POS, Kitchen & Table Management',
     subheading:
-      'Streamline floor operations with visual table layouts, steward ordering, split bills, and kitchen coordination.',
+      'Streamline dining operations with interactive table layouts, steward ordering, split bills, and multi-station KOT routing.',
     cta: 'Book Restaurant Demo',
+  },
+  '/solutions/cafes': {
+    heading: 'Kaaty for Cafes & QSRs — Quick Service POS & Modifiers',
+    subheading:
+      'Fast counter ordering with beverage customization, barista display screens, and order pickup token alerts.',
+    cta: 'Book Cafe Demo',
   },
   '/solutions/food-courts': {
     heading: 'Kaaty for Food Courts — Multi-Vendor Unified Command',
     subheading:
-      'Run multi-brand food courts with centralized kiosks, automated tenant revenue settlements, and common token boards.',
+      'Run multi-brand food courts with independent stall terminals, centralized kiosks, automated tenant revenue settlements, and common token boards.',
     cta: 'Book Food Court Demo',
+  },
+  '/solutions/cloud-kitchens': {
+    heading: 'Kaaty for Cloud Kitchens — Multi-Brand Kitchen Operations',
+    subheading:
+      'Operate multiple virtual brands from a single kitchen console. Station-based prep lines, packaging verification, and organized rider dispatch.',
+    cta: 'Book Cloud Kitchen Demo',
+  },
+  '/solutions/hotels': {
+    heading: 'Kaaty for Hotels — In-Room Dining & Multi-Outlet Operations',
+    subheading:
+      'Manage fine dining, pool bars, all-day cafes, banquets, and in-room QR dining with guest room charge postings from one platform.',
+    cta: 'Book Hotel Demo',
+  },
+  '/solutions/bakeries': {
+    heading: 'Kaaty for Bakeries — Piece & Weight Billing, Cake Advance Orders',
+    subheading:
+      'Hybrid counter billing by piece or weight, digital advance cake booking calendar, and fresh daily batch production tracking.',
+    cta: 'Book Bakery Demo',
+  },
+  '/solutions/ice-cream-parlours': {
+    heading: 'Kaaty for Ice Cream Parlours — Speedy Scoop POS & Kiosks',
+    subheading:
+      'Visual scoop and topping modifier builder, live tub stockout toggles, and self-service dessert kiosks for peak evening rushes.',
+    cta: 'Book Parlour Demo',
   },
   '/products/pos': {
     heading: 'Kaaty POS — Lightning-Fast Billing Engine for Peak Hours',
@@ -76,7 +112,7 @@ const ROUTE_CONTENT = {
   '/products/kds': {
     heading: 'Kaaty KDS — Visual Kitchen Display System',
     subheading:
-      'Zero paper lost, color-coded prep timers, station routing, and live bump bars to reduce kitchen order ticket delays.',
+      'Zero paper lost, color-coded prep timers, station routing, and live bump bars to keep kitchen stations aligned.',
     cta: 'Explore KDS',
   },
   '/integrations/razorpay': {
@@ -145,7 +181,12 @@ for (const [route, meta] of Object.entries(ROUTE_METADATA)) {
     `<meta name="twitter:image" content="${ogImg}" />`,
   )
 
-  // 6. Inject crawlable semantic fallback markup inside #root
+  // 6. Inject JSON-LD Schema
+  const schemas = generateJsonLd(route)
+  const jsonLdTag = `<script type="application/ld+json">${JSON.stringify(schemas)}</script>`
+  html = html.replace('</head>', `  ${jsonLdTag}\n</head>`)
+
+  // 7. Inject crawlable semantic fallback markup inside #root
   const content = ROUTE_CONTENT[route]
   if (content) {
     const prerenderMarkup = `
@@ -157,7 +198,7 @@ for (const [route, meta] of Object.entries(ROUTE_METADATA)) {
     html = html.replace('<div id="root"></div>', `<div id="root">${prerenderMarkup}</div>`)
   }
 
-  // Determine output path e.g. /pricing -> dist/pricing/index.html
+  // Determine output path e.g. /solutions -> dist/solutions/index.html
   const relativeSubPath = route.startsWith('/') ? route.slice(1) : route
   const targetDir = path.join(distDir, relativeSubPath)
   fs.mkdirSync(targetDir, { recursive: true })

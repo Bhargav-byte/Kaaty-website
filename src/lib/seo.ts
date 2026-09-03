@@ -69,14 +69,14 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/kds': {
-    title: 'Kaaty KDS — Visual Kitchen Display System',
+    title: 'Kaaty KDS — Station-Wise Kitchen Display System',
     description:
-      'Zero paper lost, color-coded prep timers, station routing, and live bump bars to reduce kitchen order ticket delays.',
+      'Eliminate paper tickets. Color-coded order aging, station routing, and kitchen display screens keep cooks aligned.',
     canonical: `${BASE_URL}/products/kds`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/mobile-app': {
-    title: 'Kaaty Mobile App — Branded Ordering & Queue Busting',
+    title: 'Kaaty Mobile Ordering — Direct-to-Consumer Campus & Food App',
     description:
       'Allow customers and students to browse menus, order ahead, and receive live pickup notifications from their phone.',
     canonical: `${BASE_URL}/products/mobile-app`,
@@ -117,7 +117,18 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     canonical: `${BASE_URL}/products/kiosk`,
     ogImage: DEFAULT_OG_IMAGE,
   },
-  // Solutions
+  // Solutions Hub
+  '/solutions': {
+    title: 'Industry Solutions — Kaaty Food-Tech Platform',
+    description:
+      'Purpose-built operational workflows for restaurants, cafes, cloud kitchens, food courts, college canteens, hotels, and bakeries. One platform for every food business.',
+    canonical: `${BASE_URL}/solutions`,
+    ogTitle: 'F&B Industry Solutions — Kaaty',
+    ogDescription:
+      'Purpose-built food-tech solutions for restaurants, cafes, cloud kitchens, food courts, and campus dining.',
+    ogImage: DEFAULT_OG_IMAGE,
+  },
+  // Individual Industry Solutions
   '/solutions/college-canteens': {
     title: 'Kaaty for College Canteens — Campus Food-Tech & Student Wallets',
     description:
@@ -126,7 +137,7 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/solutions/restaurants': {
-    title: 'Kaaty for Restaurants — Dine-in, Takeaway & Delivery in One Screen',
+    title: 'Kaaty for Restaurants — POS, Kitchen & Table Management',
     description:
       'Streamline floor operations with visual table layouts, steward ordering, split bills, and kitchen coordination.',
     canonical: `${BASE_URL}/solutions/restaurants`,
@@ -147,30 +158,30 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/solutions/cloud-kitchens': {
-    title: 'Kaaty for Cloud Kitchens — Multi-Brand Kitchen Aggregation',
+    title: 'Kaaty for Cloud Kitchens — Multi-Brand Kitchen Operations',
     description:
-      'Consolidate Swiggy, Zomato, and direct web orders into a unified KDS with automated stock synchronization.',
+      'Manage multi-brand virtual kitchens, station-based prep lines, packaging checklists, and rider handovers from a single kitchen console.',
     canonical: `${BASE_URL}/solutions/cloud-kitchens`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/solutions/hotels': {
-    title: 'Kaaty for Hotels — In-Room Dining & Banquet Food Operations',
+    title: 'Kaaty for Hotels — In-Room Dining & Multi-Outlet Food Operations',
     description:
-      'Room-service QR ordering, banquet KOT routing, and multi-kitchen management for hospitality venues.',
+      'In-room QR dining, banquet orders, room folio charge posting, and multi-kitchen management for hospitality venues.',
     canonical: `${BASE_URL}/solutions/hotels`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/solutions/bakeries': {
-    title: 'Kaaty for Bakeries — Recipe Costing, Batch Orders & Expiry Tracking',
+    title: 'Kaaty for Bakeries — Piece & Weight Billing, Cake Advance Orders',
     description:
-      'Specialized bakery retail POS with weight-scale integrations, custom cake advance bookings, and raw ingredient tracking.',
+      'Bakery retail POS with weight-based calculation, custom cake advance bookings, and fresh batch production scheduling.',
     canonical: `${BASE_URL}/solutions/bakeries`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/solutions/ice-cream-parlours': {
-    title: 'Kaaty for Ice Cream Parlours — Speedy Scoop POS & Weight Scales',
+    title: 'Kaaty for Ice Cream Parlours — Speedy Scoop POS & Kiosks',
     description:
-      'Single-tap flavor selection, combo cup modifiers, and automated weight scale integration for quick-service parlours.',
+      'Single-tap flavor selection, sundae topping modifiers, live tub stockout toggles, and self-ordering parlour kiosks.',
     canonical: `${BASE_URL}/solutions/ice-cream-parlours`,
     ogImage: DEFAULT_OG_IMAGE,
   },
@@ -233,8 +244,65 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
   },
 }
 
+export function generateJsonLd(cleanPath: string): object[] {
+  const schemas: object[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Kaaty',
+      url: BASE_URL,
+      logo: `${BASE_URL}/logo.jpg`,
+      sameAs: ['https://www.instagram.com/kaaty.app', 'https://www.linkedin.com/company/kaaty'],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Kaaty Food-Tech Platform',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web, Android, iOS',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'INR',
+      },
+    },
+  ]
+
+  // Breadcrumbs
+  const parts = cleanPath.split('/').filter(Boolean)
+  if (parts.length > 0) {
+    const itemList = [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `${BASE_URL}/`,
+      },
+    ]
+
+    let curr = ''
+    parts.forEach((p, idx) => {
+      curr += `/${p}`
+      const capitalized = p.charAt(0).toUpperCase() + p.slice(1).replace(/-/g, ' ')
+      itemList.push({
+        '@type': 'ListItem',
+        position: idx + 2,
+        name: capitalized,
+        item: `${BASE_URL}${curr}`,
+      })
+    })
+
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: itemList,
+    })
+  }
+
+  return schemas
+}
+
 export function updatePageMetadata(path: string): void {
-  // Normalize path
   const cleanPath = path.split('?')[0].replace(/\/$/, '') || '/'
   const meta = ROUTE_METADATA[cleanPath] || {
     title: 'Kaaty — One Platform. Every Food Business.',
@@ -244,7 +312,6 @@ export function updatePageMetadata(path: string): void {
     ogImage: DEFAULT_OG_IMAGE,
   }
 
-  // Document title
   document.title = meta.title
 
   // Meta description
@@ -279,6 +346,20 @@ export function updatePageMetadata(path: string): void {
   setMetaName('twitter:title', ogTitle)
   setMetaName('twitter:description', ogDesc)
   setMetaName('twitter:image', ogImg)
+
+  // JSON-LD structured data
+  try {
+    let scriptTag = document.querySelector('script[type="application/ld+json"]')
+    if (!scriptTag) {
+      scriptTag = document.createElement('script')
+      scriptTag.setAttribute('type', 'application/ld+json')
+      document.head.appendChild(scriptTag)
+    }
+    const schemas = generateJsonLd(cleanPath)
+    scriptTag.textContent = JSON.stringify(schemas)
+  } catch {
+    // Silent catch
+  }
 }
 
 function setMetaProperty(prop: string, content: string) {
