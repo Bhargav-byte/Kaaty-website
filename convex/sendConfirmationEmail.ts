@@ -46,7 +46,7 @@ export const sendConfirmationEmail = action({
         <div class="card">
           <div class="header">
             <div style="text-align: center;">
-              <img src="https://kaaty.online/logo.jpg" alt="Kaaty Logo" height="44" style="display: inline-block; vertical-align: middle; border-radius: 8px; margin: 0;" />
+              <img src="https://savory-crab-961.convex.cloud/api/storage/78a783f6-1464-48a6-913e-f81aaa5eff88" alt="Kaaty Logo" height="44" style="display: inline-block; vertical-align: middle; border-radius: 8px; margin: 0;" />
               <span class="logo" style="display: inline-block; vertical-align: middle; margin-left: 12px;">Kaaty</span>
             </div>
           </div>
@@ -81,7 +81,7 @@ export const sendConfirmationEmail = action({
 
     try {
       const data = await resend.emails.send({
-        from: 'Kaaty <hello@kaaty.online>',
+        from: 'Kaaty <hello@kaaty.co.in>',
         to: [args.email],
         subject: `Demo Request Confirmed — Kaaty (${args.business})`,
         html: htmlContent,
