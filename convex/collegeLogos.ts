@@ -6,7 +6,7 @@ import type { Id } from './_generated/dataModel'
 export const get = query({
   handler: async (ctx) => {
     const logos = await ctx.db.query('collegeLogos').collect()
-    const sorted = logos.sort((a, b) => a.order - b.order)
+    const sorted = [...logos].sort((a, b) => a.order - b.order)
     return Promise.all(
       sorted.map(async (it) => {
         if (it.icon.length > 20 && !it.icon.includes('-')) {

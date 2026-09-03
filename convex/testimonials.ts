@@ -4,7 +4,7 @@ import { v } from 'convex/values'
 export const get = query({
   handler: async (ctx) => {
     const testimonials = await ctx.db.query('testimonials').collect()
-    const sorted = testimonials.sort((a, b) => a.order - b.order)
+    const sorted = [...testimonials].sort((a, b) => a.order - b.order)
     
     return Promise.all(
       sorted.map(async (t) => {

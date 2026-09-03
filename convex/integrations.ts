@@ -11,7 +11,7 @@ export const getUrls = query({
 export const get = query({
   handler: async (ctx) => {
     const integrations = await ctx.db.query('integrations').collect()
-    const sorted = integrations.sort((a, b) => a.order - b.order)
+    const sorted = [...integrations].sort((a, b) => a.order - b.order)
     return Promise.all(
       sorted.map(async (it) => {
         if (it.imageStorageId) {
