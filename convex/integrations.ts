@@ -4,7 +4,7 @@ import { v } from 'convex/values'
 export const get = query({
   handler: async (ctx) => {
     const integrations = await ctx.db.query('integrations').collect()
-    return integrations.sort((a, b) => a.order - b.order)
+    return [...integrations].sort((a, b) => a.order - b.order)
   },
 })
 

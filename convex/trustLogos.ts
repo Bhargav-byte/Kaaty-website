@@ -5,7 +5,7 @@ export const get = query({
   handler: async (ctx) => {
     const logos = await ctx.db.query('trustLogos').collect()
     // Sort by order since Convex query().order() doesn't sort by arbitrary fields without indexes
-    return logos.sort((a, b) => a.order - b.order)
+    return [...logos].sort((a, b) => a.order - b.order)
   },
 })
 
