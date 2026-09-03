@@ -10,6 +10,7 @@ export const sendConfirmationEmail = action({
     email: v.string(),
     type: v.string(),
     message: v.optional(v.string()),
+    source: v.optional(v.string()),
   },
   handler: async (_, args) => {
     const apiKey = process.env.RESEND_API_KEY

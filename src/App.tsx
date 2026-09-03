@@ -1215,7 +1215,7 @@ function Logo({ light = false }) {
   return (
     <a href="#/" className="flex items-center gap-2.5">
       <img
-        src="/logo.jpg"
+        src="https://savory-crab-961.convex.cloud/api/storage/78a783f6-1464-48a6-913e-f81aaa5eff88"
         alt="Kaaty Logo"
         className="h-9 w-9 rounded-xl shadow-[0_8px_18px_-6px_rgba(255,107,0,.7)] object-cover"
       />
@@ -1303,22 +1303,7 @@ function Navbar() {
             >
               Pricing
             </a>
-            <div onMouseEnter={() => enter('Resources')} className="relative">
-              <button
-                className={`flex items-center gap-1 rounded-lg px-3.5 py-2 text-[14.5px] font-semibold transition-colors ${
-                  open === 'Resources' ? 'text-kaaty-600' : 'text-navy-800 hover:text-kaaty-600'
-                }`}
-              >
-                Resources
-                <Icon
-                  name="chevron-down"
-                  size={15}
-                  className={`transition-transform duration-200 ${
-                    open === 'Resources' ? 'rotate-180 text-kaaty-500' : 'text-navy-400'
-                  }`}
-                />
-              </button>
-            </div>
+
             <a
               href="#/about"
               className="rounded-lg px-3.5 py-2 text-[14.5px] font-semibold text-navy-800 transition-colors hover:text-kaaty-600"
@@ -1339,7 +1324,7 @@ function Navbar() {
                     The complete operating system for food businesses.
                   </span>
                   <a
-                    href="#/demo"
+                    href="#/demo?source=mobile_menu"
                     className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-kaaty-600 hover:text-kaaty-700"
                   >
                     Book a demo <Icon name="arrow-right" size={14} />
@@ -1352,7 +1337,7 @@ function Navbar() {
           <div className="flex items-center gap-2.5">
             <Button
               as="a"
-              href="#/demo"
+              href="#/demo?source=header_nav"
               size="md"
               icon="arrow-right"
               className="hidden sm:inline-flex"
@@ -1387,7 +1372,7 @@ function Navbar() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto px-4 py-4">
-              {['Products', 'Solutions', 'Integrations', 'Resources'].map((k) => (
+              {['Products', 'Solutions', 'Integrations'].map((k) => (
                 <div key={k} className="border-b border-navy-100">
                   <button
                     onClick={() => setMAcc(mAcc === k ? null : k)}
@@ -1487,7 +1472,7 @@ function Navbar() {
             <div className="border-t border-navy-100 p-4">
               <Button
                 as="a"
-                href="#/demo"
+                href="#/demo?source=mobile_menu"
                 onClick={() => setMobile(false)}
                 size="lg"
                 icon="arrow-right"
@@ -1705,7 +1690,7 @@ function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button as="a" href="#/demo" size="lg" icon="arrow-right">
+              <Button as="a" href="#/demo?source=hero" size="lg" icon="arrow-right">
                 Book Free Demo
               </Button>
               <Button
@@ -2335,7 +2320,12 @@ function CustomSolutions() {
                 team builds it.
               </p>
               <div className="mt-8">
-                <Button as="a" href="#/demo" size="lg" icon="arrow-right">
+                <Button
+                  as="a"
+                  href="#/demo?source=engineering_consultation"
+                  size="lg"
+                  icon="arrow-right"
+                >
                   Book an Engineering Consultation
                 </Button>
               </div>
@@ -2462,7 +2452,7 @@ function Pricing({ compact = false }: { compact?: boolean }) {
                   {p.desc}
                 </div>
                 <a
-                  href="#/demo"
+                  href={`#/demo?source=pricing_${p.key}`}
                   className={`mt-3 inline-flex w-full items-center justify-center rounded-lg px-3 py-2 text-[12px] font-bold transition-all ${
                     p.popular
                       ? 'bg-kaaty-500 text-white hover:bg-kaaty-400'
@@ -2727,7 +2717,7 @@ function FinalCTA() {
         ['About Us', '#/about'],
         ['Pricing', '#/pricing'],
         ['Resources', '#/resources'],
-        ['Book a Demo', '#/demo'],
+        ['Book a Demo', '#/demo?source=footer'],
       ],
     },
     {
@@ -2758,19 +2748,9 @@ function FinalCTA() {
             transform customer satisfaction.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button as="a" href="#/demo" size="lg" icon="arrow-right">
+            <Button as="a" href="#/demo?source=bottom_cta" size="lg" icon="arrow-right">
               Book Free Demo
             </Button>
-            <Button
-              as="a"
-              href="https://wa.me/919392365308"
-              target="_blank"
-              rel="noopener noreferrer"
-              size="lg"
-              variant="whatsapp"
-              icon="whatsapp"
-              className="!px-0 w-[52px]"
-            />
           </div>
         </div>
         <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
@@ -2852,7 +2832,10 @@ function FinalCTA() {
   )
 }
 
-function LogoBand({ heading, logos }: LogoBandProps) {
+function LogoBand({ heading, logos: fallbackLogos }: LogoBandProps) {
+  const convexLogos = useQuery(api.collegeLogos.get)
+  const logos = convexLogos || fallbackLogos
+
   return (
     <section className="py-14">
       <Container>
@@ -2865,10 +2848,18 @@ function LogoBand({ heading, logos }: LogoBandProps) {
           {logos.map((l) => (
             <div
               key={l.name}
-              className="group flex items-center justify-center gap-2.5 grayscale transition-all duration-300 hover:grayscale-0"
+              className="group flex items-center justify-center gap-2.5 transition-all duration-300 hover:opacity-80"
             >
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-navy-100 text-navy-500 transition-colors group-hover:bg-kaaty-500 group-hover:text-white">
-                <Icon name={l.icon} size={17} />
+              <span className="grid h-9 w-9 place-items-center rounded-lg bg-white border border-navy-100 text-navy-500 overflow-hidden p-1">
+                {'imageUrl' in l && l.imageUrl ? (
+                  <img
+                    src={l.imageUrl as string}
+                    alt={l.name}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <Icon name={l.icon} size={17} />
+                )}
               </span>
               <span className="font-display text-[13.5px] font-bold leading-tight text-navy-400 transition-colors group-hover:text-navy">
                 {l.name}
@@ -2937,7 +2928,7 @@ function SubHero({ eyebrow, title, sub, cta = 'Take a Free Demo', visual = 'pos'
               {sub}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button as="a" href="#/demo" size="lg" icon="arrow-right">
+              <Button as="a" href="#/demo?source=subhero" size="lg" icon="arrow-right">
                 {cta}
               </Button>
               <Button as="a" href="#/pricing" size="lg" variant="outline">
@@ -3050,21 +3041,39 @@ function Testimonials() {
           {testimonialsList.map((t, i) => (
             <figure
               key={t.name || i}
-              className="reveal w-full max-w-[480px] rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8"
+              className="reveal flex w-full max-w-[480px] flex-col rounded-2xl border border-navy-100 bg-white p-7 shadow-soft sm:p-8"
             >
               <div className="flex items-center gap-2.5">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
-                  <Icon name={t.icon} size={20} />
-                </span>
+                {'brandImageUrl' in t && t.brandImageUrl ? (
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-white overflow-hidden p-1 border border-navy-100">
+                    <img
+                      src={t.brandImageUrl as string}
+                      alt={t.brand}
+                      className="h-full w-full object-contain"
+                    />
+                  </span>
+                ) : (
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
+                    <Icon name={t.icon} size={20} />
+                  </span>
+                )}
                 <span className="font-display text-[16px] font-extrabold text-navy">{t.brand}</span>
               </div>
               <blockquote className="mt-5 text-[15px] leading-relaxed text-navy-600">
-                “{t.quote}”
+                {t.quote ? `“${t.quote}”` : ''}
               </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-full bg-navy-100 text-navy-500">
-                  <Icon name="user" size={20} />
-                </span>
+              <figcaption className="mt-auto pt-6 flex items-center gap-3">
+                {'authorImageUrl' in t && t.authorImageUrl ? (
+                  <img
+                    src={t.authorImageUrl as string}
+                    alt={t.name}
+                    className="h-11 w-11 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="grid h-11 w-11 place-items-center rounded-full bg-navy-100 text-navy-500">
+                    <Icon name="user" size={20} />
+                  </span>
+                )}
                 <span>
                   <span className="block font-display text-[14.5px] font-bold text-navy">
                     {t.name}
@@ -3254,6 +3263,15 @@ function DemoForm() {
   const [btypeDropdownOpen, setBtypeDropdownOpen] = React.useState(false)
   const btypePickerRef = React.useRef<HTMLDivElement>(null)
 
+  const [contactMode, setContactMode] = React.useState<'call' | 'whatsapp'>('call')
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setContactMode((prev) => (prev === 'call' ? 'whatsapp' : 'call'))
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [])
+
   const selectedCountry = React.useMemo(
     () => COUNTRY_CODES.find((c) => c.code === countryCode) || COUNTRY_CODES[0],
     [countryCode],
@@ -3295,6 +3313,63 @@ function DemoForm() {
   const [loading, setLoading] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [err, setErr] = React.useState<Partial<Record<keyof DemoFormData, number>>>({})
+  const savePartialToConvex = useMutation(api.demoRequests.savePartial)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [partialId, setPartialId] = React.useState<any>(null)
+
+  React.useEffect(() => {
+    const hasData =
+      form.name.trim() ||
+      form.business.trim() ||
+      form.phone.trim() ||
+      form.email.trim() ||
+      form.type ||
+      form.message.trim()
+    if (!hasData || sent) return
+
+    const timer = setTimeout(async () => {
+      try {
+        let sourceStr = 'Direct Book Demo'
+        const hash = window.location.hash
+        if (hash.includes('?source=')) {
+          const match = hash.match(/\?source=([^&]*)/)
+          if (match) {
+            const val = decodeURIComponent(match[1])
+            const map: Record<string, string> = {
+              pricing_core: 'Pricing: Core',
+              pricing_growth: 'Pricing: Growth',
+              pricing_scale: 'Pricing: Scale',
+              header_nav: 'Header Navigation',
+              mobile_menu: 'Mobile Menu',
+              hero: 'Homepage Hero',
+              engineering_consultation: 'Feature: Engineering',
+              footer: 'Footer Link',
+              bottom_cta: 'Bottom Get Started CTA',
+              subhero: 'Product/Solution Hero',
+              integration_page: 'Integration Page',
+            }
+            sourceStr = map[val] || val
+          }
+        }
+
+        const id = await savePartialToConvex({
+          id: partialId || undefined,
+          name: form.name.trim() || undefined,
+          business: form.business.trim() || undefined,
+          phone: form.phone.trim() ? `${countryCode} ${form.phone.trim()}` : undefined,
+          email: form.email.trim() || undefined,
+          type: form.type || undefined,
+          message: form.message.trim() || undefined,
+          source: sourceStr,
+        })
+        if (id && !partialId) setPartialId(id)
+      } catch {
+        // Ignore partial save errors
+      }
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [form, partialId, sent, countryCode, savePartialToConvex])
+
   const set =
     (k: keyof DemoFormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -3323,14 +3398,41 @@ function DemoForm() {
     if (Object.keys(er).length > 0) return
     setLoading(true)
     setSubmitError(null)
+
+    // Parse source from hash if it exists
+    let sourceStr = 'Direct Book Demo'
+    const hash = window.location.hash
+    if (hash.includes('?source=')) {
+      const match = hash.match(/\?source=([^&]*)/)
+      if (match) {
+        const val = decodeURIComponent(match[1])
+        const map: Record<string, string> = {
+          pricing_core: 'Pricing: Core',
+          pricing_growth: 'Pricing: Growth',
+          pricing_scale: 'Pricing: Scale',
+          header_nav: 'Header Navigation',
+          mobile_menu: 'Mobile Menu',
+          hero: 'Homepage Hero',
+          engineering_consultation: 'Feature: Engineering',
+          footer: 'Footer Link',
+          bottom_cta: 'Bottom Get Started CTA',
+          subhero: 'Product/Solution Hero',
+          integration_page: 'Integration Page',
+        }
+        sourceStr = map[val] || val
+      }
+    }
+
     try {
       await submitToConvex({
+        id: partialId || undefined,
         name: form.name.trim(),
         business: form.business.trim(),
         phone: `${countryCode} ${form.phone.trim()}`,
         email: form.email.trim(),
         type: form.type,
         message: form.message.trim() || undefined,
+        source: sourceStr,
       })
       setSent(true)
     } catch {
@@ -3676,18 +3778,65 @@ function DemoForm() {
                     </div>
                   </div>
                 ))}
-                <a
-                  href="tel:+919392365308"
-                  className="flex items-center justify-between rounded-2xl bg-navy-900 p-5 text-white transition-opacity hover:opacity-90"
-                >
-                  <div>
-                    <div className="text-[12px] text-navy-300">Prefer to call?</div>
-                    <div className="font-display text-[18px] font-extrabold">+91 93923 65308</div>
+                <div className="relative overflow-hidden rounded-2xl bg-navy-900">
+                  <div
+                    className={`flex transition-transform duration-500 ease-in-out ${
+                      contactMode === 'call' ? 'translate-x-0' : '-translate-x-1/2'
+                    }`}
+                    style={{ width: '200%' }}
+                  >
+                    <div className="flex w-1/2 items-center p-5 text-white">
+                      <a
+                        href="tel:+919392365308"
+                        className="flex flex-1 items-center justify-between transition-opacity hover:opacity-90"
+                      >
+                        <div>
+                          <div className="text-[12px] text-navy-300">Prefer to call?</div>
+                          <div className="font-display text-[18px] font-extrabold">
+                            +91 93923 65308
+                          </div>
+                        </div>
+                        <span className="grid h-11 w-11 place-items-center rounded-full bg-kaaty-500">
+                          <Icon name="phone" size={18} />
+                        </span>
+                      </a>
+                    </div>
+                    <div className="flex w-1/2 items-center p-5 text-white">
+                      <a
+                        href="https://wa.me/919392365308"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-1 items-center justify-between transition-opacity hover:opacity-90"
+                      >
+                        <div>
+                          <div className="text-[12px] text-navy-300">Prefer to chat?</div>
+                          <div className="font-display text-[18px] font-extrabold">WhatsApp Us</div>
+                        </div>
+                        <span className="grid h-11 w-11 place-items-center rounded-full bg-[#25D366]">
+                          <Icon name="whatsapp" size={24} />
+                        </span>
+                      </a>
+                    </div>
                   </div>
-                  <span className="grid h-11 w-11 place-items-center rounded-full bg-kaaty-500">
-                    <Icon name="phone" size={18} />
-                  </span>
-                </a>
+                </div>
+                <div className="mt-4 flex justify-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setContactMode('call')}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      contactMode === 'call' ? 'w-5 bg-navy-400' : 'w-1.5 bg-navy-200'
+                    }`}
+                    aria-label="Show Call"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setContactMode('whatsapp')}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      contactMode === 'whatsapp' ? 'w-5 bg-navy-400' : 'w-1.5 bg-navy-200'
+                    }`}
+                    aria-label="Show WhatsApp"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -3898,7 +4047,7 @@ function IntegrationPage({ slug }: { slug: string }) {
               {d.sub}
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button as="a" href="#/demo" size="lg" icon="arrow-right">
+              <Button as="a" href="#/demo?source=integration_page" size="lg" icon="arrow-right">
                 Book a Demo
               </Button>
               <Button as="a" href="#/integrations/easebuzz" size="lg" variant="outline">
@@ -4006,15 +4155,47 @@ function IntegrationPage({ slug }: { slug: string }) {
 }
 
 const RESOURCE_CARDS = [
-  { icon: 'book-open', t: 'Documentation', d: 'Setup guides, API references and how-tos.' },
-  { icon: 'award', t: 'Case Studies', d: 'Real deployments and the results they drove.' },
-  { icon: 'newspaper', t: 'Blog', d: 'Product news and F&B operations playbooks.' },
-  { icon: 'life-buoy', t: 'Help Center', d: 'Answers, troubleshooting and best practices.' },
-  { icon: 'code', t: 'API & Webhooks', d: 'Build on top of Kaaty with our developer tools.' },
-  { icon: 'users', t: 'Community', d: 'Join other operators scaling with Kaaty.' },
+  {
+    icon: 'book-open',
+    t: 'Documentation',
+    d: 'Setup guides, API references and how-tos.',
+    href: '#/resources',
+  },
+  {
+    icon: 'award',
+    t: 'Startup Journey',
+    d: 'Read how we evolved from a campus project to an ecosystem.',
+    href: '#/resources/journey',
+  },
+  {
+    icon: 'newspaper',
+    t: 'Blog',
+    d: 'Product news and F&B operations playbooks.',
+    href: '#/resources',
+  },
+  {
+    icon: 'life-buoy',
+    t: 'Help Center',
+    d: 'Answers, troubleshooting and best practices.',
+    href: '#/resources',
+  },
+  {
+    icon: 'code',
+    t: 'API & Webhooks',
+    d: 'Build on top of Kaaty with our developer tools.',
+    href: '#/resources',
+  },
+  {
+    icon: 'users',
+    t: 'Community',
+    d: 'Join other operators scaling with Kaaty.',
+    href: '#/resources',
+  },
 ]
 
 function ResourcesPage() {
+  const [isJourneyOpen, setIsJourneyOpen] = React.useState(false)
+
   return (
     <>
       <section className="relative overflow-hidden pt-[136px] sm:pt-[152px]">
@@ -4035,7 +4216,13 @@ function ResourcesPage() {
           {RESOURCE_CARDS.map((c) => (
             <a
               key={c.t}
-              href="#/demo"
+              href={c.href}
+              onClick={(e) => {
+                if (c.t === 'Startup Journey') {
+                  e.preventDefault()
+                  setIsJourneyOpen(true)
+                }
+              }}
               className="group rounded-2xl border border-navy-100 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift"
             >
               <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
@@ -4055,6 +4242,7 @@ function ResourcesPage() {
           ))}
         </div>
       </Container>
+      <JourneyModal isOpen={isJourneyOpen} onClose={() => setIsJourneyOpen(false)} />
       <DemoForm />
     </>
   )
@@ -4118,6 +4306,114 @@ function Home() {
   )
 }
 
+function JourneyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12">
+      <div
+        className="absolute inset-0 bg-navy-900/40 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+      <div className="relative flex max-h-full w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-navy-100 px-6 py-4 sm:px-8">
+          <h2 className="font-display text-[18px] font-bold text-navy">Startup Journey Report</h2>
+          <button
+            onClick={onClose}
+            className="grid h-10 w-10 place-items-center rounded-full bg-navy-50 text-navy-500 transition-colors hover:bg-navy-100 hover:text-navy-900"
+          >
+            <Icon name="x" size={20} />
+          </button>
+        </div>
+
+        <div className="overflow-y-auto p-6 sm:p-10">
+          <div className="mb-10 text-center">
+            <Eyebrow className="mx-auto">Our Story</Eyebrow>
+            <h1 className="mx-auto mt-4 font-display text-[clamp(1.8rem,4vw,2.8rem)] font-extrabold leading-[1.1] tracking-[-.03em] text-navy">
+              The Story Behind <span className="gradient-text">Kaaty</span>
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-[16px] text-navy-500 sm:text-[18px]">
+              From Solving College Canteen Queues to Building India's Smart Campus Ecosystem.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4 text-[14px] text-navy-400 sm:gap-6">
+              <div className="flex items-center gap-2">
+                <Icon name="user" size={16} />
+                <span>Founders: Bhargav P. & Nishanth M.</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="calendar" size={16} />
+                <span>Aug 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="prose prose-lg mx-auto prose-headings:font-display prose-headings:font-bold prose-h2:text-navy prose-p:text-navy-600 prose-li:text-navy-600">
+            <h2>The Problem</h2>
+            <p>
+              Every successful startup begins with a problem, and KAATY is no exception. The idea
+              emerged from a simple everyday experience shared by thousands of college students.
+              During their first year at KG Reddy College of Engineering and Technology, the
+              founding team regularly experienced long queues at the college canteen. This daily
+              inconvenience prompted a simple but powerful question:{' '}
+              <em>
+                "Why should students spend their valuable break time standing in queues just to
+                order food?"
+              </em>
+            </p>
+
+            <h2>Our Solution Evolution</h2>
+            <p>
+              This realization transformed KAATY from a basic ordering application into a
+              comprehensive SaaS solution capable of managing every stage of the food service
+              process. What started as a paper prototype evolved through:
+            </p>
+            <ul>
+              <li>
+                <strong>Phase 1:</strong> A simple Android app to view menus and order.
+              </li>
+              <li>
+                <strong>Phase 2:</strong> Adding a dashboard for the canteen staff to accept orders.
+              </li>
+              <li>
+                <strong>Phase 3:</strong> Integrating a Kitchen Display System (KDS) to eliminate
+                paper tokens.
+              </li>
+              <li>
+                <strong>Phase 4:</strong> Developing Vendor Dashboards and Business Analytics for
+                administrators.
+              </li>
+            </ul>
+
+            <h2>Pilot Deployment & Validation</h2>
+            <p>
+              The pilot deployment at KG Reddy College of Engineering and Technology provided
+              crucial validation for our ecosystem. The results spoke for themselves:
+            </p>
+            <ul>
+              <li>
+                Observed a <strong>40% reduction</strong> in average queue waiting time.
+              </li>
+              <li>
+                Over <strong>70% of regular canteen users</strong> transitioned to the digital
+                platform within the first month.
+              </li>
+              <li>Canteen staff reported significantly fewer errors in order preparation.</li>
+            </ul>
+
+            <h2>Looking Ahead</h2>
+            <p>
+              Today, KAATY is more than just a food-ordering app; it is a testament to the power of
+              student-led innovation. With a validated pilot, a robust technology stack, and a clear
+              vision for the future, KAATY is poised to lead the digital transformation of
+              educational ecosystems nationwide, building the true "Smart Campus OS".
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ContactPage() {
   return (
     <>
@@ -4150,7 +4446,8 @@ function useRoute() {
 }
 
 function renderRoute(route: string) {
-  const path = route.replace(/^#\/?/, '').replace(/\/$/, '')
+  const [routePath] = route.split('?')
+  const path = routePath.replace(/^#\/?/, '').replace(/\/$/, '')
   const seg = path.split('/').filter(Boolean)
   if (seg.length === 0) return <Home />
   if (seg[0] === 'pricing') return <PricingPage />

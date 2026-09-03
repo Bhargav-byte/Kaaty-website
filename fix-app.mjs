@@ -1,0 +1,1 @@
+import fs from 'fs'; let c = fs.readFileSync('src/App.tsx', 'utf8'); c = c.replace(/href='\#\/demo'/g, 'href=\'#/demo?source=direct\''); c = c.replace(/href=\"\#\/demo\"/g, 'href=\'#/demo?source=direct\''); fs.writeFileSync('src/App.tsx', c);

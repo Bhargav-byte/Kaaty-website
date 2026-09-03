@@ -1,0 +1,1 @@
+import { ConvexHttpClient } from 'convex/browser'; const client = new ConvexHttpClient('https://savory-crab-961.convex.cloud'); await client.mutation('demoRequests:submitDemoRequest', { name: 'Test', business: 'Test', phone: '123', email: 'test@example.com', type: 'Test' }); console.log('Done');

@@ -1,6 +1,13 @@
 import { query, mutation } from './_generated/server'
 import { v } from 'convex/values'
 
+export const getUrls = query({
+  args: { ids: v.array(v.id('_storage')) },
+  handler: async (ctx, args) => {
+    return Promise.all(args.ids.map(id => ctx.storage.getUrl(id)))
+  }
+})
+
 export const get = query({
   handler: async (ctx) => {
     const integrations = await ctx.db.query('integrations').collect()

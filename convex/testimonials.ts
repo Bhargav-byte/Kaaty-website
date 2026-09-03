@@ -4,7 +4,17 @@ import { v } from 'convex/values'
 export const get = query({
   handler: async (ctx) => {
     const testimonials = await ctx.db.query('testimonials').collect()
-    return testimonials.sort((a, b) => a.order - b.order)
+    const sorted = testimonials.sort((a, b) => a.order - b.order)
+    
+    return Promise.all(
+      sorted.map(async (t) => {
+        return {
+          ...t,
+          authorImageUrl: t.authorImageId ? await ctx.storage.getUrl(t.authorImageId) : null,
+          brandImageUrl: t.brandImageId ? await ctx.storage.getUrl(t.brandImageId) : null,
+        }
+      })
+    )
   },
 })
 
@@ -47,10 +57,16 @@ export const update = mutation({
     name: v.optional(v.string()),
     role: v.optional(v.string()),
     order: v.optional(v.number()),
+    authorImageId: v.optional(v.union(v.id('_storage'), v.null())),
+    brandImageId: v.optional(v.union(v.id('_storage'), v.null())),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args
-    await ctx.db.patch(id, updates)
+    // Remove nulls if they are meant to unset the field
+    const patchData: any = { ...updates }
+    if (patchData.authorImageId === null) patchData.authorImageId = undefined
+    if (patchData.brandImageId === null) patchData.brandImageId = undefined
+    await ctx.db.patch(id, patchData)
   },
 })
 
@@ -62,6 +78,8 @@ export const add = mutation({
     name: v.string(),
     role: v.string(),
     order: v.number(),
+    authorImageId: v.optional(v.id('_storage')),
+    brandImageId: v.optional(v.id('_storage')),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert('testimonials', args)
