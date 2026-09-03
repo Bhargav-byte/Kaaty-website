@@ -29,7 +29,7 @@ class RootErrorBoundary extends Component<{ children: React.ReactNode }, { error
             background: '#fff8f5',
           }}
         >
-          <img src="/favicon.svg" alt="Kaaty" width={48} height={48} />
+          <img src="/favicon.png" alt="Kaaty" width={48} height={48} />
           <h1 style={{ marginTop: '1rem', color: '#0f172a' }}>Something went wrong</h1>
           <p style={{ color: '#64748b', maxWidth: 480 }}>{this.state.error.message}</p>
         </div>

@@ -18,8 +18,7 @@
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
         {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://kaaty.online https://kaaty.co.in https://*.convex.cloud https://flagcdn.com; connect-src 'self' https://*.convex.cloud wss://*.convex.cloud;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://kaaty.co.in https://www.kaaty.co.in https://*.convex.cloud https://flagcdn.com; connect-src 'self' https://*.convex.cloud wss://*.convex.cloud;"
         }
       ]
     },

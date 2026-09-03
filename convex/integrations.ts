@@ -1,12 +1,7 @@
-import { query, mutation } from './_generated/server'
+import { query, internalQuery, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
 
-export const getUrls = query({
-  args: { ids: v.array(v.id('_storage')) },
-  handler: async (ctx, args) => {
-    return Promise.all(args.ids.map(id => ctx.storage.getUrl(id)))
-  }
-})
+/* ── Public query (read-only) ────────────────────────────────────────────── */
 
 export const get = query({
   handler: async (ctx) => {
@@ -23,7 +18,16 @@ export const get = query({
   },
 })
 
-export const seed = mutation({
+/* ── Internal functions (admin-only, NOT callable from the browser) ──────── */
+
+export const getUrls = internalQuery({
+  args: { ids: v.array(v.id('_storage')) },
+  handler: async (ctx, args) => {
+    return Promise.all(args.ids.map((id) => ctx.storage.getUrl(id)))
+  },
+})
+
+export const seed = internalMutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query('integrations').collect()
     if (existing.length > 0) return
@@ -33,10 +37,37 @@ export const seed = mutation({
       { name: 'Razorpay', slug: 'razorpay', icon: 'credit-card', dot: '#0C2451', order: 2 },
       { name: 'PhonePe', slug: 'phonepe', icon: 'smartphone', dot: '#5F259F', order: 3 },
       { name: 'Pine Labs', slug: 'pine-labs', icon: 'printer', dot: '#0B7F5B', order: 4 },
-      { name: 'Thermal Printers', slug: 'thermal-printers', icon: 'printer', dot: '#475569', order: 5 },
-      { name: 'Swiggy', slug: 'swiggy', icon: 'bike', dot: '#FC8019', order: 6, image: '/swiggy.png' },
-      { name: 'Zomato', slug: 'zomato', icon: 'utensils', dot: '#E23744', order: 7, image: '/zomato.png' },
-      { name: 'ONDC', slug: 'ondc', icon: 'network', dot: '#1F8A5B', order: 8, image: '/ondc.png' },
+      {
+        name: 'Thermal Printers',
+        slug: 'thermal-printers',
+        icon: 'printer',
+        dot: '#475569',
+        order: 5,
+      },
+      {
+        name: 'Swiggy',
+        slug: 'swiggy',
+        icon: 'bike',
+        dot: '#FC8019',
+        order: 6,
+        image: '/swiggy.png',
+      },
+      {
+        name: 'Zomato',
+        slug: 'zomato',
+        icon: 'utensils',
+        dot: '#E23744',
+        order: 7,
+        image: '/zomato.png',
+      },
+      {
+        name: 'ONDC',
+        slug: 'ondc',
+        icon: 'network',
+        dot: '#1F8A5B',
+        order: 8,
+        image: '/ondc.png',
+      },
     ]
 
     for (const item of integrations) {
@@ -45,7 +76,7 @@ export const seed = mutation({
   },
 })
 
-export const update = mutation({
+export const update = internalMutation({
   args: {
     id: v.id('integrations'),
     name: v.optional(v.string()),
@@ -62,7 +93,7 @@ export const update = mutation({
   },
 })
 
-export const add = mutation({
+export const add = internalMutation({
   args: {
     name: v.string(),
     slug: v.string(),
@@ -77,7 +108,7 @@ export const add = mutation({
   },
 })
 
-export const remove = mutation({
+export const remove = internalMutation({
   args: {
     id: v.id('integrations'),
   },
@@ -86,7 +117,7 @@ export const remove = mutation({
   },
 })
 
-export const generateUploadUrl = mutation({
+export const generateUploadUrl = internalMutation({
   handler: async (ctx) => {
     return await ctx.storage.generateUploadUrl()
   },

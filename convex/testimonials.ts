@@ -1,11 +1,13 @@
-import { query, mutation } from './_generated/server'
+import { query, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
+
+/* ── Public query (read-only, no PII) ────────────────────────────────────── */
 
 export const get = query({
   handler: async (ctx) => {
     const testimonials = await ctx.db.query('testimonials').collect()
     const sorted = [...testimonials].sort((a, b) => a.order - b.order)
-    
+
     return Promise.all(
       sorted.map(async (t) => {
         return {
@@ -18,7 +20,9 @@ export const get = query({
   },
 })
 
-export const seed = mutation({
+/* ── Internal mutations (admin-only, NOT callable from the browser) ──────── */
+
+export const seed = internalMutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query('testimonials').collect()
     if (existing.length > 0) return
@@ -48,7 +52,7 @@ export const seed = mutation({
   },
 })
 
-export const update = mutation({
+export const update = internalMutation({
   args: {
     id: v.id('testimonials'),
     brand: v.optional(v.string()),
@@ -63,14 +67,14 @@ export const update = mutation({
   handler: async (ctx, args) => {
     const { id, ...updates } = args
     // Remove nulls if they are meant to unset the field
-    const patchData: any = { ...updates }
+    const patchData: Record<string, unknown> = { ...updates }
     if (patchData.authorImageId === null) patchData.authorImageId = undefined
     if (patchData.brandImageId === null) patchData.brandImageId = undefined
     await ctx.db.patch(id, patchData)
   },
 })
 
-export const add = mutation({
+export const add = internalMutation({
   args: {
     brand: v.string(),
     icon: v.string(),
@@ -86,7 +90,7 @@ export const add = mutation({
   },
 })
 
-export const remove = mutation({
+export const remove = internalMutation({
   args: {
     id: v.id('testimonials'),
   },

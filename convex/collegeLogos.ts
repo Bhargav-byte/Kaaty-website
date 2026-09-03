@@ -1,7 +1,9 @@
-import { query, mutation } from './_generated/server'
+import { query, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
 
 import type { Id } from './_generated/dataModel'
+
+/* ── Public query (read-only) ────────────────────────────────────────────── */
 
 export const get = query({
   handler: async (ctx) => {
@@ -22,7 +24,9 @@ export const get = query({
   },
 })
 
-export const seed = mutation({
+/* ── Internal mutations (admin-only, NOT callable from the browser) ──────── */
+
+export const seed = internalMutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query('collegeLogos').collect()
     if (existing.length > 0) return
@@ -39,7 +43,7 @@ export const seed = mutation({
   },
 })
 
-export const update = mutation({
+export const update = internalMutation({
   args: {
     id: v.id('collegeLogos'),
     name: v.optional(v.string()),
@@ -52,7 +56,7 @@ export const update = mutation({
   },
 })
 
-export const add = mutation({
+export const add = internalMutation({
   args: {
     name: v.string(),
     icon: v.string(),
@@ -63,7 +67,7 @@ export const add = mutation({
   },
 })
 
-export const remove = mutation({
+export const remove = internalMutation({
   args: {
     id: v.id('collegeLogos'),
   },

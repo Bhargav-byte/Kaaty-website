@@ -6,7 +6,7 @@ If you discover a security vulnerability in this repository or on the live Kaaty
 
 **Contact us privately:**
 
-- Email: [support@kaaty.online](mailto:support@kaaty.online)
+- Email: [support@kaaty.co.in](mailto:support@kaaty.co.in)
 - Subject line: `[SECURITY] <short description>`
 
 We aim to acknowledge all security reports within **48 hours** and provide a resolution or mitigation within **7 days** for critical issues.
