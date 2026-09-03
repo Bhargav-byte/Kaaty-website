@@ -1215,7 +1215,7 @@ function Logo({ light = false }) {
   return (
     <a href="#/" className="flex items-center gap-2.5">
       <img
-        src="https://savory-crab-961.convex.cloud/api/storage/78a783f6-1464-48a6-913e-f81aaa5eff88"
+        src={`${import.meta.env.VITE_CONVEX_URL}/api/storage/kg28vjbz5a57z3z8zdpp36byn18dkm0h`}
         alt="Kaaty Logo"
         className="h-9 w-9 rounded-xl shadow-[0_8px_18px_-6px_rgba(255,107,0,.7)] object-cover"
       />
