@@ -339,13 +339,7 @@ export function IndustrySolutionPage({ slug }: IndustrySolutionPageProps) {
                 <Button as="a" href={demoUrl} size="lg" icon="arrow-right">
                   Schedule Free {sol.name} Demo
                 </Button>
-                <Button
-                  as="a"
-                  href="/solutions"
-                  size="lg"
-                  variant="outline"
-                  className="bg-transparent text-white ring-white/30 hover:bg-white/10"
-                >
+                <Button as="a" href="/solutions" size="lg" variant="ghostLight">
                   Browse All Verticals
                 </Button>
               </div>

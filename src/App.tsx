@@ -2704,7 +2704,7 @@ function FinalCTA() {
               {[
                 ['linkedin', 'https://www.linkedin.com/company/kaaty/posts/?feedView=all'],
                 ['instagram', 'https://www.instagram.com/kaaty.india/?__pwa=1#'],
-                ['x', 'https://x.com/Kaaty_india/status/2095105210213642332?s=20'],
+                ['twitter', 'https://x.com/Kaaty_india/status/2095105210213642332?s=20'],
                 ['youtube', 'https://www.youtube.com/@Kaatyindia'],
               ].map(([ic, h]) => (
                 <a
