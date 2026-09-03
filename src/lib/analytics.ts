@@ -22,6 +22,8 @@ export type AnalyticsEventName =
   | 'whatsapp_click'
   | 'phone_click'
   | 'faq_expand'
+  | 'industry_cta_click'
+  | 'product_industry_click'
   | 'scroll_depth_50'
   | 'scroll_depth_100'
 
@@ -32,6 +34,7 @@ export type SafeEventProperties = {
   cta_target?: string
   product_slug?: string
   solution_slug?: string
+  industry_slug?: string
   integration_slug?: string
   plan_tier?: string
   faq_question?: string

@@ -5,6 +5,10 @@ import { Icon } from './components/Icon'
 import { useRouter } from './lib/router'
 import { updatePageMetadata } from './lib/seo'
 import { trackEvent, setupScrollDepthTracking } from './lib/analytics'
+import { SolutionsHubPage } from './components/SolutionsHubPage'
+import { IndustrySolutionPage } from './components/IndustrySolutionPage'
+import { ProductIndustriesSection } from './components/ProductIndustriesSection'
+import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
 
 type ContainerProps = {
   className?: string
@@ -70,10 +74,6 @@ type SubHeroProps = {
 type FeatureRowsProps = { rows: FeatureRow[] }
 type AccordionProps = { items: FaqItem[]; heading?: string }
 type BenefitStripProps = { benefits: BenefitItem[]; heading?: string }
-type MiniValueGridProps = {
-  heading?: string
-  items?: Array<{ icon: string; title: string; desc: string }>
-}
 type HeroVisualProps = { kind?: MockKind }
 
 /* ============================================================
@@ -1086,6 +1086,13 @@ function SolutionsMenu() {
           <span className="text-[14px] font-medium text-navy-800">{s.name}</span>
         </a>
       ))}
+      <a
+        href="/solutions"
+        className="col-span-2 mt-1 flex items-center justify-between border-t border-navy-100/80 px-3 pt-3 pb-1 text-[13px] font-semibold text-kaaty-600 hover:text-kaaty-700 transition-colors"
+      >
+        <span>Explore All Industry Solutions</span>
+        <Icon name="arrow-right" size={14} />
+      </a>
     </div>
   )
 }
@@ -1333,18 +1340,29 @@ function Navbar() {
                             ))}
                           </div>
                         ))}
-                      {k === 'Solutions' &&
-                        MENU_SOLUTIONS.map((s) => (
+                      {k === 'Solutions' && (
+                        <>
+                          {MENU_SOLUTIONS.map((s) => (
+                            <a
+                              key={s.slug}
+                              href={`/solutions/${s.slug}`}
+                              onClick={() => setMobile(false)}
+                              className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
+                            >
+                              <Icon name={s.icon} size={16} className="text-kaaty-500" />
+                              {s.name}
+                            </a>
+                          ))}
                           <a
-                            key={s.slug}
-                            href={`/solutions/${s.slug}`}
+                            href="/solutions"
                             onClick={() => setMobile(false)}
-                            className="flex items-center gap-3 rounded-lg px-2 py-2 text-[14px] font-medium text-navy-700"
+                            className="mt-2 flex items-center justify-between rounded-lg bg-kaaty-50 px-3 py-2 text-[13.5px] font-semibold text-kaaty-700"
                           >
-                            <Icon name={s.icon} size={16} className="text-kaaty-500" />
-                            {s.name}
+                            <span>Explore All Solutions</span>
+                            <Icon name="arrow-right" size={14} />
                           </a>
-                        ))}
+                        </>
+                      )}
                       {k === 'Integrations' &&
                         MENU_INTEGRATIONS.map((c) => (
                           <div key={c.group} className="px-2 py-1.5">
@@ -1618,23 +1636,10 @@ function Hero() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button as="a" href="/demo?source=hero" size="lg" icon="arrow-right">
-                Book Free Demo
+                Book a Free Demo
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                icon="play"
-                onClick={() => {
-                  const el = document.getElementById('products')
-                  if (el) {
-                    window.scrollTo({
-                      top: el.getBoundingClientRect().top + window.scrollY - 70,
-                      behavior: 'smooth',
-                    })
-                  }
-                }}
-              >
-                Watch Product Tour
+              <Button as="a" href="/solutions" size="lg" variant="outline">
+                Explore Solutions
               </Button>
             </div>
 
@@ -1643,9 +1648,9 @@ function Hero() {
               <span>
                 One unified platform for{' '}
                 <span className="font-semibold text-navy-700">
-                  Restaurants, Cafes, Food Courts, Cloud Kitchens,
+                  Restaurants, Cafes, Cloud Kitchens, Food Courts, College Canteens, Hotels,
                 </span>{' '}
-                and <span className="font-semibold text-navy-700">College Canteens.</span>
+                and <span className="font-semibold text-navy-700">Bakeries.</span>
               </span>
             </div>
           </div>
@@ -2173,7 +2178,7 @@ function IntegrationsSection() {
 }
 
 function IndustrySolutions() {
-  const all = Object.entries(SOLUTIONS).map(([slug, v]) => ({ slug, ...v }))
+  const all = Object.values(INDUSTRY_SOLUTIONS)
   return (
     <section id="solutions" className="border-y border-navy-100 bg-navy-50/40 py-24 sm:py-28">
       <Container>
@@ -2186,20 +2191,25 @@ function IndustrySolutions() {
           }
           sub="From a single espresso bar to a multi-outlet franchise — Kaaty adapts to exactly how you operate."
         />
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {all.map((s) => (
             <a
               key={s.slug}
               href={`/solutions/${s.slug}`}
-              className="reveal group flex flex-col items-start gap-4 rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
+              className="reveal group flex flex-col justify-between rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
             >
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
-                <Icon name={s.icon} size={22} />
-              </span>
               <div>
-                <h3 className="font-display text-[16.5px] font-bold text-navy">{s.name}</h3>
-                <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600">
-                  Explore{' '}
+                <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
+                  <Icon name={s.icon} size={22} />
+                </span>
+                <div className="mt-4">
+                  <h3 className="font-display text-[16.5px] font-bold text-navy">{s.name}</h3>
+                  <p className="mt-1 text-[12.5px] text-navy-500 line-clamp-2">{s.tagline}</p>
+                </div>
+              </div>
+              <div className="mt-4 pt-3 border-t border-navy-100/70">
+                <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600 group-hover:text-kaaty-700">
+                  Explore solution{' '}
                   <Icon
                     name="arrow-right"
                     size={14}
@@ -2209,6 +2219,11 @@ function IndustrySolutions() {
               </div>
             </a>
           ))}
+        </div>
+        <div className="mt-12 text-center">
+          <Button as="a" href="/solutions" variant="outline">
+            Browse All Industry Solutions
+          </Button>
         </div>
       </Container>
     </section>
@@ -3228,12 +3243,46 @@ function DemoForm() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+  const initialIndustry = React.useMemo(() => {
+    if (typeof window === 'undefined') return null
+    try {
+      const searchParams = new URLSearchParams(window.location.search)
+      const ind = searchParams.get('industry')
+      if (ind) {
+        const INDUSTRY_MAP: Record<string, string> = {
+          restaurants: 'Restaurant',
+          restaurant: 'Restaurant',
+          cafes: 'Cafe / QSR',
+          cafe: 'Cafe / QSR',
+          'cloud-kitchens': 'Cloud Kitchen',
+          'cloud-kitchen': 'Cloud Kitchen',
+          'food-courts': 'Food Court',
+          'food-court': 'Food Court',
+          'college-canteens': 'College Canteen',
+          'college-canteen': 'College Canteen',
+          college: 'College Canteen',
+          hotels: 'Hotel',
+          hotel: 'Hotel',
+          bakeries: 'Bakery',
+          bakery: 'Bakery',
+          'ice-cream-parlours': 'Ice Cream Parlour',
+          'ice-cream-parlour': 'Ice Cream Parlour',
+        }
+        return INDUSTRY_MAP[ind.toLowerCase()] || null
+      }
+    } catch {
+      return null
+    }
+    return null
+  }, [])
+
+  const [industryContext] = React.useState<string | null>(initialIndustry)
   const [form, setForm] = React.useState<DemoFormData>({
     name: '',
     business: '',
     phone: '',
     email: '',
-    type: '',
+    type: initialIndustry || '',
     message: '',
   })
   const [sent, setSent] = React.useState(false)
@@ -3260,7 +3309,12 @@ function DemoForm() {
         const queryStr =
           window.location.search ||
           (window.location.hash.includes('?') ? '?' + window.location.hash.split('?')[1] : '')
-        if (queryStr.includes('source=')) {
+        if (queryStr.includes('industry=')) {
+          const indMatch = queryStr.match(/[?&]industry=([^&]*)/)
+          if (indMatch) {
+            sourceStr = `Industry: ${decodeURIComponent(indMatch[1])}`
+          }
+        } else if (queryStr.includes('source=')) {
           const match = queryStr.match(/[?&]source=([^&]*)/)
           if (match) {
             const val = decodeURIComponent(match[1])
@@ -3276,6 +3330,8 @@ function DemoForm() {
               bottom_cta: 'Bottom Get Started CTA',
               subhero: 'Product/Solution Hero',
               integration_page: 'Integration Page',
+              solutions_hub: 'Solutions Hub',
+              solutions_hub_bottom: 'Solutions Hub Bottom',
             }
             sourceStr = map[val] || val
           }
@@ -3438,264 +3494,274 @@ function DemoForm() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={submit} className="mt-8 space-y-4" noValidate>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {field('name', 'Name', 'text', 'Your full name')}
-                  {field('business', 'Business Name', 'text', 'Outlet / brand name')}
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {/* Phone with custom country code dropdown + search */}
-                  <label className="block">
-                    <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
-                      Phone <span className="text-kaaty-500">*</span>
+              <>
+                {industryContext && (
+                  <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-kaaty-200 bg-kaaty-50 px-3.5 py-1.5 text-[12.5px] font-semibold text-kaaty-700 shadow-sm">
+                    <Icon name="check-circle-2" size={15} className="text-kaaty-500" />
+                    <span>
+                      Tailored walkthrough configured for <strong>{industryContext}</strong>
                     </span>
-                    <div className="relative" ref={countryPickerRef}>
-                      <div
-                        className={`flex h-11 w-full overflow-hidden rounded-xl border bg-navy-50/50 transition-all focus-within:border-kaaty-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-kaaty-500/10 ${
-                          err.phone ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
-                        }`}
-                      >
-                        {/* Custom Dropdown Trigger Button */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setCountryDropdownOpen((v) => !v)
-                            setCountrySearch('')
-                          }}
-                          className="flex h-full shrink-0 items-center gap-1.5 border-r border-navy-200 bg-transparent px-3 text-[13.5px] font-bold text-navy outline-none hover:bg-navy-100/40 transition-colors"
+                  </div>
+                )}
+                <form onSubmit={submit} className="mt-8 space-y-4" noValidate>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {field('name', 'Name', 'text', 'Your full name')}
+                    {field('business', 'Business Name', 'text', 'Outlet / brand name')}
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {/* Phone with custom country code dropdown + search */}
+                    <label className="block">
+                      <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
+                        Phone <span className="text-kaaty-500">*</span>
+                      </span>
+                      <div className="relative" ref={countryPickerRef}>
+                        <div
+                          className={`flex h-11 w-full overflow-hidden rounded-xl border bg-navy-50/50 transition-all focus-within:border-kaaty-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-kaaty-500/10 ${
+                            err.phone ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
+                          }`}
                         >
-                          {selectedCountry && (
-                            <CountryFlag
-                              iso={selectedCountry.iso}
-                              country={selectedCountry.country}
+                          {/* Custom Dropdown Trigger Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCountryDropdownOpen((v) => !v)
+                              setCountrySearch('')
+                            }}
+                            className="flex h-full shrink-0 items-center gap-1.5 border-r border-navy-200 bg-transparent px-3 text-[13.5px] font-bold text-navy outline-none hover:bg-navy-100/40 transition-colors"
+                          >
+                            {selectedCountry && (
+                              <CountryFlag
+                                iso={selectedCountry.iso}
+                                country={selectedCountry.country}
+                              />
+                            )}
+                            <span>
+                              {selectedCountry
+                                ? `${selectedCountry.iso} ${selectedCountry.code}`
+                                : countryCode}
+                            </span>
+                            <Icon
+                              name="chevron-down"
+                              size={14}
+                              className={`shrink-0 text-navy-500 transition-transform duration-200 ${
+                                countryDropdownOpen ? 'rotate-180' : ''
+                              }`}
                             />
-                          )}
-                          <span>
-                            {selectedCountry
-                              ? `${selectedCountry.iso} ${selectedCountry.code}`
-                              : countryCode}
-                          </span>
-                          <Icon
-                            name="chevron-down"
-                            size={14}
-                            className={`shrink-0 text-navy-500 transition-transform duration-200 ${
-                              countryDropdownOpen ? 'rotate-180' : ''
-                            }`}
-                          />
-                        </button>
+                          </button>
 
-                        <input
-                          type="tel"
-                          value={form.phone}
-                          onChange={(e) => {
-                            const digitsOnly = e.target.value.replace(/\D/g, '')
-                            let maxDigits = 10
-                            if (countryCode === '+91') {
-                              maxDigits = digitsOnly.startsWith('0') ? 11 : 10
-                            } else {
+                          <input
+                            type="tel"
+                            value={form.phone}
+                            onChange={(e) => {
+                              const digitsOnly = e.target.value.replace(/\D/g, '')
+                              let maxDigits = 10
+                              if (countryCode === '+91') {
+                                maxDigits = digitsOnly.startsWith('0') ? 11 : 10
+                              } else {
+                                const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
+                                maxDigits = sel ? Math.max(...sel.digits) : 15
+                              }
+                              setForm((f) => ({ ...f, phone: digitsOnly.slice(0, maxDigits) }))
+                              if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
+                            }}
+                            placeholder={(() => {
+                              if (countryCode === '+91') {
+                                return form.phone.startsWith('0')
+                                  ? '11 digits (landline)'
+                                  : '10 digits (mobile)'
+                              }
                               const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
-                              maxDigits = sel ? Math.max(...sel.digits) : 15
-                            }
-                            setForm((f) => ({ ...f, phone: digitsOnly.slice(0, maxDigits) }))
-                            if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
-                          }}
-                          placeholder={(() => {
+                              return sel ? `${sel.digits.join(' or ')} digits` : 'Phone number'
+                            })()}
+                            className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-navy outline-none placeholder:text-navy-300"
+                          />
+                        </div>
+
+                        {/* Dropdown Popup Menu with Search */}
+                        {countryDropdownOpen && (
+                          <div className="absolute left-0 top-full z-50 mt-1.5 flex w-80 max-w-[92vw] flex-col overflow-hidden rounded-2xl border border-navy-200 bg-white p-2 shadow-2xl ring-1 ring-black/5">
+                            {/* Search Input */}
+                            <div className="relative mb-2 px-0.5">
+                              <Icon
+                                name="search"
+                                size={15}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400"
+                              />
+                              <input
+                                type="text"
+                                value={countrySearch}
+                                onChange={(e) => setCountrySearch(e.target.value)}
+                                placeholder="Search country or code..."
+                                autoFocus
+                                className="h-9 w-full rounded-xl border border-navy-200 bg-navy-50/70 pl-8 pr-3 text-[13px] text-navy outline-none placeholder:text-navy-400 focus:border-navy-400 focus:bg-white focus:ring-2 focus:ring-navy-900/5"
+                              />
+                            </div>
+
+                            {/* Country List - fits ~10 items */}
+                            <div className="max-h-[380px] overflow-y-auto space-y-0.5 pr-0.5">
+                              {filteredCountries.length === 0 ? (
+                                <div className="py-5 text-center text-[13px] text-navy-400">
+                                  No country found
+                                </div>
+                              ) : (
+                                filteredCountries.map((c) => {
+                                  const isSelected =
+                                    c.code === countryCode && c.iso === selectedCountry?.iso
+                                  return (
+                                    <button
+                                      key={c.iso + c.code}
+                                      type="button"
+                                      onClick={() => {
+                                        setCountryCode(c.code)
+                                        setCountryDropdownOpen(false)
+                                        setCountrySearch('')
+                                        if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
+                                      }}
+                                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] transition-colors ${
+                                        isSelected
+                                          ? 'bg-navy-900 font-bold text-white shadow-sm'
+                                          : 'hover:bg-navy-50 text-navy-700'
+                                      }`}
+                                    >
+                                      <div className="flex items-center gap-2.5 min-w-0">
+                                        <CountryFlag iso={c.iso} country={c.country} />
+                                        <span
+                                          className={`font-semibold shrink-0 ${isSelected ? 'text-white' : 'text-navy-800'}`}
+                                        >
+                                          {c.iso} {c.code}
+                                        </span>
+                                        <span
+                                          className={`truncate text-[12px] ${isSelected ? 'text-navy-300' : 'text-navy-400'}`}
+                                        >
+                                          — {c.country}
+                                        </span>
+                                      </div>
+                                      {isSelected && (
+                                        <Icon
+                                          name="check"
+                                          size={15}
+                                          strokeWidth={2.5}
+                                          className="text-emerald-400 shrink-0 ml-1.5"
+                                        />
+                                      )}
+                                    </button>
+                                  )
+                                })
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      {err.phone ? (
+                        <span className="mt-1 block text-[12px] text-red-500">
+                          {(() => {
                             if (countryCode === '+91') {
                               return form.phone.startsWith('0')
-                                ? '11 digits (landline)'
-                                : '10 digits (mobile)'
+                                ? 'Enter a valid 11-digit landline number'
+                                : 'Enter a valid 10-digit mobile number'
                             }
                             const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
-                            return sel ? `${sel.digits.join(' or ')} digits` : 'Phone number'
+                            return sel
+                              ? `Enter a valid ${sel.country} number (${sel.digits.join(' or ')} digits)`
+                              : 'Enter a valid phone number'
                           })()}
-                          className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-navy outline-none placeholder:text-navy-300"
+                        </span>
+                      ) : null}
+                    </label>
+                    {field('email', 'Email', 'email', 'you@business.com')}
+                  </div>
+                  {/* Custom Business Type Dropdown */}
+                  <label className="block">
+                    <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
+                      Business Type <span className="text-kaaty-500">*</span>
+                    </span>
+                    <div className="relative" ref={btypePickerRef}>
+                      <button
+                        type="button"
+                        onClick={() => setBtypeDropdownOpen((v) => !v)}
+                        className={`h-11 w-full rounded-xl border bg-navy-50/50 px-3.5 text-[14px] text-left outline-none transition-all flex items-center justify-between cursor-pointer focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10 ${
+                          err.type ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
+                        }`}
+                      >
+                        <span className={form.type ? 'text-navy font-medium' : 'text-navy-300'}>
+                          {form.type || 'Select your business type…'}
+                        </span>
+                        <Icon
+                          name="chevron-down"
+                          size={16}
+                          className={`shrink-0 text-navy-500 transition-transform duration-200 ${
+                            btypeDropdownOpen ? 'rotate-180 text-kaaty-500' : ''
+                          }`}
                         />
-                      </div>
+                      </button>
 
-                      {/* Dropdown Popup Menu with Search */}
-                      {countryDropdownOpen && (
-                        <div className="absolute left-0 top-full z-50 mt-1.5 flex w-80 max-w-[92vw] flex-col overflow-hidden rounded-2xl border border-navy-200 bg-white p-2 shadow-2xl ring-1 ring-black/5">
-                          {/* Search Input */}
-                          <div className="relative mb-2 px-0.5">
-                            <Icon
-                              name="search"
-                              size={15}
-                              className="absolute left-3 top-1/2 -translate-y-1/2 text-navy-400"
-                            />
-                            <input
-                              type="text"
-                              value={countrySearch}
-                              onChange={(e) => setCountrySearch(e.target.value)}
-                              placeholder="Search country or code..."
-                              autoFocus
-                              className="h-9 w-full rounded-xl border border-navy-200 bg-navy-50/70 pl-8 pr-3 text-[13px] text-navy outline-none placeholder:text-navy-400 focus:border-navy-400 focus:bg-white focus:ring-2 focus:ring-navy-900/5"
-                            />
-                          </div>
-
-                          {/* Country List - fits ~10 items */}
-                          <div className="max-h-[380px] overflow-y-auto space-y-0.5 pr-0.5">
-                            {filteredCountries.length === 0 ? (
-                              <div className="py-5 text-center text-[13px] text-navy-400">
-                                No country found
-                              </div>
-                            ) : (
-                              filteredCountries.map((c) => {
-                                const isSelected =
-                                  c.code === countryCode && c.iso === selectedCountry?.iso
-                                return (
-                                  <button
-                                    key={c.iso + c.code}
-                                    type="button"
-                                    onClick={() => {
-                                      setCountryCode(c.code)
-                                      setCountryDropdownOpen(false)
-                                      setCountrySearch('')
-                                      if (err.phone) setErr((er) => ({ ...er, phone: undefined }))
-                                    }}
-                                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-[13px] transition-colors ${
-                                      isSelected
-                                        ? 'bg-navy-900 font-bold text-white shadow-sm'
-                                        : 'hover:bg-navy-50 text-navy-700'
-                                    }`}
-                                  >
-                                    <div className="flex items-center gap-2.5 min-w-0">
-                                      <CountryFlag iso={c.iso} country={c.country} />
-                                      <span
-                                        className={`font-semibold shrink-0 ${isSelected ? 'text-white' : 'text-navy-800'}`}
-                                      >
-                                        {c.iso} {c.code}
-                                      </span>
-                                      <span
-                                        className={`truncate text-[12px] ${isSelected ? 'text-navy-300' : 'text-navy-400'}`}
-                                      >
-                                        — {c.country}
-                                      </span>
-                                    </div>
-                                    {isSelected && (
-                                      <Icon
-                                        name="check"
-                                        size={15}
-                                        strokeWidth={2.5}
-                                        className="text-emerald-400 shrink-0 ml-1.5"
-                                      />
-                                    )}
-                                  </button>
-                                )
-                              })
-                            )}
+                      {btypeDropdownOpen && (
+                        <div className="absolute left-0 top-full z-50 mt-1.5 w-full overflow-hidden rounded-2xl border border-navy-200 bg-white p-1.5 shadow-2xl ring-1 ring-black/5">
+                          <div className="max-h-60 overflow-y-auto space-y-0.5 pr-0.5">
+                            {BTYPES.map((t) => {
+                              const isSelected = form.type === t
+                              return (
+                                <button
+                                  key={t}
+                                  type="button"
+                                  onClick={() => {
+                                    setForm((f) => ({ ...f, type: t }))
+                                    setBtypeDropdownOpen(false)
+                                    if (err.type) setErr((er) => ({ ...er, type: undefined }))
+                                  }}
+                                  className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-[13.5px] transition-colors ${
+                                    isSelected
+                                      ? 'bg-navy-900 font-bold text-white shadow-sm'
+                                      : 'hover:bg-navy-50 text-navy-700 font-medium'
+                                  }`}
+                                >
+                                  <span>{t}</span>
+                                  {isSelected && (
+                                    <Icon
+                                      name="check"
+                                      size={15}
+                                      strokeWidth={2.5}
+                                      className="text-emerald-400 shrink-0 ml-2"
+                                    />
+                                  )}
+                                </button>
+                              )
+                            })}
                           </div>
                         </div>
                       )}
                     </div>
-                    {err.phone ? (
-                      <span className="mt-1 block text-[12px] text-red-500">
-                        {(() => {
-                          if (countryCode === '+91') {
-                            return form.phone.startsWith('0')
-                              ? 'Enter a valid 11-digit landline number'
-                              : 'Enter a valid 10-digit mobile number'
-                          }
-                          const sel = COUNTRY_CODES.find((c) => c.code === countryCode)
-                          return sel
-                            ? `Enter a valid ${sel.country} number (${sel.digits.join(' or ')} digits)`
-                            : 'Enter a valid phone number'
-                        })()}
-                      </span>
-                    ) : null}
                   </label>
-                  {field('email', 'Email', 'email', 'you@business.com')}
-                </div>
-                {/* Custom Business Type Dropdown */}
-                <label className="block">
-                  <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
-                    Business Type <span className="text-kaaty-500">*</span>
-                  </span>
-                  <div className="relative" ref={btypePickerRef}>
-                    <button
-                      type="button"
-                      onClick={() => setBtypeDropdownOpen((v) => !v)}
-                      className={`h-11 w-full rounded-xl border bg-navy-50/50 px-3.5 text-[14px] text-left outline-none transition-all flex items-center justify-between cursor-pointer focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10 ${
-                        err.type ? 'border-red-300 ring-2 ring-red-100' : 'border-navy-200'
-                      }`}
-                    >
-                      <span className={form.type ? 'text-navy font-medium' : 'text-navy-300'}>
-                        {form.type || 'Select your business type…'}
-                      </span>
-                      <Icon
-                        name="chevron-down"
-                        size={16}
-                        className={`shrink-0 text-navy-500 transition-transform duration-200 ${
-                          btypeDropdownOpen ? 'rotate-180 text-kaaty-500' : ''
-                        }`}
-                      />
-                    </button>
-
-                    {btypeDropdownOpen && (
-                      <div className="absolute left-0 top-full z-50 mt-1.5 w-full overflow-hidden rounded-2xl border border-navy-200 bg-white p-1.5 shadow-2xl ring-1 ring-black/5">
-                        <div className="max-h-60 overflow-y-auto space-y-0.5 pr-0.5">
-                          {BTYPES.map((t) => {
-                            const isSelected = form.type === t
-                            return (
-                              <button
-                                key={t}
-                                type="button"
-                                onClick={() => {
-                                  setForm((f) => ({ ...f, type: t }))
-                                  setBtypeDropdownOpen(false)
-                                  if (err.type) setErr((er) => ({ ...er, type: undefined }))
-                                }}
-                                className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left text-[13.5px] transition-colors ${
-                                  isSelected
-                                    ? 'bg-navy-900 font-bold text-white shadow-sm'
-                                    : 'hover:bg-navy-50 text-navy-700 font-medium'
-                                }`}
-                              >
-                                <span>{t}</span>
-                                {isSelected && (
-                                  <Icon
-                                    name="check"
-                                    size={15}
-                                    strokeWidth={2.5}
-                                    className="text-emerald-400 shrink-0 ml-2"
-                                  />
-                                )}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
+                  <label className="block">
+                    <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
+                      Message
+                    </span>
+                    <textarea
+                      value={form.message}
+                      onChange={set('message')}
+                      rows={3}
+                      placeholder="Tell us a little about what you need…"
+                      className="w-full rounded-xl border border-navy-200 bg-navy-50/50 px-3.5 py-2.5 text-[14px] text-navy outline-none transition-all placeholder:text-navy-300 focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10"
+                    />
+                  </label>
+                  <div className="flex items-center gap-3 rounded-xl border border-navy-200 bg-white px-4 py-3 text-[12.5px] text-navy-400">
+                    <span className="grid h-5 w-5 place-items-center rounded bg-navy-100">
+                      <Icon name="shield-check" size={13} className="text-navy-500" />
+                    </span>
+                    Protected — we never share your details.
                   </div>
-                </label>
-                <label className="block">
-                  <span className="mb-1.5 block text-[13px] font-semibold text-navy-700">
-                    Message
-                  </span>
-                  <textarea
-                    value={form.message}
-                    onChange={set('message')}
-                    rows={3}
-                    placeholder="Tell us a little about what you need…"
-                    className="w-full rounded-xl border border-navy-200 bg-navy-50/50 px-3.5 py-2.5 text-[14px] text-navy outline-none transition-all placeholder:text-navy-300 focus:border-kaaty-400 focus:bg-white focus:ring-4 focus:ring-kaaty-500/10"
-                  />
-                </label>
-                <div className="flex items-center gap-3 rounded-xl border border-navy-200 bg-white px-4 py-3 text-[12.5px] text-navy-400">
-                  <span className="grid h-5 w-5 place-items-center rounded bg-navy-100">
-                    <Icon name="shield-check" size={13} className="text-navy-500" />
-                  </span>
-                  Protected — we never share your details.
-                </div>
-                {submitError && <p className="text-[13px] text-red-500">{submitError}</p>}
-                <Button
-                  as="button"
-                  type="submit"
-                  size="lg"
-                  icon={loading ? undefined : 'arrow-right'}
-                  className={loading ? 'opacity-70 cursor-not-allowed' : ''}
-                >
-                  {loading ? 'Submitting…' : 'Submit'}
-                </Button>
-              </form>
+                  {submitError && <p className="text-[13px] text-red-500">{submitError}</p>}
+                  <Button
+                    as="button"
+                    type="submit"
+                    size="lg"
+                    icon={loading ? undefined : 'arrow-right'}
+                    className={loading ? 'opacity-70 cursor-not-allowed' : ''}
+                  >
+                    {loading ? 'Submitting…' : 'Submit'}
+                  </Button>
+                </form>
+              </>
             )}
           </div>
           <div className="relative">
@@ -3876,54 +3942,7 @@ function BenefitStrip({ benefits, heading = 'Why teams love it' }: BenefitStripP
   )
 }
 
-function MiniValueGrid({ heading = 'Everything else, included', items }: MiniValueGridProps) {
-  const data = items || [
-    {
-      icon: 'shield-check',
-      title: 'Anti-fraud UPI',
-      desc: 'Real-time payment confirmations end fake-screenshot scams.',
-    },
-    {
-      icon: 'printer',
-      title: 'Hardware ready',
-      desc: 'Pine Labs, thermal & kitchen printers work out of the box.',
-    },
-    {
-      icon: 'refresh-cw',
-      title: 'Always in sync',
-      desc: 'Counter, kitchen and customer apps update in real time.',
-    },
-    {
-      icon: 'headphones',
-      title: 'Dedicated support',
-      desc: 'Onboarding, data import and a team that picks up the phone.',
-    },
-  ]
-  return (
-    <section className="border-t border-navy-100 bg-navy-50/40 py-20 sm:py-24">
-      <Container>
-        <SectionHead eyebrow="More than a POS" title={heading} />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map((c) => (
-            <div
-              key={c.title}
-              className="reveal rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-kaaty-200 hover:shadow-lift"
-            >
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-kaaty-50 text-kaaty-600 ring-1 ring-inset ring-kaaty-100">
-                <Icon name={c.icon} size={20} />
-              </span>
-              <h3 className="mt-4 font-display text-[16px] font-bold text-navy">{c.title}</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-navy-500">{c.desc}</p>
-            </div>
-          ))}
-        </div>
-      </Container>
-    </section>
-  )
-}
-
 type ProductValue = (typeof PRODUCTS)[keyof typeof PRODUCTS]
-type SolutionValue = (typeof SOLUTIONS)[keyof typeof SOLUTIONS]
 type IntegrationValue = (typeof INTEGRATION_PAGES)[keyof typeof INTEGRATION_PAGES]
 
 function ProductPage({ slug }: { slug: string }) {
@@ -3935,6 +3954,7 @@ function ProductPage({ slug }: { slug: string }) {
       <LogoBand heading="Powering food businesses & institutions everywhere" logos={BRAND_LOGOS} />
       <FeatureRows rows={d.features as FeatureRow[]} />
       <BenefitStrip benefits={d.benefits} heading={`Built into ${d.name}`} />
+      <ProductIndustriesSection productSlug={slug} productName={d.name} />
       <Testimonials />
       <Accordion items={SHARED_BENEFIT_FAQS} />
       <DemoForm />
@@ -3943,18 +3963,8 @@ function ProductPage({ slug }: { slug: string }) {
 }
 
 function SolutionPage({ slug }: { slug: string }) {
-  const d = (SOLUTIONS as Record<string, SolutionValue | undefined>)[slug]
-  if (!d) return <NotFound />
-  return (
-    <>
-      <SubHero eyebrow={d.name} title={d.title} sub={d.sub} visual={d.visual as MockKind} />
-      <LogoBand heading={`Trusted by leading ${d.name.toLowerCase()}`} logos={BRAND_LOGOS} />
-      <FeatureRows rows={d.rows as FeatureRow[]} />
-      <MiniValueGrid heading={`Built for ${d.name}, ready for everything`} />
-      <Testimonials />
-      <DemoForm />
-    </>
-  )
+  if (!INDUSTRY_SOLUTIONS[slug] && !SOLUTIONS[slug as keyof typeof SOLUTIONS]) return <NotFound />
+  return <IndustrySolutionPage slug={slug} />
 }
 
 function IntegrationPage({ slug }: { slug: string }) {
@@ -4398,9 +4408,16 @@ function renderRoute(pathname: string) {
     trackEvent('product_page_view', { product_slug: seg[1] })
     return <ProductPage slug={seg[1]} />
   }
-  if (seg[0] === 'solutions' && seg[1] && SOLUTIONS[seg[1] as keyof typeof SOLUTIONS]) {
-    trackEvent('solution_page_view', { solution_slug: seg[1] })
-    return <SolutionPage slug={seg[1]} />
+  if (seg[0] === 'solutions') {
+    if (!seg[1]) {
+      trackEvent('solution_page_view', { solution_slug: 'all' })
+      return <SolutionsHubPage />
+    }
+    if (INDUSTRY_SOLUTIONS[seg[1]] || SOLUTIONS[seg[1] as keyof typeof SOLUTIONS]) {
+      trackEvent('solution_page_view', { solution_slug: seg[1] })
+      return <SolutionPage slug={seg[1]} />
+    }
+    return <NotFound />
   }
   if (
     seg[0] === 'integrations' &&
