@@ -81,7 +81,7 @@ export const sendConfirmationEmail = action({
 
     try {
       const data = await resend.emails.send({
-        from: 'Kaaty <hello@kaaty.co.in>',
+        from: 'Kaaty <onboarding@resend.dev>', // TODO: Change back to hello@kaaty.co.in after verifying kaaty.co.in on https://resend.com/domains
         to: [args.email],
         subject: `Demo Request Confirmed — Kaaty (${args.business})`,
         html: htmlContent,

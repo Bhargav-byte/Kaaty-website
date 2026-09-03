@@ -1,0 +1,1 @@
+import { ConvexHttpClient } from 'convex/browser'; const client = new ConvexHttpClient('https://savory-crab-961.convex.cloud'); client.query('demoRequests:get').then(d => console.log(JSON.stringify(d.filter(x => x.status === 'completed'), null, 2)));
