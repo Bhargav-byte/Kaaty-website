@@ -176,6 +176,44 @@ export const PRODUCT_INDUSTRIES: Record<string, ProductIndustryRef[]> = {
     },
   ],
 
+  business: [
+    {
+      industrySlug: 'restaurants',
+      industryName: 'Restaurants',
+      icon: 'utensils-crossed',
+      useCase:
+        'Table turnaround speed, hourly cover velocity, and dish-level gross profit margin analysis.',
+    },
+    {
+      industrySlug: 'cloud-kitchens',
+      industryName: 'Cloud Kitchens',
+      icon: 'cloud',
+      useCase:
+        'Cross-brand sales benchmarks, order prep duration, and delivery packaging tracking.',
+    },
+    {
+      industrySlug: 'bakeries',
+      industryName: 'Bakeries',
+      icon: 'croissant',
+      useCase:
+        'Hourly sales patterns that inform fresh daily batch production and minimize end-of-day waste.',
+    },
+    {
+      industrySlug: 'hotels',
+      industryName: 'Hotels & Resorts',
+      icon: 'bed-double',
+      useCase:
+        'Comprehensive property dining revenue reconciliation across all restaurants, bars, and banquets.',
+    },
+    {
+      industrySlug: 'college-canteens',
+      industryName: 'College Canteens',
+      icon: 'graduation-cap',
+      useCase:
+        'Real-time sales volume, peak-rush order trends, and item-wise revenue across canteen counters.',
+    },
+  ],
+
   analytics: [
     {
       industrySlug: 'restaurants',
@@ -204,6 +242,13 @@ export const PRODUCT_INDUSTRIES: Record<string, ProductIndustryRef[]> = {
       icon: 'bed-double',
       useCase:
         'Comprehensive property dining revenue reconciliation across all restaurants, bars, and banquets.',
+    },
+    {
+      industrySlug: 'college-canteens',
+      industryName: 'College Canteens',
+      icon: 'graduation-cap',
+      useCase:
+        'Real-time sales volume, peak-rush order trends, and item-wise revenue across canteen counters.',
     },
   ],
 

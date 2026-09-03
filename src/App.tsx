@@ -4390,9 +4390,12 @@ function renderRoute(pathname: string) {
   if (seg[0] === 'resources') return <ResourcesPage />
   if (seg[0] === 'about') return <AboutPage />
   if (seg[0] === 'demo') return <ContactPage />
-  if (seg[0] === 'products' && seg[1] && PRODUCTS[seg[1] as keyof typeof PRODUCTS]) {
-    trackEvent('product_page_view', { product_slug: seg[1] })
-    return <ProductPage slug={seg[1]} />
+  if (seg[0] === 'products' && seg[1]) {
+    const prodSlug = seg[1] === 'analytics' ? 'business' : seg[1]
+    if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
+      trackEvent('product_page_view', { product_slug: prodSlug })
+      return <ProductPage slug={prodSlug} />
+    }
   }
   if (seg[0] === 'solutions') {
     if (!seg[1]) {

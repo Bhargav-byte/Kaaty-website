@@ -122,7 +122,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Let guests view rich digital menus and re-order drinks directly from their table.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'F&B Analytics',
         icon: 'trending-up',
         why: 'Understand hourly table velocity, top-margin dishes, and peak cover distribution.',
@@ -400,7 +400,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Displays ready delivery tokens so delivery riders collect food without kitchen disruption.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'Brand Analytics',
         icon: 'trending-up',
         why: 'Compare performance, item velocities, and prep times across all virtual brands.',
@@ -663,7 +663,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         slug: 'pos',
         name: 'Kaaty Campus POS',
         icon: 'monitor',
-        why: 'Offline-ready counter billing engine optimized for 500+ orders per hour.',
+        why: 'Offline-ready counter billing engine built for rapid checkout during peak interval rushes.',
       },
       {
         slug: 'qr-ordering',
@@ -678,10 +678,10 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Directs students to numbered pickup counters to keep canteen hallways clear.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'Canteen Analytics',
         icon: 'trending-up',
-        why: 'Forecast ingredient preparation based on historical class break volume.',
+        why: 'Track real-time sales volume, peak-rush order trends, and item-wise revenue across canteen counters.',
       },
     ],
     workflow: [
@@ -716,8 +716,8 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         desc: 'Sub-second wallet taps and pre-ordering clear hundreds of students in minutes.',
       },
       {
-        label: 'Accurate Food Waste Prevention',
-        desc: 'Hourly historical break analytics help kitchen managers prepare exact meal batches.',
+        label: 'Real-Time Rush Visibility',
+        desc: 'Hourly sales volume and item-level reporting give kitchen staff clear visibility into daily peak demand.',
       },
       {
         label: 'Full Offline Reliability',
@@ -817,7 +817,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Allows hotel guests to order breakfast and midnight snacks directly from their mobile device.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'Property F&B Analytics',
         icon: 'trending-up',
         why: 'Tracks outlet-by-outlet revenue, room service average ticket size, and beverage margins.',
@@ -950,7 +950,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Informs pastry chefs and decorators of advance custom cake schedules.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'Batch Analytics',
         icon: 'trending-up',
         why: 'Identifies peak sales windows to optimize fresh daily bake quantities.',
@@ -1089,7 +1089,7 @@ export const INDUSTRY_SOLUTIONS: Record<string, IndustrySolution> = {
         why: 'Organizes pickup so scoopers call orders cleanly without crowding the glass counter.',
       },
       {
-        slug: 'analytics',
+        slug: 'business',
         name: 'Flavor Velocity Analytics',
         icon: 'trending-up',
         why: 'Identify your top 5 best-selling flavors and plan seasonal batch restocking.',

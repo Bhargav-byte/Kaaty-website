@@ -246,4 +246,26 @@ test.describe('Kaaty Production E2E Smoke Suite', () => {
     await firstCta.focus()
     await expect(firstCta).toBeFocused()
   })
+
+  // 23. Phase 3: College Canteens Canteen Analytics links to /products/business without 404
+  test('23. College Canteens Canteen Analytics links to /products/business and displays verified copy', async ({
+    page,
+  }) => {
+    await page.goto('/solutions/college-canteens')
+    await expect(page.locator('text=Canteen Analytics')).toBeVisible()
+    await expect(
+      page.locator(
+        'text=Track real-time sales volume, peak-rush order trends, and item-wise revenue across canteen counters.',
+      ),
+    ).toBeVisible()
+
+    const analyticsLink = page.locator('a[href="/products/business"]').first()
+    await expect(analyticsLink).toBeVisible()
+    await analyticsLink.click()
+
+    await expect(page).toHaveURL(/\/products\/business/)
+    await expect(page.locator('text=404')).not.toBeVisible()
+    await expect(page.locator('text=Kaaty Business App').first()).toBeVisible()
+    await expect(page.locator('text=Live sales velocity').first()).toBeVisible()
+  })
 })
