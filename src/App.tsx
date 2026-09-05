@@ -954,17 +954,27 @@ const MENU_PRODUCTS = [
     items: [
       { name: 'Kaaty POS', slug: 'pos', icon: 'monitor', desc: 'Peak-hour billing engine.' },
       { name: 'Kaaty KDS', slug: 'kds', icon: 'chef-hat', desc: 'Visual kitchen display.' },
+      { name: 'Self Kiosk', slug: 'kiosk', icon: 'scan-line', desc: 'Line-busting terminals.' },
+      { name: 'Token Board', slug: 'token-board', icon: 'tv', desc: 'Live status displays.' },
     ],
   },
   {
     group: 'Guest Experience',
     items: [
+      { name: 'Mobile App', slug: 'mobile-app', icon: 'smartphone', desc: 'Branded ordering app.' },
+      { name: 'QR Ordering', slug: 'qr-ordering', icon: 'qr-code', desc: 'Scan-to-order dining.' },
+    ],
+  },
+  {
+    group: 'Business Management',
+    items: [
       {
-        name: 'Kaaty Mobile',
-        slug: 'mobile-app',
-        icon: 'smartphone',
-        desc: 'Branded ordering app.',
+        name: 'Business App',
+        slug: 'business',
+        icon: 'layout-dashboard',
+        desc: 'Owner command centre.',
       },
+      { name: 'Vendor App', slug: 'vendor', icon: 'store', desc: 'Mobile POS for stalls.' },
     ],
   },
 ]
@@ -1019,15 +1029,24 @@ function ItemLink({ href, icon, name, desc }: ItemLinkProps) {
   return (
     <a
       href={href}
-      className="group flex items-start gap-3 rounded-xl p-2.5 transition-colors hover:bg-kaaty-50"
+      className="group flex items-start gap-3 rounded-lg p-2.5 transition-all duration-200 hover:bg-navy-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-kaaty-500"
     >
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
-        <Icon name={icon} size={17} />
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-navy-50/80 text-navy-600 ring-1 ring-inset ring-navy-100/50 transition-colors duration-200 group-hover:bg-kaaty-50 group-hover:text-kaaty-600 group-hover:ring-kaaty-100">
+        <Icon name={icon} size={15} />
       </span>
-      <span className="min-w-0">
-        <span className="block text-[13.5px] font-semibold text-navy">{name}</span>
+      <span className="min-w-0 pt-px flex-1">
+        <span className="flex items-center gap-1.5 text-[13.5px] font-bold text-navy transition-colors duration-200 group-hover:text-kaaty-700">
+          {name}
+          <Icon
+            name="chevron-right"
+            size={12}
+            className="opacity-0 -translate-x-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 text-kaaty-500"
+          />
+        </span>
         {desc && (
-          <span className="mt-0.5 block text-[12px] leading-snug text-navy-500">{desc}</span>
+          <span className="mt-[3px] block text-[12px] leading-[1.3] text-navy-400 transition-colors duration-200 group-hover:text-navy-500">
+            {desc}
+          </span>
         )}
       </span>
     </a>
@@ -1036,10 +1055,10 @@ function ItemLink({ href, icon, name, desc }: ItemLinkProps) {
 
 function ProductsMenu() {
   return (
-    <div className="grid grid-cols-2 gap-2 p-4">
+    <div className="grid grid-cols-3 gap-x-3 gap-y-2 p-4">
       {MENU_PRODUCTS.map((col) => (
-        <div key={col.group}>
-          <div className="mb-1.5 px-2.5 text-[11px] font-bold uppercase tracking-wider text-navy-400">
+        <div key={col.group} className="flex flex-col">
+          <div className="mb-1.5 px-2.5 text-[10.5px] font-bold uppercase tracking-wider text-navy-400">
             {col.group}
           </div>
           <div className="flex flex-col gap-0.5">
@@ -1120,7 +1139,7 @@ function ResourcesMenu() {
 
 type MenuConfig = { width: string; render: () => React.ReactElement }
 const MENUS: Record<string, MenuConfig> = {
-  Products: { width: 'w-[500px]', render: ProductsMenu },
+  Products: { width: 'w-[720px]', render: ProductsMenu },
   Solutions: { width: 'w-[520px]', render: SolutionsMenu },
   Integrations: { width: 'w-[600px]', render: IntegrationsMenu },
   Resources: { width: 'w-[360px]', render: ResourcesMenu },
@@ -1234,15 +1253,20 @@ function Navbar() {
                 } max-w-[94vw] overflow-hidden rounded-2xl border border-navy-100 bg-white shadow-lift`}
               >
                 {React.createElement(MENUS[open].render)}
-                <div className="flex items-center justify-between gap-3 border-t border-navy-100 bg-navy-50/60 px-5 py-3">
-                  <span className="text-[12.5px] font-medium text-navy-500">
+                <div className="flex items-center justify-between gap-3 border-t border-navy-100 bg-navy-50/50 px-5 py-3">
+                  <span className="text-[13px] font-medium text-navy-500">
                     The complete operating system for food businesses.
                   </span>
                   <a
-                    href="/demo?source=mobile_menu"
-                    className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-kaaty-600 hover:text-kaaty-700"
+                    href="/demo?source=header_dropdown"
+                    className="inline-flex items-center gap-1.5 text-[13px] font-bold text-kaaty-600 transition-colors hover:text-kaaty-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kaaty-500 focus-visible:ring-offset-2 rounded-sm"
                   >
-                    Book a demo <Icon name="arrow-right" size={14} />
+                    Book a Free Demo{' '}
+                    <Icon
+                      name="arrow-right"
+                      size={14}
+                      className="transition-transform group-hover:translate-x-0.5"
+                    />
                   </a>
                 </div>
               </div>
@@ -1779,22 +1803,63 @@ const ECOSYSTEM_CARDS = [
     name: 'Kaaty POS',
     icon: 'monitor',
     blurb: 'Peak-hour billing with offline reliability and fraud-proof UPI.',
+    core: true,
   },
   {
     slug: 'kds',
     name: 'Kaaty KDS',
     icon: 'chef-hat',
     blurb: 'Visual kitchen display that routes every item to the right station.',
+    core: true,
   },
   {
     slug: 'mobile-app',
     name: 'Kaaty Mobile',
     icon: 'smartphone',
     blurb: 'Your branded ordering app with live tracking and QR dining.',
+    core: true,
+  },
+  {
+    slug: 'business',
+    name: 'Business App',
+    icon: 'layout-dashboard',
+    blurb: 'Live multi-outlet analytics and settlements in your pocket.',
+    core: false,
+  },
+  {
+    slug: 'vendor',
+    name: 'Vendor App',
+    icon: 'store',
+    blurb: 'A full mobile POS for stalls - no expensive hardware needed.',
+    core: false,
+  },
+  {
+    slug: 'qr-ordering',
+    name: 'QR Ordering',
+    icon: 'qr-code',
+    blurb: 'Scan-to-order dining that lifts ticket value and clears lines.',
+    core: false,
+  },
+  {
+    slug: 'kiosk',
+    name: 'Self Kiosk',
+    icon: 'scan-line',
+    blurb: 'Line-busting self-service terminals that grow average orders.',
+    core: false,
+  },
+  {
+    slug: 'token-board',
+    name: 'Token Board',
+    icon: 'tv',
+    blurb: 'Live, kitchen-synced token displays that clear the crowd.',
+    core: false,
   },
 ]
 
 function ProductEcosystem() {
+  const core = ECOSYSTEM_CARDS.filter((c) => c.core)
+  const modules = ECOSYSTEM_CARDS.filter((c) => !c.core)
+
   return (
     <section id="products" className="py-16 sm:py-24">
       <Container>
@@ -1806,35 +1871,59 @@ function ProductEcosystem() {
               <span className="gradient-text">in one platform</span>
             </>
           }
-          sub="Start with one product and add the rest as you grow — everything shares the same data, in real time."
+          sub="Start with one product and add the rest as you grow - everything shares the same data, in real time."
         />
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {ECOSYSTEM_CARDS.map((c) => (
+
+        {/* Core Platform */}
+        <div className="mt-14 grid gap-5 sm:grid-cols-3">
+          {core.map((c) => (
             <a
               key={c.slug}
               href={`/products/${c.slug}`}
-              className="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
+              className="reveal group relative flex flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-kaaty-200 hover:shadow-lift"
             >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-kaaty-50 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="relative grid h-12 w-12 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
-                <Icon name={c.icon} size={22} />
+              <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-kaaty-50 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="relative grid h-14 w-14 place-items-center rounded-xl bg-navy-50 text-navy-700 ring-1 ring-inset ring-navy-100 transition-all duration-300 group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
+                <Icon name={c.icon} size={24} />
               </span>
-              <h3 className="relative mt-5 font-display text-[18px] font-bold text-navy">
+              <h3 className="relative mt-6 font-display text-[20px] font-bold text-navy">
                 {c.name}
               </h3>
-              <p className="relative mt-2 flex-1 text-[13.5px] leading-relaxed text-navy-500">
+              <p className="relative mt-3 flex-1 text-[14.5px] leading-relaxed text-navy-500">
                 {c.blurb}
               </p>
-              <span className="relative mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-kaaty-600">
-                Learn more{' '}
+              <span className="relative mt-6 inline-flex items-center gap-1.5 text-[14px] font-bold text-kaaty-600 transition-colors group-hover:text-kaaty-700">
+                Explore {c.name.replace('Kaaty ', '')}{' '}
                 <Icon
                   name="arrow-right"
-                  size={14}
-                  className="transition-transform group-hover:translate-x-0.5"
+                  size={15}
+                  className="transition-transform group-hover:translate-x-1"
                 />
               </span>
             </a>
           ))}
+        </div>
+
+        {/* Connected Modules */}
+        <div className="mt-12 border-t border-navy-100 pt-12">
+          <Eyebrow className="mb-8">Connected Modules</Eyebrow>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {modules.map((c) => (
+              <a
+                key={c.slug}
+                href={`/products/${c.slug}`}
+                className="group flex flex-col rounded-xl border border-navy-100 bg-navy-50/50 p-5 transition-all hover:-translate-y-1 hover:border-kaaty-200 hover:bg-white hover:shadow-soft"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white text-navy-600 ring-1 ring-inset ring-navy-200 transition-colors group-hover:bg-kaaty-500 group-hover:text-white group-hover:ring-kaaty-500">
+                    <Icon name={c.icon} size={18} />
+                  </span>
+                  <h4 className="font-display text-[15px] font-bold text-navy">{c.name}</h4>
+                </div>
+                <p className="mt-4 text-[13px] leading-relaxed text-navy-500">{c.blurb}</p>
+              </a>
+            ))}
+          </div>
         </div>
       </Container>
     </section>
