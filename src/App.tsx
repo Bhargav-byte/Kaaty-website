@@ -393,6 +393,7 @@ const PRODUCTS = {
       { icon: 'percent', label: 'Zero commission' },
     ],
   },
+
   business: {
     name: 'Kaaty Business App',
     icon: 'layout-dashboard',
@@ -949,41 +950,20 @@ const INTEGRATION_GROUPS = [
 
 const MENU_PRODUCTS = [
   {
-    group: 'Restaurant Operations',
+    group: 'Operations',
     items: [
       { name: 'Kaaty POS', slug: 'pos', icon: 'monitor', desc: 'Peak-hour billing engine.' },
       { name: 'Kaaty KDS', slug: 'kds', icon: 'chef-hat', desc: 'Visual kitchen display.' },
-      { name: 'Token Board', slug: 'token-board', icon: 'tv', desc: 'Live status displays.' },
     ],
   },
   {
-    group: 'Customer Experience',
-    items: [
-      { name: 'Mobile App', slug: 'mobile-app', icon: 'smartphone', desc: 'Branded ordering app.' },
-      { name: 'QR Ordering', slug: 'qr-ordering', icon: 'qr-code', desc: 'Scan-to-order dining.' },
-      {
-        name: 'Self Ordering Kiosk',
-        slug: 'kiosk',
-        icon: 'scan-line',
-        desc: 'Line-busting terminals.',
-      },
-    ],
-  },
-  {
-    group: 'Business Management',
+    group: 'Guest Experience',
     items: [
       {
-        name: 'Business App',
-        slug: 'business',
-        icon: 'layout-dashboard',
-        desc: 'Owner command centre.',
-      },
-      { name: 'Vendor App', slug: 'vendor', icon: 'store', desc: 'Mobile POS for stalls.' },
-      {
-        name: 'Inventory Management',
-        slug: 'business',
-        icon: 'package',
-        desc: 'Stock & costing control.',
+        name: 'Kaaty Mobile',
+        slug: 'mobile-app',
+        icon: 'smartphone',
+        desc: 'Branded ordering app.',
       },
     ],
   },
@@ -1056,7 +1036,7 @@ function ItemLink({ href, icon, name, desc }: ItemLinkProps) {
 
 function ProductsMenu() {
   return (
-    <div className="grid grid-cols-3 gap-2 p-4">
+    <div className="grid grid-cols-2 gap-2 p-4">
       {MENU_PRODUCTS.map((col) => (
         <div key={col.group}>
           <div className="mb-1.5 px-2.5 text-[11px] font-bold uppercase tracking-wider text-navy-400">
@@ -1140,7 +1120,7 @@ function ResourcesMenu() {
 
 type MenuConfig = { width: string; render: () => React.ReactElement }
 const MENUS: Record<string, MenuConfig> = {
-  Products: { width: 'w-[720px]', render: ProductsMenu },
+  Products: { width: 'w-[500px]', render: ProductsMenu },
   Solutions: { width: 'w-[520px]', render: SolutionsMenu },
   Integrations: { width: 'w-[600px]', render: IntegrationsMenu },
   Resources: { width: 'w-[360px]', render: ResourcesMenu },
@@ -1276,8 +1256,8 @@ function Navbar() {
               size="md"
               className="inline-flex h-[36px] px-3.5 text-[13px] sm:h-[40px] sm:px-4 sm:text-[14.5px]"
             >
-              <span className="hidden sm:inline">Book Demo</span>
-              <span className="sm:hidden">Get Started</span>
+              <span className="hidden sm:inline">Book a Free Demo</span>
+              <span className="sm:hidden">Free Demo</span>
             </Button>
             <button
               onClick={() => setMobile(true)}
@@ -1425,7 +1405,7 @@ function Navbar() {
                 icon="arrow-right"
                 className="w-full"
               >
-                Book Demo
+                Book a Free Demo
               </Button>
             </div>
           </div>
@@ -1808,39 +1788,9 @@ const ECOSYSTEM_CARDS = [
   },
   {
     slug: 'mobile-app',
-    name: 'Mobile App',
+    name: 'Kaaty Mobile',
     icon: 'smartphone',
-    blurb: 'Your branded ordering app with live tracking and notifications.',
-  },
-  {
-    slug: 'business',
-    name: 'Business App',
-    icon: 'layout-dashboard',
-    blurb: 'Live multi-outlet analytics and settlements in your pocket.',
-  },
-  {
-    slug: 'vendor',
-    name: 'Vendor App',
-    icon: 'store',
-    blurb: 'A full mobile POS for stalls — no expensive hardware needed.',
-  },
-  {
-    slug: 'qr-ordering',
-    name: 'QR Ordering',
-    icon: 'qr-code',
-    blurb: 'Scan-to-order dining that lifts ticket value and clears lines.',
-  },
-  {
-    slug: 'kiosk',
-    name: 'Self Kiosk',
-    icon: 'scan-line',
-    blurb: 'Line-busting self-service terminals that grow average orders.',
-  },
-  {
-    slug: 'token-board',
-    name: 'Token Board',
-    icon: 'tv',
-    blurb: 'Live, kitchen-synced token displays that clear the crowd.',
+    blurb: 'Your branded ordering app with live tracking and QR dining.',
   },
 ]
 
@@ -1929,13 +1879,13 @@ function WhyKaaty() {
     <section className="border-y border-navy-100 bg-navy-50/40 py-24 sm:py-28">
       <Container>
         <SectionHead
-          eyebrow="Why Kaaty"
+          eyebrow="Ecosystem"
           title={
             <>
-              More than a POS — <span className="gradient-text">an operating system</span>
+              How Kaaty products <span className="gradient-text">connect</span>
             </>
           }
-          sub="The reasons growing food businesses and institutions standardise on Kaaty."
+          sub="A single shared data ledger means everything stays perfectly in sync."
         />
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {WHY_CARDS.map((c, i) => (
@@ -2089,70 +2039,6 @@ function IndustrySolutions() {
           <Button as="a" href="/solutions" variant="outline">
             Browse All Industry Solutions
           </Button>
-        </div>
-      </Container>
-    </section>
-  )
-}
-
-const CUSTOM_ITEMS = [
-  { icon: 'globe', t: 'Restaurant Websites' },
-  { icon: 'palette', t: 'White-Label Apps' },
-  { icon: 'database', t: 'ERP Integrations' },
-  { icon: 'file-text', t: 'Custom Reports' },
-  { icon: 'code', t: 'API Integrations' },
-  { icon: 'wallet', t: 'Campus Wallet Systems' },
-  { icon: 'store', t: 'Multi-Vendor Systems' },
-]
-
-function CustomSolutions() {
-  return (
-    <section className="py-12 sm:py-16">
-      <Container>
-        <div className="reveal relative overflow-hidden rounded-[28px] bg-navy-950 p-8 shadow-glow ring-1 ring-kaaty-500/40 sm:p-12 lg:p-16">
-          <div className="pointer-events-none absolute inset-0 dotgrid opacity-40" />
-          <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-kaaty-500/25 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-kaaty-600/20 blur-3xl" />
-          <div className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <div>
-              <Eyebrow className="bg-white/10 text-kaaty-300 ring-white/10">
-                Custom development
-              </Eyebrow>
-              <h2 className="mt-5 font-display text-[clamp(1.9rem,3.6vw,2.9rem)] font-extrabold leading-[1.06] tracking-[-.025em] text-white">
-                What You Ask. <span className="gradient-text">We Build.</span>
-              </h2>
-              <p className="mt-5 max-w-md text-[15px] leading-relaxed text-navy-300">
-                Unlike rigid retail software that forces you to adapt, Kaaty offers an open, highly
-                customizable feature pipeline. Tell us what your business needs — our engineering
-                team builds it.
-              </p>
-              <div className="mt-8">
-                <Button
-                  as="a"
-                  href="/demo?source=engineering_consultation"
-                  size="lg"
-                  icon="arrow-right"
-                >
-                  Book an Engineering Consultation
-                </Button>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {CUSTOM_ITEMS.map((e) => (
-                <div
-                  key={e.t}
-                  className="flex items-center gap-3 rounded-xl bg-white/[.04] p-3.5 ring-1 ring-white/10 transition-colors hover:bg-white/[.08]"
-                >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-kaaty-500/90 text-white">
-                    <Icon name={e.icon} size={17} />
-                  </span>
-                  <span className="text-[13.5px] font-semibold leading-snug text-navy-100">
-                    {e.t}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </Container>
     </section>
@@ -2556,7 +2442,7 @@ function FinalCTA() {
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button as="a" href="/demo?source=bottom_cta" size="lg" icon="arrow-right">
-              Book Free Demo
+              Book a Free Demo
             </Button>
           </div>
         </div>
@@ -4119,12 +4005,9 @@ function Home() {
       <TrustMarquee />
       <ProductEcosystem />
       <WhyKaaty />
+      <Testimonials />
       <IndustrySolutions />
       <IntegrationsSection />
-      <CustomSolutions />
-      <Testimonials />
-      <FAQ />
-      <DemoForm />
     </>
   )
 }
