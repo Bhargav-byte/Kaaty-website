@@ -38,6 +38,8 @@ dist-ssr
 # ── Tooling output ────────────────────────────────────────────────
 .lighthouseci/
 .husky/_
+test-results/
+playwright-report/
 
 # ── Convex local cache (NOT the same as convex/_generated/ which IS committed) ──
 .convex/

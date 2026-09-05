@@ -1,14 +1,28 @@
-import { query, mutation } from './_generated/server'
+import { query, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
+
+/* ── Public query (read-only, no PII) ────────────────────────────────────── */
 
 export const get = query({
   handler: async (ctx) => {
     const testimonials = await ctx.db.query('testimonials').collect()
-    return [...testimonials].sort((a, b) => a.order - b.order)
+    const sorted = [...testimonials].sort((a, b) => a.order - b.order)
+
+    return Promise.all(
+      sorted.map(async (t) => {
+        return {
+          ...t,
+          authorImageUrl: t.authorImageId ? await ctx.storage.getUrl(t.authorImageId) : null,
+          brandImageUrl: t.brandImageId ? await ctx.storage.getUrl(t.brandImageId) : null,
+        }
+      })
+    )
   },
 })
 
-export const seed = mutation({
+/* ── Internal mutations (admin-only, NOT callable from the browser) ──────── */
+
+export const seed = internalMutation({
   handler: async (ctx) => {
     const existing = await ctx.db.query('testimonials').collect()
     if (existing.length > 0) return
@@ -38,7 +52,7 @@ export const seed = mutation({
   },
 })
 
-export const update = mutation({
+export const update = internalMutation({
   args: {
     id: v.id('testimonials'),
     brand: v.optional(v.string()),
@@ -47,9 +61,40 @@ export const update = mutation({
     name: v.optional(v.string()),
     role: v.optional(v.string()),
     order: v.optional(v.number()),
+    authorImageId: v.optional(v.union(v.id('_storage'), v.null())),
+    brandImageId: v.optional(v.union(v.id('_storage'), v.null())),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args
-    await ctx.db.patch(id, updates)
+    // Remove nulls if they are meant to unset the field
+    const patchData: Record<string, unknown> = { ...updates }
+    if (patchData.authorImageId === null) patchData.authorImageId = undefined
+    if (patchData.brandImageId === null) patchData.brandImageId = undefined
+    await ctx.db.patch(id, patchData)
+  },
+})
+
+export const add = internalMutation({
+  args: {
+    brand: v.string(),
+    icon: v.string(),
+    quote: v.string(),
+    name: v.string(),
+    role: v.string(),
+    order: v.number(),
+    authorImageId: v.optional(v.id('_storage')),
+    brandImageId: v.optional(v.id('_storage')),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert('testimonials', args)
+  },
+})
+
+export const remove = internalMutation({
+  args: {
+    id: v.id('testimonials'),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id)
   },
 })

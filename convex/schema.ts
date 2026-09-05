@@ -3,15 +3,17 @@ import { v } from 'convex/values'
 
 export default defineSchema({
   demoRequests: defineTable({
-    name: v.string(),
-    business: v.string(),
-    phone: v.string(),
-    email: v.string(),
-    type: v.string(),
+    name: v.optional(v.string()),
+    business: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    email: v.optional(v.string()),
+    type: v.optional(v.string()),
     message: v.optional(v.string()),
+    source: v.optional(v.string()),
+    status: v.optional(v.string()),
     submittedAt: v.number(),
   }),
-  trustLogos: defineTable({
+  collegeLogos: defineTable({
     name: v.string(),
     icon: v.string(),
     order: v.number(),
@@ -20,6 +22,8 @@ export default defineSchema({
     name: v.string(),
     slug: v.string(),
     icon: v.string(),
+    image: v.optional(v.string()),
+    imageStorageId: v.optional(v.id('_storage')),
     dot: v.string(),
     order: v.number(),
   }),
@@ -30,5 +34,7 @@ export default defineSchema({
     name: v.string(),
     role: v.string(),
     order: v.number(),
+    authorImageId: v.optional(v.id('_storage')),
+    brandImageId: v.optional(v.id('_storage')),
   }),
 })

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\\\Users\\\\bharg\\\\Downloads\\\\kaaty-website\" /b /a)",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
+    ]
+  }
+}
