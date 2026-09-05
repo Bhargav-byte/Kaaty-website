@@ -1574,6 +1574,24 @@ function Hero() {
           {/* ── Right: devices ── */}
           <div className="w-full lg:w-[58%] xl:w-[58%]">
             <ProductEcosystemVisual />
+
+            {/* Mobile Product Tabs */}
+            <div className="md:hidden w-screen relative left-1/2 -translate-x-1/2 mt-2 mb-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4 sm:px-6">
+              <div className="flex w-max items-center gap-3 pb-2">
+                {['POS', 'Attendo', 'Invoice', 'Tasks'].map((tab) => (
+                  <button
+                    key={tab}
+                    className={`shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-[14.5px] transition-all ${
+                      tab === 'POS'
+                        ? 'bg-kaaty-50/60 font-bold text-kaaty-600 ring-1 ring-inset ring-kaaty-100/50'
+                        : 'font-medium text-navy-500 hover:text-navy-900'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </Container>
