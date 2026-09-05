@@ -1269,19 +1269,19 @@ function Navbar() {
             )}
           </nav>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             <Button
               as="a"
               href="/demo?source=header_nav"
               size="md"
-              icon="arrow-right"
-              className="hidden sm:inline-flex"
+              className="inline-flex h-[36px] px-3.5 text-[13px] sm:h-[40px] sm:px-4 sm:text-[14.5px]"
             >
-              Book Demo
+              <span className="hidden sm:inline">Book Demo</span>
+              <span className="sm:hidden">Get Started</span>
             </Button>
             <button
               onClick={() => setMobile(true)}
-              className="grid h-10 w-10 place-items-center rounded-xl text-navy ring-1 ring-inset ring-navy-200 lg:hidden"
+              className="grid h-[36px] w-[36px] sm:h-10 sm:w-10 place-items-center rounded-xl text-navy ring-1 ring-inset ring-navy-200 lg:hidden"
               aria-label="Open menu"
             >
               <Icon name="menu" size={20} />
@@ -1450,158 +1450,72 @@ function StatusDot({ color }: StatusDotProps) {
   )
 }
 
-function POSDevice() {
-  const rows = [
-    { n: 'Chicken Biryani', q: 2, p: '₹360' },
-    { n: 'Paneer Tikka', q: 1, p: '₹240' },
-    { n: 'Masala Dosa', q: 3, p: '₹270' },
-    { n: 'Cold Coffee', q: 2, p: '₹180' },
-  ]
+function ProductEcosystemVisual() {
   return (
-    <div className="w-full overflow-hidden rounded-[22px] border border-navy-200/70 bg-white shadow-lift ring-1 ring-black/5">
-      <div className="flex items-center justify-between border-b border-navy-100 bg-navy-50/70 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-kaaty-500 text-white">
-            <Icon name="monitor" size={14} />
-          </span>
-          <span className="font-display text-[13px] font-bold text-navy">Kaaty POS</span>
-        </div>
-        <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-1 text-[10.5px] font-bold text-emerald-600">
-          <StatusDot color="bg-emerald-500" /> Live
-        </span>
-      </div>
-      <div className="px-4 py-3">
-        <div className="mb-2 flex items-center justify-between text-[11px] font-semibold uppercase tracking-wide text-navy-400">
-          <span>Table 7 · Dine-in</span>
-          <span>Order #1042</span>
-        </div>
-        <div className="space-y-1.5">
-          {rows.map((r) => (
-            <div
-              key={r.n}
-              className="flex items-center justify-between rounded-lg bg-navy-50/60 px-3 py-2"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-white text-[11px] font-bold text-kaaty-600 ring-1 ring-navy-100">
-                  {r.q}
-                </span>
-                <span className="truncate text-[13px] font-medium text-navy-800">{r.n}</span>
-              </div>
-              <span className="text-[13px] font-semibold text-navy">{r.p}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="border-t border-navy-100 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <span className="text-[12.5px] font-medium text-navy-500">Total</span>
-          <span className="font-display text-[18px] font-extrabold text-navy">₹1,050</span>
-        </div>
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">
-            Hold
-          </button>
-          <button className="rounded-lg bg-navy-50 py-2 text-[11.5px] font-semibold text-navy-700">
-            Split
-          </button>
-          <button className="rounded-lg bg-kaaty-500 py-2 text-[11.5px] font-bold text-white">
-            Pay UPI
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function KDSDevice() {
-  const tickets = [
-    {
-      id: '#1042',
-      t: '02:14',
-      items: ['2× Biryani', '1× Paneer Tikka'],
-      state: 'Preparing',
-      tone: 'amber',
-    },
-    { id: '#1041', t: '00:38', items: ['3× Masala Dosa'], state: 'Ready', tone: 'emerald' },
-  ]
-  const tones: Record<string, string> = {
-    amber: 'bg-amber-100 text-amber-700',
-    emerald: 'bg-emerald-100 text-emerald-700',
-  }
-  return (
-    <div className="w-full overflow-hidden rounded-[18px] border border-navy-800 bg-navy-900 shadow-lift">
-      <div className="flex items-center justify-between border-b border-white/10 px-3.5 py-2.5">
-        <div className="flex items-center gap-2">
-          <span className="grid h-6 w-6 place-items-center rounded-md bg-kaaty-500 text-white">
-            <Icon name="chef-hat" size={13} />
-          </span>
-          <span className="font-display text-[12px] font-bold text-white">Kitchen Display</span>
-        </div>
-        <span className="text-[10px] font-bold text-navy-300">STATION 1</span>
-      </div>
-      <div className="space-y-2 p-3">
-        {tickets.map((t) => (
-          <div key={t.id} className="rounded-xl bg-white/5 p-3 ring-1 ring-white/10">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="font-display text-[13px] font-bold text-white">{t.id}</span>
-              <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${tones[t.tone]}`}>
-                {t.state}
-              </span>
-            </div>
-            <ul className="space-y-1">
-              {t.items.map((i) => (
-                <li key={i} className="flex items-center gap-1.5 text-[12px] text-navy-200">
-                  <Icon name="dot" size={14} className="text-kaaty-400" />
-                  {i}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-2 flex items-center gap-1 text-[10.5px] font-semibold text-navy-400">
-              <Icon name="timer" size={12} /> {t.t}
-            </div>
+    <div className="relative mx-auto w-full max-w-[850px] lg:-mt-12 xl:-mt-20">
+      {/* Dedicated Mobile Composition (hidden on md and up) */}
+      <div className="relative w-full mx-auto md:hidden pt-8 pb-10 flex justify-center">
+        {/* Container limits width to avoid overflow */}
+        <div className="relative w-full max-w-[500px]">
+          {/* POS laptop (Centered anchor) */}
+          {/* 84% width safely stays within viewport padding (meets 80-88% target) */}
+          <div className="w-[84%] mx-auto relative z-0 animate-floaty">
+            <img
+              src="/kaaty-pos.png"
+              alt="Kaaty POS interface"
+              className="w-full h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] rounded-xl"
+            />
           </div>
-        ))}
-      </div>
-    </div>
-  )
-}
 
-function PhoneDevice() {
-  const steps: Array<[string, boolean]> = [
-    ['Order placed', true],
-    ['Preparing', true],
-    ['Ready for pickup', false],
-  ]
-  return (
-    <div className="w-full overflow-hidden rounded-[28px] border-[5px] border-navy-900 bg-white shadow-lift">
-      <div className="relative bg-gradient-to-b from-kaaty-500 to-kaaty-600 px-4 pb-6 pt-5 text-white">
-        <div className="absolute left-1/2 top-1.5 h-1 w-12 -translate-x-1/2 rounded-full bg-white/40" />
-        <div className="mt-1 text-[10.5px] font-medium text-white/80">Order ready in</div>
-        <div className="font-display text-[26px] font-extrabold leading-none">04:30</div>
-        <div className="mt-3 flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-white/20">
-            <Icon name="bell" size={13} />
-          </span>
-          <span className="text-[11px] font-semibold">Token #1042</span>
+          {/* Mobile phone (Overlapping lower right) */}
+          {/* 24% of wrapper equals ~28% of POS visual width. Placed at right edge to avoid clipping. */}
+          <div
+            className="absolute -bottom-[8%] right-[2%] w-[24%] z-20 animate-floaty"
+            style={{ animationDelay: '1s' }}
+          >
+            <img
+              src="/kaaty-mobile.png"
+              alt="Kaaty mobile ordering application"
+              className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)] rounded-[18px]"
+            />
+          </div>
         </div>
       </div>
-      <div className="space-y-2.5 px-4 py-4">
-        {steps.map(([s, done]) => (
-          <div key={s} className="flex items-center gap-2.5">
-            <span
-              className={`grid h-5 w-5 place-items-center rounded-full ${
-                done ? 'bg-emerald-500 text-white' : 'bg-navy-100 text-navy-400'
-              }`}
-            >
-              <Icon name={done ? 'check' : 'circle'} size={12} />
-            </span>
-            <span
-              className={`text-[11.5px] font-medium ${done ? 'text-navy-800' : 'text-navy-400'}`}
-            >
-              {s}
-            </span>
-          </div>
-        ))}
+
+      {/* Desktop Overlap Layout (hidden on mobile, visible on md and up) */}
+      <div className="hidden md:block relative w-full pt-8 pb-12">
+        {/* POS laptop (Background anchor - shifted right to prevent text overlap) */}
+        {/* 85% width gives room for KDS/Mobile to extend naturally. It's perfectly dominant. */}
+        <div className="relative w-[85%] ml-auto mr-[2%] lg:mr-[5%] z-0 animate-floaty">
+          <img
+            src="/kaaty-pos.png"
+            alt="Kaaty POS interface"
+            className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] rounded-xl"
+          />
+        </div>
+
+        {/* KDS tablet (Front Left - overlapping POS) */}
+        {/* Width is ~47% of POS visual width (falls in 45-50% range). Overlaps POS perfectly without hitting text. */}
+        <div className="absolute bottom-[2%] left-[0%] lg:left-[-2%] xl:left-[-8%] w-[40%] z-10 animate-floaty2">
+          <img
+            src="/kaaty-kds.png"
+            alt="Kaaty Kitchen Display System"
+            className="w-full h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.25)] rounded-xl"
+          />
+        </div>
+
+        {/* Mobile phone (Front Right - smaller accent) */}
+        {/* Width is ~28% of POS visual width (falls in 25-30% range). Fits right edge perfectly. */}
+        <div
+          className="absolute bottom-[-5%] right-[0%] w-[24%] z-20 animate-floaty"
+          style={{ animationDelay: '1s' }}
+        >
+          <img
+            src="/kaaty-mobile.png"
+            alt="Kaaty mobile ordering application"
+            className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.3)] rounded-[24px]"
+          />
+        </div>
       </div>
     </div>
   )
@@ -1614,10 +1528,10 @@ function Hero() {
       <div className="pointer-events-none absolute -top-32 right-[-10%] h-[520px] w-[520px] rounded-full bg-kaaty-500/10 blur-3xl" />
       <div className="pointer-events-none absolute left-[-8%] top-40 h-[380px] w-[380px] rounded-full bg-kaaty-300/10 blur-3xl" />
 
-      <Container className="relative pb-20 sm:pb-28">
+      <Container className="relative pb-10 md:pb-20 sm:pb-28">
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12 xl:gap-16">
           {/* ── Left: copy ── */}
-          <div className="w-full lg:w-[50%] xl:w-[52%]">
+          <div className="w-full lg:w-[42%] xl:w-[42%]">
             <div className="reveal in inline-flex items-center gap-2 rounded-full border border-navy-200 bg-white/70 px-3.5 py-1.5 text-[12.5px] font-semibold text-navy-700 backdrop-blur">
               <span className="flex h-5 items-center gap-1 rounded-full bg-kaaty-500 px-2 text-[10.5px] font-bold uppercase tracking-wide text-white">
                 New
@@ -1658,43 +1572,8 @@ function Hero() {
           </div>
 
           {/* ── Right: devices ── */}
-          <div className="w-full lg:w-[50%] xl:w-[48%]">
-            {/*
-              Aspect-ratio container: paddingBottom 85% gives stable
-              intrinsic height that scales proportionally with width at
-              every zoom level — zero fixed px heights anywhere.
-            */}
-            <div className="relative mx-auto w-full max-w-[640px] xl:max-w-[720px]">
-              <div className="relative w-full" style={{ paddingBottom: '90%' }}>
-                {/* POS — top-right, largest card */}
-                <div className="absolute right-0 top-0 w-[64%] animate-floaty">
-                  <POSDevice />
-                </div>
-
-                {/* KDS — left, overlapping POS */}
-                <div className="absolute left-0 top-[18%] w-[48%] animate-floaty2">
-                  <KDSDevice />
-                </div>
-
-                {/* Phone — bottom-right */}
-                <div
-                  className="absolute bottom-0 right-[8%] z-10 w-[30%] animate-floaty"
-                  style={{ animationDelay: '1.2s' }}
-                >
-                  <PhoneDevice />
-                </div>
-
-                {/* Synced badge — center */}
-                <div className="absolute left-1/2 top-[44%] z-20 -translate-x-1/2 -translate-y-1/2">
-                  <div className="flex items-center gap-2 rounded-full bg-navy-900 px-3.5 py-2 text-white shadow-lift">
-                    <Icon name="refresh-cw" size={14} className="text-kaaty-400" />
-                    <span className="whitespace-nowrap text-[11.5px] font-bold">
-                      Synced · real-time
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="w-full lg:w-[58%] xl:w-[58%]">
+            <ProductEcosystemVisual />
           </div>
         </div>
       </Container>
@@ -1967,7 +1846,7 @@ const ECOSYSTEM_CARDS = [
 
 function ProductEcosystem() {
   return (
-    <section id="products" className="py-24 sm:py-28">
+    <section id="products" className="py-16 sm:py-24">
       <Container>
         <SectionHead
           eyebrow="One connected ecosystem"
