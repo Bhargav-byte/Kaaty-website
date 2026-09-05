@@ -1054,20 +1054,26 @@ function ItemLink({ href, icon, name, desc }: ItemLinkProps) {
 }
 
 function ProductsMenu() {
+  const col1 = [MENU_PRODUCTS[0]]
+  const col2 = [MENU_PRODUCTS[1], MENU_PRODUCTS[2]]
+
+  const renderGroup = (col: (typeof MENU_PRODUCTS)[0]) => (
+    <div key={col.group} className="flex flex-col">
+      <div className="mb-1.5 px-2.5 text-[10.5px] font-bold uppercase tracking-wider text-navy-400">
+        {col.group}
+      </div>
+      <div className="flex flex-col gap-0.5">
+        {col.items.map((it) => (
+          <ItemLink key={it.name} href={`/products/${it.slug}`} {...it} />
+        ))}
+      </div>
+    </div>
+  )
+
   return (
-    <div className="grid grid-cols-3 gap-x-3 gap-y-2 p-4">
-      {MENU_PRODUCTS.map((col) => (
-        <div key={col.group} className="flex flex-col">
-          <div className="mb-1.5 px-2.5 text-[10.5px] font-bold uppercase tracking-wider text-navy-400">
-            {col.group}
-          </div>
-          <div className="flex flex-col gap-0.5">
-            {col.items.map((it) => (
-              <ItemLink key={it.name} href={`/products/${it.slug}`} {...it} />
-            ))}
-          </div>
-        </div>
-      ))}
+    <div className="grid grid-cols-2 gap-x-6 p-5">
+      <div className="flex flex-col gap-5">{col1.map(renderGroup)}</div>
+      <div className="flex flex-col gap-5">{col2.map(renderGroup)}</div>
     </div>
   )
 }
@@ -1139,7 +1145,7 @@ function ResourcesMenu() {
 
 type MenuConfig = { width: string; render: () => React.ReactElement }
 const MENUS: Record<string, MenuConfig> = {
-  Products: { width: 'w-[720px]', render: ProductsMenu },
+  Products: { width: 'w-[600px]', render: ProductsMenu },
   Solutions: { width: 'w-[520px]', render: SolutionsMenu },
   Integrations: { width: 'w-[600px]', render: IntegrationsMenu },
   Resources: { width: 'w-[360px]', render: ResourcesMenu },
