@@ -7,6 +7,7 @@ import { updatePageMetadata } from './lib/seo'
 import { trackEvent, setupScrollDepthTracking } from './lib/analytics'
 import { SolutionsHubPage } from './components/SolutionsHubPage'
 import { IndustrySolutionPage } from './components/IndustrySolutionPage'
+import { KaatyPosPage } from './components/KaatyPosPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -4249,6 +4250,12 @@ function renderRoute(pathname: string) {
   if (seg[0] === 'demo') return <ContactPage />
   if (seg[0] === 'products' && seg[1]) {
     const prodSlug = seg[1] === 'analytics' ? 'business' : seg[1]
+
+    if (prodSlug === 'pos') {
+      trackEvent('product_page_view', { product_slug: 'pos' })
+      return <KaatyPosPage />
+    }
+
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
       trackEvent('product_page_view', { product_slug: prodSlug })
       return <ProductPage slug={prodSlug} />
