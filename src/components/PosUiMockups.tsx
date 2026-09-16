@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Icon } from './Icon'
 
 // Premium Food Data for Marketing Mockups
@@ -46,7 +47,58 @@ const FOOD_ITEMS = [
   },
 ]
 
+type CartItem = {
+  name: string
+  price: number
+  img: string
+  qty: number
+}
+
 export function PremiumPosGridUi() {
+  const [cart, setCart] = useState<CartItem[]>([
+    { name: 'Premium Burger', price: 249, img: FOOD_ITEMS[0].img, qty: 2 },
+  ])
+  const [isPlaced, setIsPlaced] = useState(false)
+
+  const handleAdd = (item: (typeof FOOD_ITEMS)[0]) => {
+    if (!item.available) return
+    setIsPlaced(false)
+    setCart((prev) => {
+      const existing = prev.find((c) => c.name === item.name)
+      if (existing) {
+        return prev.map((c) => (c.name === item.name ? { ...c, qty: c.qty + 1 } : c))
+      }
+      return [...prev, { name: item.name, price: parseFloat(item.price), img: item.img, qty: 1 }]
+    })
+  }
+
+  const handleUpdateQty = (name: string, delta: number) => {
+    setCart((prev) =>
+      prev.map((c) => {
+        if (c.name === name) {
+          return { ...c, qty: Math.max(1, c.qty + delta) }
+        }
+        return c
+      }),
+    )
+  }
+
+  const handleRemove = (name: string) => {
+    setCart((prev) => prev.filter((c) => c.name !== name))
+  }
+
+  const handlePlaceOrder = () => {
+    if (cart.length > 0) {
+      setIsPlaced(true)
+      setTimeout(() => {
+        setCart([])
+        setIsPlaced(false)
+      }, 2000)
+    }
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+
   return (
     <div
       className="w-full max-w-5xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[500px]"
@@ -58,6 +110,17 @@ export function PremiumPosGridUi() {
           Order Status
         </div>
         <div className="flex-1 space-y-3 overflow-y-auto pr-1">
+          {isPlaced && (
+            <div className="bg-white rounded-lg border border-kaaty-200 p-3 shadow-sm flex items-center justify-between ring-2 ring-kaaty-500/20 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-[16px] text-kaaty-500">93</span>
+                <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-bold">
+                  NEW
+                </span>
+              </div>
+              <Icon name="clock" size={14} className="text-navy-300" />
+            </div>
+          )}
           <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="font-display font-bold text-[16px] text-kaaty-500">92</span>
@@ -111,7 +174,7 @@ export function PremiumPosGridUi() {
                 <img
                   src={item.img}
                   alt={item.name}
-                  className={`w-full h-full object-cover ${!item.available ? 'opacity-40 grayscale' : ''}`}
+                  className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${!item.available ? 'opacity-40 grayscale' : ''}`}
                 />
                 {item.available && (
                   <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-sm ring-2 ring-white"></div>
@@ -126,7 +189,9 @@ export function PremiumPosGridUi() {
               <div className="mt-auto pt-2 flex items-center justify-between">
                 <span className="text-[13px] font-mono text-navy-600">₹{item.price}</span>
                 <button
-                  className={`px-3 py-1 rounded-md text-[11px] font-bold transition-all border ${item.available ? 'border-navy-200 bg-white text-navy-700 shadow-sm hover:border-kaaty-500 hover:text-kaaty-600' : 'border-transparent bg-navy-50 text-navy-400 cursor-not-allowed'}`}
+                  onClick={() => handleAdd(item)}
+                  disabled={!item.available}
+                  className={`px-3 py-1 rounded-md text-[11px] font-bold transition-all border ${item.available ? 'border-navy-200 bg-white text-navy-700 shadow-sm hover:border-kaaty-500 hover:text-kaaty-600 active:scale-95' : 'border-transparent bg-navy-50 text-navy-400 cursor-not-allowed'}`}
                 >
                   + Add
                 </button>
@@ -140,40 +205,75 @@ export function PremiumPosGridUi() {
       <div className="hidden lg:flex flex-col w-[280px] bg-white border-l border-navy-200 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.03)]">
         <div className="p-4 border-b border-navy-100 flex justify-between items-center">
           <h3 className="font-bold text-navy-900 text-[16px]">Your Cart</h3>
-          <Icon name="more-vertical" size={16} className="text-navy-400" />
+          <span className="bg-navy-100 text-navy-600 font-bold text-[12px] px-2 py-0.5 rounded-full">
+            {cart.length}
+          </span>
         </div>
         <div className="flex-1 p-3 space-y-3 overflow-y-auto">
-          {/* Cart Item */}
-          <div className="bg-navy-50/50 rounded-lg p-2.5 border border-navy-100 flex gap-3 relative group">
-            <img src={FOOD_ITEMS[0].img} alt="Food" className="w-12 h-12 rounded object-cover" />
-            <div className="flex-1 min-w-0">
-              <h4 className="text-[13px] font-bold text-navy-900 truncate">{FOOD_ITEMS[0].name}</h4>
-              <p className="text-[12px] font-mono text-navy-600">₹{FOOD_ITEMS[0].price}</p>
-              <span className="inline-block mt-1 px-1.5 py-0.5 bg-white border border-navy-200 text-navy-500 text-[9px] uppercase font-bold rounded">
-                Parcel
-              </span>
+          {cart.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-navy-400 opacity-50">
+              <Icon name="shopping-cart" size={48} className="mb-2" />
+              <span className="text-[14px] font-medium">Cart is empty</span>
             </div>
-            <div className="flex flex-col justify-between items-end">
-              <Icon
-                name="trash-2"
-                size={14}
-                className="text-red-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-              />
-              <div className="flex items-center gap-1.5 bg-white border border-navy-200 rounded px-1 py-0.5">
-                <span className="text-navy-400 text-[12px] cursor-pointer">-</span>
-                <span className="text-[12px] font-bold text-navy-900 w-3 text-center">2</span>
-                <span className="text-kaaty-500 text-[12px] cursor-pointer">+</span>
+          ) : (
+            cart.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-navy-50/50 rounded-lg p-2.5 border border-navy-100 flex gap-3 relative group animate-in slide-in-from-right-4 fade-in duration-200"
+              >
+                <img src={item.img} alt={item.name} className="w-12 h-12 rounded object-cover" />
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[13px] font-bold text-navy-900 truncate">{item.name}</h4>
+                  <p className="text-[12px] font-mono text-navy-600">₹{item.price}</p>
+                </div>
+                <div className="flex flex-col justify-between items-end">
+                  <button
+                    onClick={() => handleRemove(item.name)}
+                    className="text-navy-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <Icon name="trash-2" size={14} />
+                  </button>
+                  <div className="flex items-center gap-1.5 bg-white border border-navy-200 rounded px-1 py-0.5 shadow-sm">
+                    <button
+                      onClick={() => handleUpdateQty(item.name, -1)}
+                      className="text-navy-400 hover:text-navy-900 text-[14px] px-1 active:scale-90"
+                    >
+                      -
+                    </button>
+                    <span className="text-[12px] font-bold text-navy-900 w-3 text-center select-none">
+                      {item.qty}
+                    </span>
+                    <button
+                      onClick={() => handleUpdateQty(item.name, 1)}
+                      className="text-kaaty-500 hover:text-kaaty-600 text-[14px] px-1 active:scale-90"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            ))
+          )}
         </div>
         <div className="p-4 border-t border-navy-100 bg-white shadow-[0_-4px_15px_rgba(0,0,0,0.02)]">
           <div className="flex justify-between items-center mb-4">
             <span className="text-navy-600 text-[14px]">Total</span>
-            <span className="font-display font-bold text-[20px] text-navy-900">₹498.00</span>
+            <span className="font-display font-bold text-[20px] text-navy-900">
+              ₹{total.toFixed(2)}
+            </span>
           </div>
-          <button className="w-full bg-kaaty-500 hover:bg-kaaty-600 text-white rounded-xl py-3 font-bold shadow-md transition-colors">
-            Place Order
+          <button
+            onClick={handlePlaceOrder}
+            disabled={cart.length === 0 || isPlaced}
+            className={`w-full rounded-xl py-3 font-bold shadow-md transition-all flex items-center justify-center gap-2 ${cart.length === 0 ? 'bg-navy-100 text-navy-400 cursor-not-allowed' : isPlaced ? 'bg-emerald-500 text-white' : 'bg-kaaty-500 hover:bg-kaaty-600 text-white active:scale-95'}`}
+          >
+            {isPlaced ? (
+              <>
+                <Icon name="check" size={18} /> Order Placed
+              </>
+            ) : (
+              'Place Order'
+            )}
           </button>
         </div>
       </div>
