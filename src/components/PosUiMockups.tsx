@@ -6,42 +6,42 @@ const FOOD_ITEMS = [
   {
     name: 'Premium Burger',
     price: '249.00',
-    img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/burger.jpg',
     available: true,
     qty: 45,
   },
   {
     name: 'Crispy Fries',
     price: '149.00',
-    img: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/fries.jpg',
     available: true,
     qty: 120,
   },
   {
     name: 'Iced Latte',
     price: '199.00',
-    img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/latte.jpg',
     available: true,
     qty: 85,
   },
   {
     name: 'Classic Dosa',
     price: '120.00',
-    img: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/dosa.jpg',
     available: true,
     qty: 30,
   },
   {
     name: 'Chicken Biryani',
     price: '299.00',
-    img: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/biryani.jpg',
     available: false,
     qty: 0,
   },
   {
     name: 'Margherita Pizza',
     price: '349.00',
-    img: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=300&q=80',
+    img: '/images/food/pizza.jpg',
     available: true,
     qty: 15,
   },
@@ -101,7 +101,7 @@ export function PremiumPosGridUi() {
 
   return (
     <div
-      className="w-full max-w-5xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[500px]"
+      className="w-full max-w-5xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[850px] md:h-[550px]"
       aria-hidden="true"
     >
       {/* Left Sidebar: Token Status */}
@@ -153,7 +153,7 @@ export function PremiumPosGridUi() {
 
       {/* Main Area: Menu Grid */}
       <div className="flex-1 flex flex-col p-4 bg-navy-50 overflow-hidden">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4">
           <h3 className="font-bold text-navy-900 text-[18px]">Menu Items</h3>
           <div className="flex gap-2">
             <div className="px-3 py-1.5 bg-white border border-navy-200 rounded-lg text-[13px] font-medium text-navy-600">
@@ -202,7 +202,7 @@ export function PremiumPosGridUi() {
       </div>
 
       {/* Right Sidebar: Cart */}
-      <div className="hidden lg:flex flex-col w-[280px] bg-white border-l border-navy-200 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.03)]">
+      <div className="flex flex-col w-full md:w-[280px] h-[350px] md:h-auto bg-white border-l border-navy-200 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.03)]">
         <div className="p-4 border-b border-navy-100 flex justify-between items-center">
           <h3 className="font-bold text-navy-900 text-[16px]">Your Cart</h3>
           <span className="bg-navy-100 text-navy-600 font-bold text-[12px] px-2 py-0.5 rounded-full">
@@ -256,7 +256,7 @@ export function PremiumPosGridUi() {
           )}
         </div>
         <div className="p-4 border-t border-navy-100 bg-white shadow-[0_-4px_15px_rgba(0,0,0,0.02)]">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4">
             <span className="text-navy-600 text-[14px]">Total</span>
             <span className="font-display font-bold text-[20px] text-navy-900">
               ₹{total.toFixed(2)}
@@ -284,7 +284,7 @@ export function PremiumPosGridUi() {
 export function PremiumStockUi() {
   return (
     <div
-      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-white shadow-2xl overflow-hidden flex flex-col h-[400px]"
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-white shadow-2xl overflow-hidden flex flex-col h-[500px] md:h-[400px]"
       aria-hidden="true"
     >
       <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-navy-50/50">
@@ -381,7 +381,7 @@ export function PremiumKdsUi() {
 
   return (
     <div
-      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col h-[400px]"
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col h-[500px] md:h-[400px]"
       aria-hidden="true"
     >
       <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-white">
@@ -699,7 +699,7 @@ export function PremiumAnalyticsUi() {
       </div>
 
       <div className="bg-navy-50 rounded-xl p-5 border border-navy-100">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4">
           <span className="text-[14px] font-bold text-navy-900">Profit Margin</span>
           <span className="font-display font-bold text-[24px] text-emerald-600">40%</span>
         </div>
