@@ -135,43 +135,69 @@ export function KioskInteractiveInterface() {
 
               {/* MENU SCREEN */}
               {activeStep === 'MENU' && (
-                <div className="p-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                  <div className="flex gap-2 overflow-x-auto hide-scrollbar mb-6">
-                    {['Recommended', 'Burgers', 'Snacks', 'Beverages'].map((cat, i) => (
+                <div className="absolute inset-0 flex bg-gray-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                  {/* Left Sidebar Categories */}
+                  <div className="w-[72px] bg-white border-r border-gray-100 flex flex-col py-3 shrink-0 overflow-y-auto hide-scrollbar z-10 shadow-[2px_0_10px_rgba(0,0,0,0.02)]">
+                    {[
+                      { name: 'Menu', icon: 'layout-grid' },
+                      { name: 'Burgers', icon: 'sandwich' }, // using standard available lucide icon or fallback
+                      { name: 'Sides', icon: 'french-fries' }, // fallback below
+                      { name: 'Drinks', icon: 'coffee' },
+                    ].map((cat, i) => (
                       <button
-                        key={cat}
-                        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${i === 0 ? 'bg-navy text-white' : 'bg-white text-navy-600 border border-gray-200'}`}
+                        key={cat.name}
+                        className={`mx-2 mb-2 aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition-colors ${
+                          i === 0
+                            ? 'bg-navy text-white shadow-md'
+                            : 'bg-transparent text-navy-500 hover:bg-gray-50 border border-transparent'
+                        }`}
                       >
-                        {cat}
+                        {/* We will use generic icons available in Lucide or fallback to standard ones */}
+                        <Icon
+                          name={
+                            i === 0
+                              ? 'layout-grid'
+                              : i === 1
+                                ? 'align-justify'
+                                : i === 2
+                                  ? 'circle'
+                                  : 'coffee'
+                          }
+                          size={18}
+                        />
+                        <span className="text-[9px] font-bold tracking-tight">{cat.name}</span>
                       </button>
                     ))}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    {FOOD_ITEMS.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer active:scale-95 transition-transform"
-                        onClick={() => {
-                          setSelectedItem(item)
-                          setActiveStep('ITEM')
-                        }}
-                      >
-                        <div className="aspect-square bg-gray-100 relative">
-                          <img
-                            src={item.img}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
+                  {/* Right Main Content */}
+                  <div className="flex-1 p-3 overflow-y-auto hide-scrollbar pb-24 relative">
+                    <div className="grid grid-cols-2 gap-3">
+                      {FOOD_ITEMS.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer active:scale-95 transition-transform"
+                          onClick={() => {
+                            setSelectedItem(item)
+                            setActiveStep('ITEM')
+                          }}
+                        >
+                          <div className="aspect-square bg-gray-100 relative">
+                            <img
+                              src={item.img}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-3">
+                            <h4 className="font-bold text-navy text-xs leading-tight mb-1 line-clamp-2 min-h-[32px]">
+                              {item.name}
+                            </h4>
+                            <p className="text-orange-600 font-bold text-sm">₹{item.price}</p>
+                          </div>
                         </div>
-                        <div className="p-3">
-                          <h4 className="font-bold text-navy text-sm leading-tight mb-1 truncate">
-                            {item.name}
-                          </h4>
-                          <p className="text-orange-600 font-bold text-sm">₹{item.price}</p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
