@@ -110,7 +110,9 @@ export function KioskInteractiveInterface() {
             )}
 
             {/* SCREEN STATES */}
-            <div className="flex-1 relative overflow-y-auto overflow-x-hidden bg-gray-50 hide-scrollbar pb-24">
+            <div
+              className={`flex-1 relative overflow-y-auto overflow-x-hidden bg-gray-50 hide-scrollbar ${activeStep === 'MENU' ? 'pb-24' : ''}`}
+            >
               {/* HOME SCREEN */}
               {activeStep === 'HOME' && (
                 <div
@@ -176,7 +178,7 @@ export function KioskInteractiveInterface() {
 
               {/* ITEM DETAILS SCREEN */}
               {activeStep === 'ITEM' && selectedItem && (
-                <div className="bg-white min-h-full animate-in slide-in-from-right duration-300">
+                <div className="bg-white min-h-full animate-in slide-in-from-right duration-300 pb-28">
                   <div className="aspect-square relative">
                     <img
                       src={selectedItem.img}
@@ -217,17 +219,6 @@ export function KioskInteractiveInterface() {
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Fixed Bottom Action */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20">
-                    <button
-                      onClick={() => addToCart(selectedItem)}
-                      className="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 active:scale-95 transition-all flex justify-between items-center px-6"
-                    >
-                      <span>Add to Cart</span>
-                      <span>₹{selectedItem.price}</span>
-                    </button>
                   </div>
                 </div>
               )}
@@ -289,7 +280,7 @@ export function KioskInteractiveInterface() {
                         ))}
                       </div>
 
-                      <div className="mt-8 bg-white p-4 rounded-xl shadow-sm space-y-2 mb-8">
+                      <div className="mt-8 bg-white p-4 rounded-xl shadow-sm space-y-2">
                         <div className="flex justify-between text-sm text-navy-500">
                           <span>Subtotal</span>
                           <span>₹{cartTotal.toFixed(2)}</span>
@@ -303,18 +294,6 @@ export function KioskInteractiveInterface() {
                           <span>₹{(cartTotal * 1.05).toFixed(2)}</span>
                         </div>
                       </div>
-                    </div>
-                  )}
-
-                  {cart.length > 0 && (
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-white shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20">
-                      <button
-                        onClick={() => setActiveStep('PAYMENT')}
-                        className="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 active:scale-95 transition-all flex justify-between items-center px-6"
-                      >
-                        <span>Pay Now</span>
-                        <span>₹{(cartTotal * 1.05).toFixed(2)}</span>
-                      </button>
                     </div>
                   )}
                 </div>
@@ -336,26 +315,48 @@ export function KioskInteractiveInterface() {
                 </div>
               )}
 
-              {/* CONFIRMATION SCREEN */}
+              {/* CONFIRMATION SCREEN (With Receipt Animation) */}
               {activeStep === 'CONFIRMATION' && (
-                <div className="p-5 animate-in fade-in duration-500 min-h-full bg-orange-500 flex flex-col items-center justify-center text-center text-white z-30 absolute inset-0">
-                  <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                    <Icon name="check" size={40} className="text-white drop-shadow" />
+                <div className="min-h-full bg-orange-500 flex flex-col z-30 absolute inset-0">
+                  <div className="p-5 animate-in fade-in duration-500 flex flex-col items-center text-center text-white pt-12 relative z-10">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                      <Icon name="check" size={32} className="text-white drop-shadow" />
+                    </div>
+                    <h2 className="text-3xl font-display font-bold mb-1">Order Placed!</h2>
+                    <p className="text-white/90 text-sm mb-4">Please collect your receipt.</p>
                   </div>
-                  <h2 className="text-3xl font-display font-bold mb-2">Order Placed!</h2>
-                  <p className="text-white/90 text-lg mb-8">Please collect your receipt.</p>
 
-                  <div className="bg-white text-navy p-6 rounded-2xl shadow-2xl w-full max-w-[250px]">
-                    <p className="text-navy-400 font-bold text-sm uppercase mb-1">Your Token No.</p>
-                    <p className="font-display font-bold text-6xl text-navy">42</p>
+                  {/* Receipt Slot & Paper Animation */}
+                  <div className="flex-1 flex flex-col items-center w-full relative pt-2">
+                    {/* The slot line */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[240px] h-[6px] bg-black/40 rounded-full z-20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div>
+
+                    {/* The paper receipt emerging */}
+                    <div className="w-full overflow-hidden flex justify-center pb-12 pt-[3px] absolute inset-0 z-10">
+                      <div className="bg-white text-navy px-6 py-8 w-[220px] shadow-2xl animate-in slide-in-from-top-full duration-1000 fill-mode-forwards relative rounded-b-xl">
+                        <p className="text-navy-400 font-bold text-[11px] uppercase mb-1 tracking-wider text-center">
+                          Your Token No.
+                        </p>
+                        <p className="font-display font-bold text-6xl text-navy text-center mb-6">
+                          42
+                        </p>
+                        <div className="border-t border-dashed border-gray-300 pt-4 flex flex-col gap-2">
+                          <div className="h-1.5 bg-gray-100 rounded w-full"></div>
+                          <div className="h-1.5 bg-gray-100 rounded w-3/4"></div>
+                          <div className="h-1.5 bg-gray-100 rounded w-1/2"></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Floating Cart Summary Button for Menu Step */}
+            {/* FLOATING ACTION BARS (Fixed relative to device, outside scroll) */}
+
+            {/* Floating Menu Cart */}
             {activeStep === 'MENU' && cart.length > 0 && (
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-20">
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-20 animate-in slide-in-from-bottom-12 duration-300">
                 <button
                   onClick={() => setActiveStep('CART')}
                   className="w-full bg-navy text-white rounded-xl shadow-2xl p-3 flex items-center justify-between hover:bg-navy-700 transition-colors"
@@ -367,6 +368,32 @@ export function KioskInteractiveInterface() {
                     <span className="font-medium text-sm">View Cart</span>
                   </div>
                   <span className="font-bold">₹{cartTotal.toFixed(2)}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Fixed Bottom Action for ITEM screen */}
+            {activeStep === 'ITEM' && selectedItem && (
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20 animate-in slide-in-from-bottom-12 duration-300">
+                <button
+                  onClick={() => addToCart(selectedItem)}
+                  className="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 active:scale-95 transition-all flex justify-between items-center px-6"
+                >
+                  <span>Add to Cart</span>
+                  <span>₹{selectedItem.price}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Fixed Bottom Action for CART screen */}
+            {activeStep === 'CART' && cart.length > 0 && (
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20 animate-in slide-in-from-bottom-12 duration-300">
+                <button
+                  onClick={() => setActiveStep('PAYMENT')}
+                  className="w-full bg-orange-500 text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 active:scale-95 transition-all flex justify-between items-center px-6"
+                >
+                  <span>Pay Now</span>
+                  <span>₹{(cartTotal * 1.05).toFixed(2)}</span>
                 </button>
               </div>
             )}

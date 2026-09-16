@@ -54,32 +54,37 @@ export function KaatySelfKioskPage() {
                     </div>
                   </div>
                   {/* Fake UI Content */}
-                  <div className="flex-1 bg-gray-50 p-3 flex flex-col gap-3 overflow-hidden">
-                    <div className="flex gap-2">
-                      <div className="px-3 py-1 bg-navy text-white text-[10px] rounded-full">
-                        Burgers
+                  <div className="flex-1 bg-gray-50 flex overflow-hidden">
+                    <div className="w-14 bg-white border-r border-gray-100 flex flex-col py-2 gap-2 shrink-0">
+                      <div className="mx-2 aspect-square bg-navy text-white rounded-lg flex items-center justify-center text-[8px] font-bold">
+                        Menu
                       </div>
-                      <div className="px-3 py-1 bg-white border border-gray-200 text-navy-500 text-[10px] rounded-full">
+                      <div className="mx-2 aspect-square bg-gray-50 border border-gray-100 text-navy-500 rounded-lg flex items-center justify-center text-[8px]">
                         Drinks
                       </div>
+                      <div className="mx-2 aspect-square bg-gray-50 border border-gray-100 text-navy-500 rounded-lg flex items-center justify-center text-[8px]">
+                        Sides
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div
-                          key={i}
-                          className="bg-white rounded-lg p-2 shadow-sm border border-gray-100"
-                        >
-                          <div className="aspect-square bg-gray-200 rounded-md mb-2 overflow-hidden">
-                            <img
-                              src={`/images/food/${i === 1 ? 'burger' : i === 2 ? 'fries' : i === 3 ? 'pizza' : 'dosa'}.jpg`}
-                              className="w-full h-full object-cover"
-                              alt="Food"
-                            />
+                    <div className="flex-1 p-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className="bg-white rounded-lg p-2 shadow-sm border border-gray-100"
+                          >
+                            <div className="aspect-square bg-gray-200 rounded-md mb-2 overflow-hidden">
+                              <img
+                                src={`/images/food/${i === 1 ? 'burger' : i === 2 ? 'fries' : i === 3 ? 'pizza' : 'dosa'}.jpg`}
+                                className="w-full h-full object-cover"
+                                alt="Food"
+                              />
+                            </div>
+                            <div className="h-2 w-3/4 bg-gray-200 rounded mb-1"></div>
+                            <div className="h-2 w-1/2 bg-orange-200 rounded"></div>
                           </div>
-                          <div className="h-2 w-3/4 bg-gray-200 rounded mb-1"></div>
-                          <div className="h-2 w-1/2 bg-orange-200 rounded"></div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
                   {/* Fake UI Footer */}
