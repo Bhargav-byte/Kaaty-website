@@ -43,11 +43,11 @@ export function KaatyKdsPage() {
                 <div className="absolute inset-0 bg-navy-900/40"></div>
 
                 {/* Floating Tablet mockup */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] bg-navy-900 p-2 sm:p-3 rounded-2xl sm:rounded-[24px] shadow-2xl border border-navy-700/50 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-[85%] rotate-[-2deg] group-hover:rotate-0 transition-transform duration-500 drop-shadow-[0_25px_25px_rgba(0,0,0,0.5)]">
                   <img
                     src="/kaaty-kds.png"
                     alt="Kaaty KDS Interface"
-                    className="w-full h-auto rounded-lg sm:rounded-xl opacity-95 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-auto opacity-95 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
               </div>
