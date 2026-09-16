@@ -73,7 +73,7 @@ export function KioskInteractiveInterface() {
           <StepButton
             active={activeStep === 'PAYMENT'}
             title="4. Pay"
-            desc="UPI or card checkout."
+            desc="Secure self-checkout."
             onClick={() => setActiveStep('PAYMENT')}
           />
           <StepButton
@@ -326,7 +326,7 @@ export function KioskInteractiveInterface() {
                   </div>
                   <h2 className="text-2xl font-bold text-navy mb-2">Please Pay Below</h2>
                   <p className="text-navy-500 mb-8 max-w-[250px]">
-                    Tap your card or scan UPI on the terminal below the screen.
+                    Complete payment using the terminal below the screen.
                   </p>
                   <div className="bg-white px-8 py-4 rounded-2xl shadow-sm font-bold text-2xl text-navy border border-gray-200">
                     ₹{(cartTotal > 0 ? cartTotal * 1.05 : 261.45).toFixed(2)}

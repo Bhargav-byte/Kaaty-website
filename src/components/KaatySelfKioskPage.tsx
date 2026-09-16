@@ -113,27 +113,72 @@ export function KaatySelfKioskPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center">
-              <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name="users" size={24} />
-              </div>
-              <h3 className="font-bold text-navy mb-2">Long Queues</h3>
-              <p className="text-sm text-navy-500">
-                Customers wait just to speak to a cashier, leading to walk-aways during rush hour.
-              </p>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Traditional */}
+            <div className="bg-gray-50 p-8 rounded-2xl border border-gray-200">
+              <h3 className="font-bold text-navy text-xl mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm">
+                  <Icon name="users" size={20} className="text-gray-400" />
+                </div>
+                Traditional Ordering
+              </h3>
+              <ul className="space-y-5 text-navy-600 relative before:absolute before:inset-y-2 before:left-2 before:w-px before:bg-gray-300">
+                <li className="flex gap-4 relative items-center">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-gray-300 shrink-0 relative z-10" />{' '}
+                  Customer arrives
+                </li>
+                <li className="flex gap-4 relative items-center">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-gray-300 shrink-0 relative z-10" />{' '}
+                  Waits in line
+                </li>
+                <li className="flex gap-4 relative items-center">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-gray-300 shrink-0 relative z-10" />{' '}
+                  Cashier takes order
+                </li>
+                <li className="flex gap-4 relative items-center">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-gray-300 shrink-0 relative z-10" />{' '}
+                  Payment & billing
+                </li>
+                <li className="flex gap-4 relative items-center">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-gray-300 shrink-0 relative z-10" />{' '}
+                  Kitchen receives order
+                </li>
+              </ul>
             </div>
-            <div className="hidden md:flex items-center justify-center">
-              <Icon name="arrow-right" size={32} className="text-gray-300" />
-            </div>
-            <div className="bg-orange-50 p-6 rounded-2xl border border-orange-100 text-center">
-              <div className="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/30">
-                <Icon name="scan-line" size={24} />
+
+            {/* Transformed */}
+            <div className="bg-orange-50 p-8 rounded-2xl border border-orange-100 relative">
+              <div className="absolute top-1/2 -translate-y-1/2 -left-6 w-12 h-12 bg-white rounded-full border border-gray-100 flex items-center justify-center text-gray-400 shadow-md hidden md:flex z-20">
+                <Icon name="arrow-right" size={24} />
               </div>
-              <h3 className="font-bold text-navy mb-2">Self-Service Kiosk</h3>
-              <p className="text-sm text-navy-600">
-                Guests browse, select, and pay on their own terminal. Zero counter wait.
-              </p>
+              <h3 className="font-bold text-kaaty-700 text-xl mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-md shadow-orange-500/30">
+                  <Icon name="scan-line" size={20} className="text-white" />
+                </div>
+                Transformed with Kaaty
+              </h3>
+              <ul className="space-y-5 text-navy relative before:absolute before:inset-y-2 before:left-2 before:w-px before:bg-orange-200">
+                <li className="flex gap-4 relative items-center font-medium">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-orange-500 shrink-0 relative z-10" />{' '}
+                  Customer walks to kiosk
+                </li>
+                <li className="flex gap-4 relative items-center font-medium">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-orange-500 shrink-0 relative z-10" />{' '}
+                  Browses menu
+                </li>
+                <li className="flex gap-4 relative items-center font-medium">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-orange-500 shrink-0 relative z-10" />{' '}
+                  Selects items
+                </li>
+                <li className="flex gap-4 relative items-center font-medium">
+                  <div className="w-4 h-4 rounded-full bg-white border-[3px] border-orange-500 shrink-0 relative z-10" />{' '}
+                  Pays
+                </li>
+                <li className="flex gap-4 relative items-center font-medium">
+                  <div className="w-4 h-4 rounded-full bg-orange-500 border-[3px] border-orange-500 shrink-0 relative z-10" />{' '}
+                  Order enters Kaaty workflow
+                </li>
+              </ul>
             </div>
           </div>
         </Container>
@@ -154,8 +199,61 @@ export function KaatySelfKioskPage() {
         </Container>
       </section>
 
-      {/* 4. ECOSYSTEM / WORKFLOW */}
-      <section className="py-20 lg:py-32 bg-white overflow-hidden">
+      {/* 4. CAPABILITIES */}
+      <section className="py-20 lg:py-32 bg-white">
+        <Container>
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="font-display text-3xl font-bold text-navy sm:text-4xl">
+              Everything customers need to order independently.
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+              <div className="w-10 h-10 bg-white shadow-sm border border-gray-200 rounded-lg flex items-center justify-center text-navy mb-4">
+                <Icon name="layout-dashboard" size={20} />
+              </div>
+              <h4 className="font-bold text-navy mb-2">Visual Menu</h4>
+              <p className="text-sm text-navy-600">
+                Customers browse menu items with rich images, categories, and accurate pricing.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+              <div className="w-10 h-10 bg-white shadow-sm border border-gray-200 rounded-lg flex items-center justify-center text-navy mb-4">
+                <Icon name="utensils" size={20} />
+              </div>
+              <h4 className="font-bold text-navy mb-2">Self-Service Ordering</h4>
+              <p className="text-sm text-navy-600">
+                Customers build and customize their own order without waiting for a cashier.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+              <div className="w-10 h-10 bg-white shadow-sm border border-gray-200 rounded-lg flex items-center justify-center text-navy mb-4">
+                <Icon name="credit-card" size={20} />
+              </div>
+              <h4 className="font-bold text-navy mb-2">Checkout</h4>
+              <p className="text-sm text-navy-600">
+                Customers easily review their cart and complete the available payment flow directly.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+              <div className="w-10 h-10 bg-white shadow-sm border border-gray-200 rounded-lg flex items-center justify-center text-navy mb-4">
+                <Icon name="check-circle-2" size={20} />
+              </div>
+              <h4 className="font-bold text-navy mb-2">Order Confirmation</h4>
+              <p className="text-sm text-navy-600">
+                Customers receive a clear token number or confirmation right on the screen.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* 5. ECOSYSTEM / WORKFLOW */}
+      <section className="py-20 lg:py-32 bg-navy-50 overflow-hidden border-t border-navy-100">
         <Container>
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="order-2 lg:order-1 relative">
@@ -219,9 +317,9 @@ export function KaatySelfKioskPage() {
               </p>
               <ul className="space-y-3">
                 {[
-                  'Orders instantly sync to Kaaty KDS',
-                  'Inventory is automatically updated in Kaaty POS',
-                  'Unified sales reporting in the Business App',
+                  'Orders instantly sync to Kaaty KDS for kitchen fulfillment',
+                  'Transactions flow directly into your Kaaty POS system',
+                  'Centralized monitoring through the Kaaty Business App',
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-navy-600">
                     <div className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
@@ -313,18 +411,18 @@ export function KaatySelfKioskPage() {
         </Container>
       </section>
 
-      {/* 6. BOTTOM CTA */}
+      {/* 7. BOTTOM CTA */}
       <section className="py-24 bg-white text-center">
         <Container>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-navy mb-6">
-            Ready to bust the queue?
+            Ready to modernize your food business?
           </h2>
           <p className="text-navy-600 mb-8 max-w-2xl mx-auto">
-            Deploy Kaaty Self Kiosks in your venue and watch your average ticket size and customer
-            satisfaction grow.
+            Give customers a faster, more independent way to order while your team stays focused on
+            fulfillment.
           </p>
           <Button as="a" href="/demo?source=kiosk_bottom" variant="primary" size="lg">
-            Get a Demo
+            Book a Free Demo &rarr;
           </Button>
         </Container>
       </section>
