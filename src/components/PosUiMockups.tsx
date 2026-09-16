@@ -126,9 +126,9 @@ export function PremiumPosGridUi() {
               <div className="mt-auto pt-2 flex items-center justify-between">
                 <span className="text-[13px] font-mono text-navy-600">₹{item.price}</span>
                 <button
-                  className={`px-2.5 py-1 rounded text-[11px] font-bold ${item.available ? 'bg-kaaty-500 text-white' : 'bg-navy-100 text-navy-400 cursor-not-allowed'}`}
+                  className={`px-3 py-1 rounded-md text-[11px] font-bold transition-all border ${item.available ? 'border-navy-200 bg-white text-navy-700 shadow-sm hover:border-kaaty-500 hover:text-kaaty-600' : 'border-transparent bg-navy-50 text-navy-400 cursor-not-allowed'}`}
                 >
-                  + Add Item
+                  + Add
                 </button>
               </div>
             </div>
