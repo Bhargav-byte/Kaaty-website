@@ -230,7 +230,7 @@ export function KdsInteractiveBoard() {
                           : 'text-navy-600'
                       }`}
                     >
-                      <Icon name="clock" size={14} />
+                      <Icon name="timer" size={14} />
                       {Math.floor(order.elapsedMinutes / 60)
                         .toString()
                         .padStart(2, '0')}
@@ -274,7 +274,7 @@ export function KdsInteractiveBoard() {
                         className="w-full py-2.5 rounded-lg bg-kaaty-50 text-kaaty-600 font-bold text-sm hover:bg-kaaty-500 hover:text-white transition-colors flex items-center justify-center gap-2 group"
                       >
                         <Icon
-                          name="check-check"
+                          name="check-circle-2"
                           size={16}
                           className="group-hover:scale-110 transition-transform"
                         />
@@ -325,7 +325,7 @@ export function KdsWorkflowTimeline() {
       {/* Step 3: Preparing */}
       <div className="relative z-10 flex flex-col items-center gap-3 group">
         <div className="w-16 h-16 rounded-2xl bg-white border-2 border-navy-200 shadow-lg flex items-center justify-center text-navy-400 group-hover:border-navy-400 group-hover:scale-110 transition-all">
-          <Icon name="clock" size={28} />
+          <Icon name="timer" size={28} />
         </div>
         <div className="text-center">
           <div className="font-bold text-navy-900 text-[15px]">3. Timer Starts</div>
@@ -336,11 +336,11 @@ export function KdsWorkflowTimeline() {
       {/* Step 4: Ready */}
       <div className="relative z-10 flex flex-col items-center gap-3 group">
         <div className="w-16 h-16 rounded-2xl bg-emerald-500 shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white group-hover:scale-110 transition-all">
-          <Icon name="check-circle" size={28} />
+          <Icon name="check-circle-2" size={28} />
         </div>
         <div className="text-center">
           <div className="font-bold text-navy-900 text-[15px]">4. Marked Ready</div>
-          <div className="text-navy-500 text-[13px]">Customer notified</div>
+          <div className="text-navy-500 text-[13px]">Ready status updated</div>
         </div>
       </div>
     </div>

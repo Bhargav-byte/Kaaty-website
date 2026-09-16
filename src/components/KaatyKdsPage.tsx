@@ -131,7 +131,7 @@ export function KaatyKdsPage() {
           <SectionHead
             align="center"
             title="From incoming order to ready for pickup."
-            sub="Kaaty connects the counter and the kitchen automatically. The exact moment an order is punched, the kitchen sees it."
+            sub="Kaaty connects the counter and kitchen in one clear workflow. The exact moment an order is punched, the kitchen sees it."
           />
           <div className="mt-16">
             <KdsWorkflowTimeline />
@@ -160,7 +160,7 @@ export function KaatyKdsPage() {
             {/* Category Filters */}
             <div className="bg-navy-50 rounded-2xl p-8 border border-navy-100 hover:border-navy-200 transition-colors">
               <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-kaaty-500 mb-6">
-                <Icon name="filter" size={24} />
+                <Icon name="layout-dashboard" size={24} />
               </div>
               <h3 className="text-xl font-bold text-navy-900 mb-3">
                 Keep the kitchen completely organized
@@ -174,7 +174,7 @@ export function KaatyKdsPage() {
             {/* Integration */}
             <div className="bg-navy-50 rounded-2xl p-8 border border-navy-100 hover:border-navy-200 transition-colors">
               <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-kaaty-500 mb-6">
-                <Icon name="link" size={24} />
+                <Icon name="network" size={24} />
               </div>
               <h3 className="text-xl font-bold text-navy-900 mb-3">
                 Zero missed orders or confusion
@@ -201,15 +201,15 @@ export function KaatyKdsPage() {
               />
               <ul className="mt-8 space-y-4 text-navy-200">
                 <li className="flex items-center gap-3">
-                  <Icon name="check-circle" size={18} className="text-emerald-400" />
+                  <Icon name="check-circle-2" size={18} className="text-emerald-400" />
                   Updates Token Status on the POS sidebar
                 </li>
                 <li className="flex items-center gap-3">
-                  <Icon name="check-circle" size={18} className="text-emerald-400" />
+                  <Icon name="check-circle-2" size={18} className="text-emerald-400" />
                   Flashes 'Ready' on the customer Token Board
                 </li>
                 <li className="flex items-center gap-3">
-                  <Icon name="check-circle" size={18} className="text-emerald-400" />
+                  <Icon name="check-circle-2" size={18} className="text-emerald-400" />
                   Logs exact preparation time in Analytics
                 </li>
               </ul>
@@ -236,7 +236,7 @@ export function KaatyKdsPage() {
           <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="bg-navy-50 rounded-xl overflow-hidden border border-navy-100 group hover:shadow-lg transition-all">
               <img
-                src="/images/food/biryani.jpg"
+                src="/images/kds-canteen.jpg"
                 alt="College Canteen"
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
               />
@@ -250,7 +250,7 @@ export function KaatyKdsPage() {
             </div>
             <div className="bg-navy-50 rounded-xl overflow-hidden border border-navy-100 group hover:shadow-lg transition-all">
               <img
-                src="/images/food/burger.jpg"
+                src="/images/kds-qsr.jpg"
                 alt="QSR"
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
               />
@@ -264,7 +264,7 @@ export function KaatyKdsPage() {
             </div>
             <div className="bg-navy-50 rounded-xl overflow-hidden border border-navy-100 group hover:shadow-lg transition-all">
               <img
-                src="/images/food/latte.jpg"
+                src="/images/kds-cafe.jpg"
                 alt="Cafe"
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
               />
@@ -278,7 +278,7 @@ export function KaatyKdsPage() {
             </div>
             <div className="bg-navy-50 rounded-xl overflow-hidden border border-navy-100 group hover:shadow-lg transition-all">
               <img
-                src="/images/food/pizza.jpg"
+                src="/images/kds-foodcourt.jpg"
                 alt="Food Courts"
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
               />
