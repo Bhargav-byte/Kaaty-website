@@ -7,6 +7,7 @@ export function KioskInteractiveInterface() {
     'HOME' | 'MENU' | 'ITEM' | 'CART' | 'PAYMENT' | 'CONFIRMATION'
   >('HOME')
   const [selectedItem, setSelectedItem] = useState<(typeof FOOD_ITEMS)[0] | null>(null)
+  const [activeCategory, setActiveCategory] = useState('Menu')
   const [cart, setCart] = useState<{ item: (typeof FOOD_ITEMS)[0]; qty: number }[]>([])
 
   // Auto-progress demo states for idle users
@@ -139,32 +140,24 @@ export function KioskInteractiveInterface() {
                   {/* Left Sidebar Categories */}
                   <div className="w-[72px] bg-white border-r border-gray-100 flex flex-col py-3 shrink-0 overflow-y-auto hide-scrollbar z-10 shadow-[2px_0_10px_rgba(0,0,0,0.02)]">
                     {[
-                      { name: 'Menu', icon: 'layout-grid' },
-                      { name: 'Burgers', icon: 'sandwich' }, // using standard available lucide icon or fallback
-                      { name: 'Sides', icon: 'french-fries' }, // fallback below
+                      { name: 'Menu', icon: 'layout-dashboard' },
+                      { name: 'Burgers', icon: 'utensils' },
+                      { name: 'Sides', icon: 'drumstick' },
                       { name: 'Drinks', icon: 'coffee' },
-                    ].map((cat, i) => (
+                    ].map((cat) => (
                       <button
                         key={cat.name}
+                        onClick={(e) => {
+                          e.stopPropagation() // prevent bubbling to the wrapper click which goes to ITEM
+                          setActiveCategory(cat.name)
+                        }}
                         className={`mx-2 mb-2 aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition-colors ${
-                          i === 0
+                          activeCategory === cat.name
                             ? 'bg-navy text-white shadow-md'
                             : 'bg-transparent text-navy-500 hover:bg-gray-50 border border-transparent'
                         }`}
                       >
-                        {/* We will use generic icons available in Lucide or fallback to standard ones */}
-                        <Icon
-                          name={
-                            i === 0
-                              ? 'layout-grid'
-                              : i === 1
-                                ? 'align-justify'
-                                : i === 2
-                                  ? 'circle'
-                                  : 'coffee'
-                          }
-                          size={18}
-                        />
+                        <Icon name={cat.icon as any} size={18} />
                         <span className="text-[9px] font-bold tracking-tight">{cat.name}</span>
                       </button>
                     ))}
