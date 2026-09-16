@@ -139,14 +139,14 @@ export function PremiumPosGridUi() {
             </div>
             <Icon name="play" size={14} className="text-navy-300" />
           </div>
-          <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between opacity-60">
+          <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between transition-all hover:border-red-200">
             <div className="flex items-center gap-2">
-              <span className="font-display font-bold text-[16px] text-navy-400">90</span>
-              <span className="px-2 py-0.5 rounded bg-navy-50 text-navy-500 text-[10px] font-bold">
-                DELIVERED
-              </span>
+              <span className="font-display font-bold text-[16px] text-navy-900">90</span>
+              <button className="px-2 py-0.5 rounded bg-red-50 text-red-600 text-[10px] font-bold hover:bg-red-100 transition-colors">
+                DELIVER
+              </button>
             </div>
-            <Icon name="check" size={14} className="text-navy-300" />
+            <Icon name="arrow-right" size={14} className="text-red-400" />
           </div>
         </div>
       </div>
