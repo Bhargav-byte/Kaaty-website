@@ -316,7 +316,7 @@ export function KaatyPosPage() {
                 <Icon name="check" size={20} className="text-kaaty-500 shrink-0 mt-0.5" />
                 <span className="text-[15px] text-navy-200">
                   <strong className="text-white block mb-1">Token Settings</strong>
-                  Configure auto-timing, token generation logic, and KOT lifecycles for the kitchen.
+                  Configure auto-timing, token generation logic, and KDS lifecycles for the kitchen.
                 </span>
               </div>
               <div className="flex items-start gap-3 bg-navy-800/50 p-5 rounded-xl border border-navy-700">
