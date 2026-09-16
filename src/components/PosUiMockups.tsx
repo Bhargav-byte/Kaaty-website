@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Icon } from './Icon'
 
 // Premium Food Data for Marketing Mockups
-const FOOD_ITEMS = [
+export const FOOD_ITEMS = [
   {
     name: 'Premium Burger',
     price: '249.00',
