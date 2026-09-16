@@ -513,6 +513,155 @@ export function PremiumKdsUi() {
   )
 }
 
+export function PremiumSettingsUi() {
+  const [activeTab, setActiveTab] = useState('Stock In / Out')
+
+  const menu = [
+    {
+      group: 'ACCOUNT & SYSTEM',
+      items: [
+        { name: 'Profile', icon: 'user' },
+        { name: 'Notifications', icon: 'bell' },
+        { name: 'Appearance', icon: 'sun' },
+      ],
+    },
+    {
+      group: 'POS SETTINGS',
+      items: [
+        { name: 'Print Category', icon: 'printer' },
+        { name: 'Token Settings', icon: 'ticket' },
+        { name: 'Parcel Items', icon: 'package' },
+        { name: 'Delivered Orders', icon: 'check-circle' },
+        { name: 'Stock In / Out', icon: 'arrow-right-left' },
+      ],
+    },
+    {
+      group: 'KITCHEN DISPLAY',
+      items: [{ name: 'KDS Settings', icon: 'monitor' }],
+    },
+  ]
+
+  return (
+    <div
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-white shadow-2xl overflow-hidden flex flex-col sm:flex-row h-[520px] text-left"
+      aria-hidden="true"
+    >
+      <div className="w-full sm:w-[240px] border-r border-navy-100 bg-navy-50 flex flex-col shrink-0 overflow-y-auto pt-4 pb-4">
+        {menu.map((section, idx) => (
+          <div key={idx} className="mb-6 px-3">
+            <h4 className="text-[11px] font-bold text-navy-400 mb-2 px-3 tracking-wider">
+              {section.group}
+            </h4>
+            <div className="space-y-1">
+              {section.items.map((item) => {
+                const isActive = activeTab === item.name
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => setActiveTab(item.name)}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-bold transition-all ${
+                      isActive
+                        ? 'bg-orange-50 text-orange-600'
+                        : 'text-navy-600 hover:bg-navy-100 hover:text-navy-900'
+                    }`}
+                  >
+                    <Icon
+                      name={item.icon as any}
+                      size={16}
+                      className={isActive ? 'text-orange-500' : 'text-navy-400'}
+                    />
+                    {item.name}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex-1 bg-white p-6 sm:p-8 overflow-y-auto">
+        {activeTab === 'Appearance' && (
+          <div className="animate-in fade-in duration-300">
+            <h3 className="text-[20px] font-display font-bold text-navy-900 mb-1">Appearance</h3>
+            <p className="text-[14px] text-navy-500 mb-8">Theme and visual preferences</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {['Light', 'Dark', 'System'].map((theme) => (
+                <div
+                  key={theme}
+                  className={`border rounded-xl p-4 cursor-pointer transition-all ${theme === 'Light' ? 'border-orange-500 ring-1 ring-orange-500 bg-orange-50/20' : 'border-navy-200 hover:border-navy-300'}`}
+                >
+                  <div
+                    className={`h-24 rounded-lg mb-4 shadow-sm ${theme === 'Light' ? 'bg-white border border-navy-100' : theme === 'Dark' ? 'bg-navy-900' : 'bg-gradient-to-br from-white to-navy-900'}`}
+                  ></div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-[14px] text-navy-900">{theme}</span>
+                    {theme === 'Light' && (
+                      <div className="w-4 h-4 rounded-full bg-orange-500 shadow-sm border-2 border-white"></div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'Stock In / Out' && (
+          <div className="animate-in fade-in duration-300">
+            <h3 className="text-[20px] font-display font-bold text-navy-900 mb-1">
+              Stock Management
+            </h3>
+            <p className="text-[14px] text-navy-500 mb-8">
+              Instantly adjust inventory levels for menu items
+            </p>
+            <div className="space-y-4">
+              {FOOD_ITEMS.slice(0, 4).map((item, i) => (
+                <div
+                  key={item.name}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-navy-100 rounded-xl hover:border-navy-300 transition-colors bg-white shadow-sm gap-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="w-12 h-12 rounded-lg object-cover border border-navy-100"
+                    />
+                    <div>
+                      <div className="font-bold text-navy-900 text-[15px]">{item.name}</div>
+                      <div
+                        className={`text-[12px] font-bold ${i === 2 ? 'text-red-500' : 'text-emerald-600'}`}
+                      >
+                        {i === 2 ? 'Out of Stock' : `Current Stock: ${45 - i * 10}`}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button className="flex-1 sm:flex-none px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-[13px] font-bold transition-colors">
+                      - Out
+                    </button>
+                    <button className="flex-1 sm:flex-none px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg text-[13px] font-bold transition-colors">
+                      + In
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab !== 'Appearance' && activeTab !== 'Stock In / Out' && (
+          <div className="h-full flex flex-col items-center justify-center opacity-40 animate-in fade-in duration-300">
+            <Icon name="settings-2" size={48} className="text-navy-400 mb-4" />
+            <h3 className="text-[18px] font-bold text-navy-600">{activeTab} Settings</h3>
+            <p className="text-[14px] text-navy-500 mt-2">
+              Configuration for {activeTab.toLowerCase()} will appear here.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function PremiumAnalyticsUi() {
   return (
     <div

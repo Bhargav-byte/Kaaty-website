@@ -5,6 +5,7 @@ import {
   PremiumKdsUi,
   PremiumStockUi,
   PremiumAnalyticsUi,
+  PremiumSettingsUi,
   TimelineUi,
 } from './PosUiMockups'
 
@@ -288,36 +289,52 @@ export function KaatyPosPage() {
             <PremiumAnalyticsUi />
           </div>
 
-          <div className="mt-16 pt-16 border-t border-navy-800 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="font-display text-[28px] font-bold text-white mb-4">
+          <div className="mt-16 pt-16 border-t border-navy-800">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <h3 className="font-display text-[28px] sm:text-[32px] font-bold text-white mb-4">
                 Complete Configuration
               </h3>
-              <p className="text-navy-300 text-[16px] leading-relaxed mb-6">
+              <p className="text-navy-300 text-[16px] sm:text-[18px] leading-relaxed">
                 Kaaty adapts to your workflow, not the other way around. Access powerful POS
                 settings directly from the profile menu.
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-[15px] text-navy-200">
-                  <Icon name="check" size={18} className="text-kaaty-500" /> Customize Light, Dark,
-                  or System visual themes.
-                </li>
-                <li className="flex items-center gap-3 text-[15px] text-navy-200">
-                  <Icon name="check" size={18} className="text-kaaty-500" /> Configure dedicated
-                  print categories and KDS routing.
-                </li>
-                <li className="flex items-center gap-3 text-[15px] text-navy-200">
-                  <Icon name="check" size={18} className="text-kaaty-500" /> Toggle token generation
-                  logic and parcel behaviors.
-                </li>
-              </ul>
             </div>
-            <div className="bg-navy-800 rounded-2xl p-4 border border-navy-700 shadow-xl">
-              <img
-                src="/screenshots/pos-settings.png"
-                alt="POS Configuration Settings"
-                className="w-full rounded-xl opacity-90"
-              />
+
+            <div className="mb-12">
+              <PremiumSettingsUi />
+            </div>
+
+            <div className="max-w-5xl mx-auto grid sm:grid-cols-2 gap-6">
+              <div className="flex items-start gap-3 bg-navy-800/50 p-5 rounded-xl border border-navy-700">
+                <Icon name="check" size={20} className="text-kaaty-500 shrink-0 mt-0.5" />
+                <span className="text-[15px] text-navy-200">
+                  <strong className="text-white block mb-1">Stock In / Out</strong>
+                  Automate inventory tracking with instant stock adjustments right from the counter.
+                </span>
+              </div>
+              <div className="flex items-start gap-3 bg-navy-800/50 p-5 rounded-xl border border-navy-700">
+                <Icon name="check" size={20} className="text-kaaty-500 shrink-0 mt-0.5" />
+                <span className="text-[15px] text-navy-200">
+                  <strong className="text-white block mb-1">Token Settings</strong>
+                  Configure auto-timing, token generation logic, and KOT lifecycles for the kitchen.
+                </span>
+              </div>
+              <div className="flex items-start gap-3 bg-navy-800/50 p-5 rounded-xl border border-navy-700">
+                <Icon name="check" size={20} className="text-kaaty-500 shrink-0 mt-0.5" />
+                <span className="text-[15px] text-navy-200">
+                  <strong className="text-white block mb-1">Print & KDS Routing</strong>
+                  Map specific food categories to dedicated chef screens or thermal printers
+                  instantly.
+                </span>
+              </div>
+              <div className="flex items-start gap-3 bg-navy-800/50 p-5 rounded-xl border border-navy-700">
+                <Icon name="check" size={20} className="text-kaaty-500 shrink-0 mt-0.5" />
+                <span className="text-[15px] text-navy-200">
+                  <strong className="text-white block mb-1">Parcel & Delivered Logs</strong>
+                  Set custom packaging rules and access complete historical logs of delivered
+                  orders.
+                </span>
+              </div>
             </div>
           </div>
         </Container>
