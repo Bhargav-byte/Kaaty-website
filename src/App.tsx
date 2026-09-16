@@ -10,6 +10,7 @@ import { IndustrySolutionPage } from './components/IndustrySolutionPage'
 import { KaatyPosPage } from './components/KaatyPosPage'
 import { KaatyKdsPage } from './components/KaatyKdsPage'
 import { KaatySelfKioskPage } from './components/KaatySelfKioskPage'
+import { KaatyTokenBoardPage } from './components/KaatyTokenBoardPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -4266,6 +4267,11 @@ function renderRoute(pathname: string) {
     if (prodSlug === 'kiosk') {
       trackEvent('product_page_view', { product_slug: 'kiosk' })
       return <KaatySelfKioskPage />
+    }
+
+    if (prodSlug === 'token-board') {
+      trackEvent('product_page_view', { product_slug: 'token-board' })
+      return <KaatyTokenBoardPage />
     }
 
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
