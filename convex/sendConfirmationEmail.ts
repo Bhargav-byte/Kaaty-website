@@ -39,6 +39,7 @@ export const sendConfirmationEmail = action({
           .summary-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 12px; }
           .cta-box { background: #fff7ed; border: 1px solid #ffedd5; border-radius: 14px; padding: 18px; text-align: center; margin-top: 24px; }
           .cta-text { font-size: 14px; font-weight: 600; color: #c2410c; margin: 0; }
+          .btn { display: block; width: 100%; text-align: center; background-color: #ea580c; color: #ffffff; padding: 14px 0; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; margin-top: 24px; box-sizing: border-box; }
           .footer { text-align: center; padding: 24px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; }
         </style>
       </head>
@@ -66,6 +67,8 @@ export const sendConfirmationEmail = action({
                 ${args.message ? `<div><span style="color:#64748b">Message:</span> <em>${args.message}</em></div>` : ''}
               </div>
             </div>
+
+            <a href="https://www.kaaty.co.in" class="btn">Explore Kaaty features</a>
 
             <div class="cta-box">
               <p class="cta-text">Need immediate assistance? Call us directly at <strong>+91 93923 65308</strong></p>
