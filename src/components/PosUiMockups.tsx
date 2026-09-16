@@ -355,6 +355,30 @@ export function PremiumStockUi() {
 }
 
 export function PremiumKdsUi() {
+  const [activeTab, setActiveTab] = useState<'pending' | 'ready'>('pending')
+  const [justReady, setJustReady] = useState(false)
+
+  // Initial state mimicking a busy kitchen
+  const [orders, setOrders] = useState([
+    { id: 89, item: FOOD_ITEMS[0], time: '12:41', status: 'pending' },
+    { id: 88, item: FOOD_ITEMS[1], time: '12:42', status: 'pending' },
+    { id: 87, item: FOOD_ITEMS[2], time: '12:43', status: 'pending' },
+    { id: 86, item: FOOD_ITEMS[5], time: '12:35', status: 'ready' },
+  ])
+
+  const pendingOrders = orders.filter((o) => o.status === 'pending')
+  const readyOrders = orders.filter((o) => o.status === 'ready')
+
+  const markReady = (id: number) => {
+    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: 'ready' } : o)))
+    setJustReady(true)
+    setTimeout(() => setJustReady(false), 800)
+  }
+
+  const markPending = (id: number) => {
+    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: 'pending' } : o)))
+  }
+
   return (
     <div
       className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col h-[400px]"
@@ -364,12 +388,26 @@ export function PremiumKdsUi() {
         <div className="flex items-center gap-4">
           <h3 className="font-display font-bold text-[20px] text-navy-900">KDS</h3>
           <div className="flex gap-2">
-            <span className="px-3 py-1 bg-navy-900 text-white rounded-full text-[12px] font-bold shadow-sm">
-              Pending 46
-            </span>
-            <span className="px-3 py-1 bg-white border border-navy-200 text-navy-600 rounded-full text-[12px] font-bold shadow-sm">
-              Ready 1
-            </span>
+            <button
+              onClick={() => setActiveTab('pending')}
+              className={`px-3 py-1 rounded-full text-[12px] font-bold shadow-sm transition-all ${
+                activeTab === 'pending'
+                  ? 'bg-navy-900 text-white'
+                  : 'bg-white border border-navy-200 text-navy-600 hover:border-navy-400'
+              }`}
+            >
+              Pending {pendingOrders.length}
+            </button>
+            <button
+              onClick={() => setActiveTab('ready')}
+              className={`px-3 py-1 rounded-full text-[12px] font-bold shadow-sm transition-all ${
+                activeTab === 'ready'
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-white border border-navy-200 text-navy-600 hover:border-navy-400'
+              } ${justReady ? 'ring-4 ring-emerald-500/30 scale-105' : ''}`}
+            >
+              Ready {readyOrders.length}
+            </button>
           </div>
         </div>
         <div className="hidden sm:flex items-center gap-2">
@@ -377,42 +415,99 @@ export function PremiumKdsUi() {
           <span className="text-[13px] font-bold text-navy-600">12:34 PM</span>
         </div>
       </div>
-      <div className="flex-1 p-5 overflow-y-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl border border-navy-200 p-4 shadow-sm flex flex-col"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex gap-3 items-center">
-                  <img
-                    src={FOOD_ITEMS[0].img}
-                    alt="Food"
-                    className="w-10 h-10 rounded-lg object-cover shadow-sm"
-                  />
-                  <div>
-                    <h4 className="font-bold text-navy-900 text-[14px] leading-tight">
-                      {FOOD_ITEMS[0].name}
-                    </h4>
-                    <span className="text-[12px] font-mono text-red-500 font-bold">
-                      12:4{i} min ago
-                    </span>
+      <div className="flex-1 p-5 overflow-y-auto relative">
+        {activeTab === 'pending' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {pendingOrders.length === 0 && (
+              <div className="col-span-full flex flex-col items-center justify-center py-12 text-navy-400 opacity-60">
+                <Icon name="check-circle" size={48} className="mb-2 text-emerald-500" />
+                <span className="text-[14px] font-bold text-navy-600">All caught up!</span>
+              </div>
+            )}
+            {pendingOrders.map((order) => (
+              <div
+                key={order.id}
+                className="bg-white rounded-xl border border-navy-200 p-4 shadow-sm flex flex-col animate-in fade-in zoom-in-95 duration-200"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-3 items-center">
+                    <img
+                      src={order.item.img}
+                      alt="Food"
+                      className="w-10 h-10 rounded-lg object-cover shadow-sm"
+                    />
+                    <div>
+                      <h4 className="font-bold text-navy-900 text-[14px] leading-tight">
+                        {order.item.name}
+                      </h4>
+                      <span className="text-[12px] font-mono text-red-500 font-bold">
+                        {order.time} min ago
+                      </span>
+                    </div>
                   </div>
+                  <div className="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></div>
                 </div>
-                <div className="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></div>
+                <div className="mb-4">
+                  <span className="font-display font-black text-[28px] text-navy-900 leading-none">
+                    #{order.id}
+                  </span>
+                </div>
+                <button
+                  onClick={() => markReady(order.id)}
+                  className="mt-auto w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold py-2.5 rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all"
+                >
+                  <Icon name="check" size={16} /> READY
+                </button>
               </div>
-              <div className="mb-4">
-                <span className="font-display font-black text-[28px] text-navy-900 leading-none">
-                  #{90 - i}
-                </span>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'ready' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {readyOrders.length === 0 && (
+              <div className="col-span-full flex flex-col items-center justify-center py-12 text-navy-400 opacity-60">
+                <span className="text-[14px] font-bold">No ready orders</span>
               </div>
-              <button className="mt-auto w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow-sm flex items-center justify-center gap-2 transition-colors">
-                <Icon name="check" size={16} /> READY
-              </button>
-            </div>
-          ))}
-        </div>
+            )}
+            {readyOrders.map((order) => (
+              <div
+                key={order.id}
+                className="bg-emerald-50 rounded-xl border border-emerald-200 p-4 shadow-sm flex flex-col animate-in fade-in slide-in-from-left-4 duration-300"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-3 items-center">
+                    <img
+                      src={order.item.img}
+                      alt="Food"
+                      className="w-10 h-10 rounded-lg object-cover shadow-sm opacity-80"
+                    />
+                    <div>
+                      <h4 className="font-bold text-emerald-900 text-[14px] leading-tight">
+                        {order.item.name}
+                      </h4>
+                      <span className="text-[12px] font-mono text-emerald-700 font-bold">
+                        Marked ready
+                      </span>
+                    </div>
+                  </div>
+                  <Icon name="check-circle-2" size={18} className="text-emerald-500" />
+                </div>
+                <div className="mb-4">
+                  <span className="font-display font-black text-[28px] text-emerald-800 leading-none">
+                    #{order.id}
+                  </span>
+                </div>
+                <button
+                  onClick={() => markPending(order.id)}
+                  className="mt-auto w-full bg-white border border-emerald-200 hover:bg-emerald-100 active:scale-95 text-emerald-700 font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-[13px]"
+                >
+                  <Icon name="rotate-ccw" size={14} /> UNDO
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
