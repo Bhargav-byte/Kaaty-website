@@ -375,8 +375,8 @@ export function PremiumKdsUi() {
     setTimeout(() => setJustReady(false), 800)
   }
 
-  const markPending = (id: number) => {
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: 'pending' } : o)))
+  const markDelivered = (id: number) => {
+    setOrders((prev) => prev.filter((o) => o.id !== id))
   }
 
   return (
@@ -499,10 +499,10 @@ export function PremiumKdsUi() {
                   </span>
                 </div>
                 <button
-                  onClick={() => markPending(order.id)}
-                  className="mt-auto w-full bg-white border border-emerald-200 hover:bg-emerald-100 active:scale-95 text-emerald-700 font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-[13px]"
+                  onClick={() => markDelivered(order.id)}
+                  className="mt-auto w-full bg-white border border-red-200 hover:bg-red-50 active:scale-95 text-red-600 font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all text-[13px]"
                 >
-                  <Icon name="rotate-ccw" size={14} /> UNDO
+                  <Icon name="check" size={14} /> DELIVER
                 </button>
               </div>
             ))}
