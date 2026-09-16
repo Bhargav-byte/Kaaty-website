@@ -709,15 +709,15 @@ export function PremiumAnalyticsUi() {
         <div className="mt-4 flex gap-6 text-[12px]">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-emerald-500 rounded-sm"></div>
-            <span className="text-navy-600 font-medium">Profit</span>
+            <span className="text-navy-600 font-medium">Profit (40%)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-navy-300 rounded-sm"></div>
-            <span className="text-navy-600 font-medium">Food Cost (44%)</span>
+            <span className="text-navy-600 font-medium">Food Cost (50%)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-navy-400 rounded-sm"></div>
-            <span className="text-navy-600 font-medium">Packaging (8%)</span>
+            <span className="text-navy-600 font-medium">Packaging (10%)</span>
           </div>
         </div>
       </div>
