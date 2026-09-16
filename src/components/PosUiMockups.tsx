@@ -1,98 +1,390 @@
 import { Icon } from './Icon'
 
-// CSS Mockup for Token/Order Workflow
-export function TokenWorkflowUi() {
+// Premium Food Data for Marketing Mockups
+const FOOD_ITEMS = [
+  {
+    name: 'Premium Burger',
+    price: '249.00',
+    img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80',
+    available: true,
+    qty: 45,
+  },
+  {
+    name: 'Crispy Fries',
+    price: '149.00',
+    img: 'https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=300&q=80',
+    available: true,
+    qty: 120,
+  },
+  {
+    name: 'Iced Latte',
+    price: '199.00',
+    img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=300&q=80',
+    available: true,
+    qty: 85,
+  },
+  {
+    name: 'Classic Dosa',
+    price: '120.00',
+    img: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80',
+    available: true,
+    qty: 30,
+  },
+  {
+    name: 'Chicken Biryani',
+    price: '299.00',
+    img: 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?auto=format&fit=crop&w=300&q=80',
+    available: false,
+    qty: 0,
+  },
+  {
+    name: 'Margherita Pizza',
+    price: '349.00',
+    img: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=300&q=80',
+    available: true,
+    qty: 15,
+  },
+]
+
+export function PremiumPosGridUi() {
   return (
     <div
-      className="w-full max-w-[280px] mx-auto overflow-hidden rounded-2xl border border-navy-200 bg-white shadow-xl flex flex-col"
+      className="w-full max-w-5xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col md:flex-row h-[500px]"
       aria-hidden="true"
     >
-      <div className="bg-white border-b border-navy-100 p-4">
-        <div className="w-full bg-kaaty-500 rounded-xl py-2.5 flex justify-center items-center text-white font-bold text-[14px]">
+      {/* Left Sidebar: Token Status */}
+      <div className="hidden md:flex flex-col w-[240px] bg-white border-r border-navy-200 p-4 shrink-0">
+        <div className="bg-kaaty-500 text-white rounded-lg py-2.5 px-4 font-bold text-[14px] text-center shadow-sm mb-4">
           Order Status
         </div>
+        <div className="flex-1 space-y-3 overflow-y-auto pr-1">
+          <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="font-display font-bold text-[16px] text-kaaty-500">92</span>
+              <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[10px] font-bold">
+                PREPARING
+              </span>
+            </div>
+            <Icon name="play" size={14} className="text-navy-300" />
+          </div>
+          <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="font-display font-bold text-[16px] text-kaaty-500">91</span>
+              <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 text-[10px] font-bold">
+                READY
+              </span>
+            </div>
+            <Icon name="play" size={14} className="text-navy-300" />
+          </div>
+          <div className="bg-white rounded-lg border border-navy-100 p-3 shadow-sm flex items-center justify-between opacity-60">
+            <div className="flex items-center gap-2">
+              <span className="font-display font-bold text-[16px] text-navy-400">90</span>
+              <span className="px-2 py-0.5 rounded bg-navy-50 text-navy-500 text-[10px] font-bold">
+                DELIVERED
+              </span>
+            </div>
+            <Icon name="check" size={14} className="text-navy-300" />
+          </div>
+        </div>
       </div>
-      <div className="p-3 bg-navy-50/50 flex-1 space-y-2">
-        <div className="bg-white rounded-lg border border-navy-100 p-3 flex justify-between items-center shadow-sm">
-          <div className="flex items-center gap-3">
-            <span className="font-display font-extrabold text-[18px] text-kaaty-500">92</span>
-            <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold tracking-wider">
-              PREPARING
-            </span>
+
+      {/* Main Area: Menu Grid */}
+      <div className="flex-1 flex flex-col p-4 bg-navy-50 overflow-hidden">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-bold text-navy-900 text-[18px]">Menu Items</h3>
+          <div className="flex gap-2">
+            <div className="px-3 py-1.5 bg-white border border-navy-200 rounded-lg text-[13px] font-medium text-navy-600">
+              All Categories
+            </div>
+            <div className="px-3 py-1.5 bg-white border border-navy-200 rounded-lg text-[13px] font-medium text-navy-600 flex items-center gap-2">
+              <Icon name="search" size={14} /> Search
+            </div>
           </div>
-          <Icon name="play" size={14} className="text-navy-300" />
         </div>
-        <div className="bg-white rounded-lg border border-navy-100 p-3 flex justify-between items-center shadow-sm">
-          <div className="flex items-center gap-3">
-            <span className="font-display font-extrabold text-[18px] text-kaaty-500">91</span>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold tracking-wider">
-              READY
-            </span>
-          </div>
-          <Icon name="play" size={14} className="text-navy-300" />
+        <div className="flex-1 overflow-y-auto grid grid-cols-2 lg:grid-cols-3 gap-3 pr-2 pb-4">
+          {FOOD_ITEMS.slice(0, 6).map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-xl border border-navy-200 p-2.5 flex flex-col shadow-sm relative group hover:border-kaaty-400 transition-colors"
+            >
+              <div className="aspect-[4/3] w-full rounded-lg overflow-hidden mb-3 relative bg-navy-50">
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className={`w-full h-full object-cover ${!item.available ? 'opacity-40 grayscale' : ''}`}
+                />
+                {item.available && (
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-sm ring-2 ring-white"></div>
+                )}
+                {!item.available && (
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-sm ring-2 ring-white"></div>
+                )}
+              </div>
+              <h4 className="font-bold text-navy-900 text-[14px] leading-tight truncate">
+                {item.name}
+              </h4>
+              <div className="mt-auto pt-2 flex items-center justify-between">
+                <span className="text-[13px] font-mono text-navy-600">₹{item.price}</span>
+                <button
+                  className={`px-2.5 py-1 rounded text-[11px] font-bold ${item.available ? 'bg-kaaty-500 text-white' : 'bg-navy-100 text-navy-400 cursor-not-allowed'}`}
+                >
+                  + Add Item
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="bg-white rounded-lg border border-navy-100 p-3 flex justify-between items-center shadow-sm opacity-60">
-          <div className="flex items-center gap-3">
-            <span className="font-display font-extrabold text-[18px] text-kaaty-500">90</span>
-            <span className="px-2 py-0.5 rounded-full bg-navy-100 text-navy-600 text-[10px] font-bold tracking-wider">
-              DELIVERED
-            </span>
+      </div>
+
+      {/* Right Sidebar: Cart */}
+      <div className="hidden lg:flex flex-col w-[280px] bg-white border-l border-navy-200 shrink-0 shadow-[-4px_0_15px_rgba(0,0,0,0.03)]">
+        <div className="p-4 border-b border-navy-100 flex justify-between items-center">
+          <h3 className="font-bold text-navy-900 text-[16px]">Your Cart</h3>
+          <Icon name="more-vertical" size={16} className="text-navy-400" />
+        </div>
+        <div className="flex-1 p-3 space-y-3 overflow-y-auto">
+          {/* Cart Item */}
+          <div className="bg-navy-50/50 rounded-lg p-2.5 border border-navy-100 flex gap-3 relative group">
+            <img src={FOOD_ITEMS[0].img} alt="Food" className="w-12 h-12 rounded object-cover" />
+            <div className="flex-1 min-w-0">
+              <h4 className="text-[13px] font-bold text-navy-900 truncate">{FOOD_ITEMS[0].name}</h4>
+              <p className="text-[12px] font-mono text-navy-600">₹{FOOD_ITEMS[0].price}</p>
+              <span className="inline-block mt-1 px-1.5 py-0.5 bg-white border border-navy-200 text-navy-500 text-[9px] uppercase font-bold rounded">
+                Parcel
+              </span>
+            </div>
+            <div className="flex flex-col justify-between items-end">
+              <Icon
+                name="trash-2"
+                size={14}
+                className="text-red-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              />
+              <div className="flex items-center gap-1.5 bg-white border border-navy-200 rounded px-1 py-0.5">
+                <span className="text-navy-400 text-[12px] cursor-pointer">-</span>
+                <span className="text-[12px] font-bold text-navy-900 w-3 text-center">2</span>
+                <span className="text-kaaty-500 text-[12px] cursor-pointer">+</span>
+              </div>
+            </div>
           </div>
-          <Icon name="check" size={14} className="text-navy-300" />
+        </div>
+        <div className="p-4 border-t border-navy-100 bg-white shadow-[0_-4px_15px_rgba(0,0,0,0.02)]">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-navy-600 text-[14px]">Total</span>
+            <span className="font-display font-bold text-[20px] text-navy-900">₹498.00</span>
+          </div>
+          <button className="w-full bg-kaaty-500 hover:bg-kaaty-600 text-white rounded-xl py-3 font-bold shadow-md transition-colors">
+            Place Order
+          </button>
         </div>
       </div>
     </div>
   )
 }
 
-// CSS Mockup for Payment Experience
-export function PaymentExperienceUi() {
+export function PremiumStockUi() {
   return (
     <div
-      className="w-full max-w-sm mx-auto overflow-hidden rounded-2xl border border-navy-200 bg-white shadow-xl"
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-white shadow-2xl overflow-hidden flex flex-col h-[400px]"
       aria-hidden="true"
     >
-      <div className="bg-navy-50 border-b border-navy-100 px-5 py-4 flex justify-between items-center">
-        <span className="font-bold text-navy-900 text-[15px]">Select Payment</span>
-        <span className="text-navy-400 text-[13px] font-mono">Total: ₹240</span>
-      </div>
-
-      <div className="p-5 space-y-3">
-        <button className="w-full flex items-center justify-between p-3 rounded-xl border-2 border-kaaty-500 bg-kaaty-50/50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-kaaty-600">
-              <Icon name="smartphone-nfc" size={16} />
-            </div>
-            <span className="font-bold text-navy-900">UPI / QR Code</span>
+      <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-navy-50/50">
+        <div className="flex gap-4">
+          <div className="text-center px-4 border-r border-navy-200">
+            <div className="text-[12px] text-navy-500 font-medium">Total Items</div>
+            <div className="font-display font-bold text-[20px] text-navy-900">105</div>
           </div>
-          <Icon name="check-circle-2" size={20} className="text-kaaty-500" />
-        </button>
-
-        <button className="w-full flex items-center justify-between p-3 rounded-xl border border-navy-200 bg-white hover:bg-navy-50 transition-colors">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-navy-50 text-navy-600 flex items-center justify-center">
-              <Icon name="banknote" size={16} />
-            </div>
-            <span className="font-bold text-navy-700">Cash</span>
+          <div className="text-center px-4 border-r border-navy-200">
+            <div className="text-[12px] text-emerald-600 font-medium">Available</div>
+            <div className="font-display font-bold text-[20px] text-emerald-700">93</div>
           </div>
+          <div className="text-center px-4">
+            <div className="text-[12px] text-red-500 font-medium">Out of Stock</div>
+            <div className="font-display font-bold text-[20px] text-red-600">12</div>
+          </div>
+        </div>
+        <button className="bg-red-500 text-white px-4 py-2 rounded-lg text-[13px] font-bold shadow-sm hidden sm:block">
+          Mark All Out of Stock
         </button>
       </div>
-
-      <div className="px-5 pb-5 pt-2">
-        <div className="w-full bg-kaaty-500 rounded-xl py-3.5 flex justify-center items-center gap-2 text-white font-bold shadow-md shadow-kaaty-500/20">
-          <span>Confirm ₹240 (UPI)</span>
+      <div className="flex-1 p-5 overflow-y-auto bg-navy-50">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {FOOD_ITEMS.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-xl border border-navy-200 p-3 flex flex-col shadow-sm relative"
+            >
+              <div className="absolute top-0 left-0 w-full p-2 flex justify-between z-10">
+                {item.available ? (
+                  <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-md">
+                    In Stock
+                  </span>
+                ) : (
+                  <span className="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-md">
+                    Out of Stock
+                  </span>
+                )}
+                <div
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-white ${item.available ? 'bg-emerald-500' : 'bg-red-500'}`}
+                >
+                  {item.available ? <Icon name="check" size={10} /> : <Icon name="x" size={10} />}
+                </div>
+              </div>
+              <div className="aspect-square w-full rounded-lg overflow-hidden mb-3 relative bg-navy-50">
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className={`w-full h-full object-cover ${!item.available ? 'opacity-40 grayscale' : ''}`}
+                />
+              </div>
+              <h4 className="font-bold text-navy-900 text-[13px] text-center truncate">
+                {item.name}
+              </h4>
+              <div className="mt-3 bg-navy-50 rounded-lg p-2 text-center border border-navy-100">
+                <span
+                  className={`font-display font-bold text-[18px] ${item.available ? 'text-emerald-600' : 'text-red-500'}`}
+                >
+                  {item.qty}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   )
 }
 
-// Visual for Timeline
+export function PremiumKdsUi() {
+  return (
+    <div
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-navy-50 shadow-2xl overflow-hidden flex flex-col h-[400px]"
+      aria-hidden="true"
+    >
+      <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-white">
+        <div className="flex items-center gap-4">
+          <h3 className="font-display font-bold text-[20px] text-navy-900">KDS</h3>
+          <div className="flex gap-2">
+            <span className="px-3 py-1 bg-navy-900 text-white rounded-full text-[12px] font-bold shadow-sm">
+              Pending 46
+            </span>
+            <span className="px-3 py-1 bg-white border border-navy-200 text-navy-600 rounded-full text-[12px] font-bold shadow-sm">
+              Ready 1
+            </span>
+          </div>
+        </div>
+        <div className="hidden sm:flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span className="text-[13px] font-bold text-navy-600">12:34 PM</span>
+        </div>
+      </div>
+      <div className="flex-1 p-5 overflow-y-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl border border-navy-200 p-4 shadow-sm flex flex-col"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex gap-3 items-center">
+                  <img
+                    src={FOOD_ITEMS[0].img}
+                    alt="Food"
+                    className="w-10 h-10 rounded-lg object-cover shadow-sm"
+                  />
+                  <div>
+                    <h4 className="font-bold text-navy-900 text-[14px] leading-tight">
+                      {FOOD_ITEMS[0].name}
+                    </h4>
+                    <span className="text-[12px] font-mono text-red-500 font-bold">
+                      12:4{i} min ago
+                    </span>
+                  </div>
+                </div>
+                <div className="w-4 h-4 rounded bg-emerald-100 border border-emerald-300"></div>
+              </div>
+              <div className="mb-4">
+                <span className="font-display font-black text-[28px] text-navy-900 leading-none">
+                  #{90 - i}
+                </span>
+              </div>
+              <button className="mt-auto w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow-sm flex items-center justify-center gap-2 transition-colors">
+                <Icon name="check" size={16} /> READY
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function PremiumAnalyticsUi() {
+  return (
+    <div
+      className="w-full max-w-4xl mx-auto rounded-xl border border-navy-200 bg-white shadow-2xl p-6"
+      aria-hidden="true"
+    >
+      <div className="flex justify-between items-end mb-8">
+        <div>
+          <h3 className="font-bold text-navy-900 text-[18px]">Profit & Loss Summary</h3>
+          <p className="text-[13px] text-navy-500">
+            Comprehensive breakdown of revenue and profitability
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="bg-navy-50 rounded-xl p-4 border border-navy-100">
+          <span className="text-[12px] font-bold text-navy-500 uppercase tracking-wider">
+            Gross Revenue
+          </span>
+          <div className="mt-2 font-display font-bold text-[28px] text-navy-900">₹14,720</div>
+        </div>
+        <div className="bg-navy-50 rounded-xl p-4 border border-navy-100">
+          <span className="text-[12px] font-bold text-navy-500 uppercase tracking-wider">
+            Cost of Goods
+          </span>
+          <div className="mt-2 font-display font-bold text-[28px] text-red-500">₹8,832</div>
+        </div>
+        <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-200 shadow-sm">
+          <span className="text-[12px] font-bold text-emerald-700 uppercase tracking-wider">
+            Net Profit
+          </span>
+          <div className="mt-2 font-display font-bold text-[28px] text-emerald-600">₹5,888</div>
+        </div>
+      </div>
+
+      <div className="bg-navy-50 rounded-xl p-5 border border-navy-100">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-[14px] font-bold text-navy-900">Profit Margin</span>
+          <span className="font-display font-bold text-[24px] text-emerald-600">40%</span>
+        </div>
+        <div className="w-full h-3 bg-navy-200 rounded-full overflow-hidden">
+          <div className="h-full bg-emerald-500 rounded-full w-[40%]"></div>
+        </div>
+        <div className="mt-4 flex gap-6 text-[12px]">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-emerald-500 rounded-sm"></div>
+            <span className="text-navy-600 font-medium">Profit</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-navy-300 rounded-sm"></div>
+            <span className="text-navy-600 font-medium">Food Cost (44%)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-navy-400 rounded-sm"></div>
+            <span className="text-navy-600 font-medium">Packaging (8%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function TimelineUi() {
   return (
     <div className="w-full max-w-md mx-auto relative py-4">
       <div className="absolute left-[27px] top-8 bottom-8 w-[2px] bg-navy-100"></div>
-
       <div className="space-y-8 relative z-10">
         <div className="flex gap-4 items-start">
           <div className="w-14 shrink-0 text-right pt-1">
@@ -100,26 +392,24 @@ export function TimelineUi() {
           </div>
           <div className="w-4 h-4 rounded-full bg-white border-4 border-kaaty-500 shadow-sm mt-1 shrink-0"></div>
           <div className="flex-1 bg-white rounded-xl border border-navy-100 p-4 shadow-sm">
-            <h4 className="font-bold text-navy-900 text-[14px]">Order Received</h4>
+            <h4 className="font-bold text-navy-900 text-[14px]">Order Punched</h4>
             <p className="text-[13px] text-navy-600 mt-1">
-              Cashier enters 4 items into POS. Payment confirmed via UPI.
+              Cashier instantly enters a 6-item order via the POS grid.
             </p>
           </div>
         </div>
-
         <div className="flex gap-4 items-start">
           <div className="w-14 shrink-0 text-right pt-1">
             <span className="text-[12px] font-bold text-navy-900">12:31</span>
           </div>
           <div className="w-4 h-4 rounded-full bg-white border-2 border-navy-300 mt-1 shrink-0"></div>
           <div className="flex-1 bg-white rounded-xl border border-navy-100 p-4 shadow-sm">
-            <h4 className="font-bold text-navy-900 text-[14px]">Routed to KDS</h4>
+            <h4 className="font-bold text-navy-900 text-[14px]">Syncs to Kitchen</h4>
             <p className="text-[13px] text-navy-600 mt-1">
-              Token #92 appears instantly on Kitchen Display.
+              Token #92 routes automatically to the Kitchen Display (KDS).
             </p>
           </div>
         </div>
-
         <div className="flex gap-4 items-start">
           <div className="w-14 shrink-0 text-right pt-1">
             <span className="text-[12px] font-bold text-navy-900">12:35</span>
@@ -128,7 +418,7 @@ export function TimelineUi() {
           <div className="flex-1 bg-emerald-50 rounded-xl border border-emerald-200 p-4 shadow-sm">
             <h4 className="font-bold text-emerald-900 text-[14px]">Order Ready</h4>
             <p className="text-[13px] text-emerald-700 mt-1">
-              Kitchen taps "Ready". Counter staff and Token Board update instantly.
+              Kitchen taps "Ready". Counter POS alerts staff to hand over the food.
             </p>
           </div>
         </div>
