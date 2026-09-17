@@ -42,10 +42,8 @@ export function KaatyTokenBoardPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-900/60 to-transparent"></div>
                 {/* Floating Token Board UI overlay to simulate real screen */}
-                <div className="absolute top-1/4 left-[10%] right-[10%] shadow-2xl rounded border border-gray-700 transform -rotate-1 group-hover:rotate-0 transition-transform duration-700">
-                  <div className="pointer-events-none scale-[0.6] origin-top">
-                    <PremiumTokenBoardUi />
-                  </div>
+                <div className="absolute top-[10%] left-[10%] right-[10%] shadow-2xl rounded-xl border border-gray-700/50 transform -rotate-1 group-hover:rotate-0 transition-transform duration-700 overflow-hidden bg-white/90 backdrop-blur-sm">
+                  <PremiumTokenBoardUi compact={true} />
                 </div>
               </div>
             </div>
