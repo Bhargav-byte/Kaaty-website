@@ -2,6 +2,15 @@ import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
 export default defineSchema({
+  // Users & Website CMS Administrator Authentication
+  users: defineTable({
+    tokenIdentifier: v.string(),
+    name: v.optional(v.string()),
+    email: v.optional(v.string()),
+    role: v.string(), // 'admin' | 'super_admin'
+  }).index('by_token', ['tokenIdentifier']),
+
+  // Marketing: Demo Booking Leads
   demoRequests: defineTable({
     name: v.optional(v.string()),
     business: v.optional(v.string()),
@@ -13,11 +22,15 @@ export default defineSchema({
     status: v.optional(v.string()),
     submittedAt: v.number(),
   }),
+
+  // Marketing: Partner College Logos
   collegeLogos: defineTable({
     name: v.string(),
     icon: v.string(),
     order: v.number(),
   }),
+
+  // Marketing: Partner Integrations
   integrations: defineTable({
     name: v.string(),
     slug: v.string(),
@@ -27,6 +40,8 @@ export default defineSchema({
     dot: v.string(),
     order: v.number(),
   }),
+
+  // Marketing: Customer Testimonials
   testimonials: defineTable({
     brand: v.string(),
     icon: v.string(),

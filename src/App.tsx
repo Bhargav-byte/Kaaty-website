@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMutation, useQuery } from 'convex/react'
+import { useQuery } from 'convex/react'
 import { api } from '../convex/_generated/api'
 import { Icon } from './components/Icon'
 import { useRouter } from './lib/router'
@@ -3046,7 +3046,6 @@ type DemoFormData = {
 }
 
 function DemoForm() {
-  const submitToConvex = useMutation(api.demoRequests.submitDemoRequest)
   const [countryCode, setCountryCode] = React.useState('+91')
   const [countryDropdownOpen, setCountryDropdownOpen] = React.useState(false)
   const [countrySearch, setCountrySearch] = React.useState('')
@@ -3139,7 +3138,6 @@ function DemoForm() {
   const [loading, setLoading] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [err, setErr] = React.useState<Partial<Record<keyof DemoFormData, number>>>({})
-  const savePartialToConvex = useMutation(api.demoRequests.savePartial)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [partialId, setPartialId] = React.useState<any>(null)
 
@@ -3187,23 +3185,37 @@ function DemoForm() {
           }
         }
 
-        const id = await savePartialToConvex({
-          id: partialId || undefined,
-          name: form.name.trim() || undefined,
-          business: form.business.trim() || undefined,
-          phone: form.phone.trim() ? `${countryCode} ${form.phone.trim()}` : undefined,
-          email: form.email.trim() || undefined,
-          type: form.type || undefined,
-          message: form.message.trim() || undefined,
-          source: sourceStr,
+        // SECURITY: Partial saves also route through the Cloudflare Worker.
+        // The Worker forwards with X-Kaaty-Worker-Secret server-side.
+        const partialEndpoint = import.meta.env.VITE_DEMO_PARTIAL_INGRESS_URL || '/api/demo-partial'
+
+        const res = await fetch(partialEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: partialId || undefined,
+            name: form.name.trim() || undefined,
+            business: form.business.trim() || undefined,
+            phone: form.phone.trim() ? `${countryCode} ${form.phone.trim()}` : undefined,
+            email: form.email.trim() || undefined,
+            type: form.type || undefined,
+            message: form.message.trim() || undefined,
+            source: sourceStr,
+          }),
         })
-        if (id && !partialId) setPartialId(id)
+
+        if (res.ok) {
+          const data = await res.json()
+          if (data.id && !partialId) setPartialId(data.id)
+        }
       } catch {
         // Ignore partial save errors
       }
     }, 1500)
     return () => clearTimeout(timer)
-  }, [form, partialId, sent, countryCode, savePartialToConvex])
+  }, [form, partialId, sent, countryCode])
 
   const startedRef = React.useRef(false)
 
@@ -3272,16 +3284,33 @@ function DemoForm() {
     }
 
     try {
-      await submitToConvex({
-        id: partialId || undefined,
-        name: form.name.trim(),
-        business: form.business.trim(),
-        phone: `${countryCode} ${form.phone.trim()}`,
-        email: form.email.trim(),
-        type: form.type,
-        message: form.message.trim() || undefined,
-        source: sourceStr,
+      // SECURITY: Must call the Cloudflare Worker, never the Convex URL directly.
+      // Cloudflare Worker enforces: Turnstile + rate limiting + WORKER_SHARED_SECRET.
+      // The secret is held server-side in the Worker; the browser never sees it.
+      const ingressEndpoint = import.meta.env.VITE_DEMO_INGRESS_URL || '/api/demo-request'
+
+      const response = await fetch(ingressEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: partialId || undefined,
+          name: form.name.trim(),
+          business: form.business.trim(),
+          phone: `${countryCode} ${form.phone.trim()}`,
+          email: form.email.trim(),
+          type: form.type,
+          message: form.message.trim() || undefined,
+          source: sourceStr,
+        }),
       })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.error || 'Submission failed')
+      }
+
       trackEvent('demo_form_submit', { business_type: form.type })
       setSent(true)
     } catch {

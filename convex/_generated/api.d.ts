@@ -8,8 +8,10 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as collegeLogos from "../collegeLogos.js";
 import type * as demoRequests from "../demoRequests.js";
+import type * as http from "../http.js";
 import type * as integrations from "../integrations.js";
 import type * as sendConfirmationEmail from "../sendConfirmationEmail.js";
 import type * as testimonials from "../testimonials.js";
@@ -21,8 +23,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   collegeLogos: typeof collegeLogos;
   demoRequests: typeof demoRequests;
+  http: typeof http;
   integrations: typeof integrations;
   sendConfirmationEmail: typeof sendConfirmationEmail;
   testimonials: typeof testimonials;

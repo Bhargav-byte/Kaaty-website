@@ -1,8 +1,8 @@
-import { action } from './_generated/server'
+import { internalAction } from './_generated/server'
 import { v } from 'convex/values'
 import { Resend } from 'resend'
 
-export const sendConfirmationEmail = action({
+export const sendConfirmationEmail = internalAction({
   args: {
     name: v.string(),
     business: v.string(),
