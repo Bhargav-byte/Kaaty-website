@@ -218,11 +218,11 @@ export function KaatyMobileAppPage() {
                   aria-label="Get it on Google Play"
                 >
                   <img
-                    src="/images/badges/google-play-badge.png"
+                    src="/images/badges/google-play-badge.svg"
                     alt="Get it on Google Play"
-                    width={731}
-                    height={241}
-                    className="w-full h-auto object-contain rounded-xl"
+                    width={270}
+                    height={88}
+                    className="w-full h-auto object-contain"
                   />
                 </a>
                 <a
@@ -233,11 +233,11 @@ export function KaatyMobileAppPage() {
                   aria-label="Download on the App Store"
                 >
                   <img
-                    src="/images/badges/app-store-badge.png"
+                    src="/images/badges/app-store-badge.svg"
                     alt="Download on the App Store"
-                    width={731}
-                    height={241}
-                    className="w-full h-auto object-contain rounded-xl"
+                    width={270}
+                    height={88}
+                    className="w-full h-auto object-contain"
                   />
                 </a>
               </div>
