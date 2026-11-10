@@ -194,8 +194,8 @@ export function KaatyMobileAppPage() {
               </div>
             </div>
 
-            {/* Right Column: Dual Phone Showcase (Neatly contained with no edge overflow) */}
-            <div className="lg:col-span-5 relative z-10 flex justify-center items-center py-4 px-2 sm:px-6">
+            {/* Right Column: Dual Phone Showcase & Official Store Badges */}
+            <div className="lg:col-span-5 relative z-10 flex flex-col justify-center items-center py-4 px-2 sm:px-6">
               <div className="relative w-full max-w-[380px] mx-auto flex items-center justify-center">
                 {/* Secondary Background Phone (Order Tracking) */}
                 <div className="hidden sm:block absolute -right-4 top-6 scale-[0.85] opacity-80 rotate-3 transition-transform duration-500 filter drop-shadow-xl z-0 pointer-events-none">
@@ -206,6 +206,40 @@ export function KaatyMobileAppPage() {
                 <div className="relative z-10 filter drop-shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
                   <PremiumMobileAppUi initialScreen="home" />
                 </div>
+              </div>
+
+              {/* Official Store Badges (Directly Below Smartphone Mockup) */}
+              <div className="mt-7 flex items-center justify-center gap-3.5 w-full max-w-[340px]">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.nishanth2006.katty"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 transition-all duration-200 hover:scale-105 active:scale-95 drop-shadow-xs hover:drop-shadow-md"
+                  aria-label="Get it on Google Play"
+                >
+                  <img
+                    src="/images/badges/google-play-badge.png"
+                    alt="Get it on Google Play"
+                    width={731}
+                    height={241}
+                    className="w-full h-auto object-contain rounded-xl"
+                  />
+                </a>
+                <a
+                  href="https://apps.apple.com/in/app/kaaty/id6757310016"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 transition-all duration-200 hover:scale-105 active:scale-95 drop-shadow-xs hover:drop-shadow-md"
+                  aria-label="Download on the App Store"
+                >
+                  <img
+                    src="/images/badges/app-store-badge.png"
+                    alt="Download on the App Store"
+                    width={731}
+                    height={241}
+                    className="w-full h-auto object-contain rounded-xl"
+                  />
+                </a>
               </div>
             </div>
           </div>
