@@ -626,6 +626,24 @@ export function KaatyMobileAppPage() {
 
               <div className="pt-2">
                 <div className="w-full py-3 px-4 rounded-2xl bg-navy text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm group-hover:bg-black transition-colors">
+                  <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 512 512" aria-hidden="true">
+                    <path
+                      fill="#00C3FF"
+                      d="M32.5 24.3C27 30.1 24 38.6 24 49.5v413c0 10.9 3 19.4 8.5 25.2l232-232L32.5 24.3z"
+                    />
+                    <path
+                      fill="#00E676"
+                      d="M341.2 328.7l-76.7-76.7-232 232c7.7 8.2 20.5 9.2 34.6 1.4l274.1-156.7z"
+                    />
+                    <path
+                      fill="#FF334C"
+                      d="M341.2 183.3L67.1 26.6C53 18.8 40.2 19.8 32.5 28l232 232 76.7-76.7z"
+                    />
+                    <path
+                      fill="#FFD400"
+                      d="M485.4 240.2l-144.2-82.5-68.7 68.7 68.7 68.7 144.2-82.5c15.2-8.7 15.2-22.9 0-31.6z"
+                    />
+                  </svg>
                   <span>Get it on Google Play</span>
                   <Icon
                     name="arrow-right"
@@ -646,13 +664,13 @@ export function KaatyMobileAppPage() {
               <div>
                 <div className="flex items-center justify-between mb-5">
                   <div className="w-13 h-13 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center p-2.5 shadow-xs group-hover:scale-105 transition-transform">
-                    {/* Apple Vector Logo */}
+                    {/* Official Pixel-Perfect Apple Vector Logo */}
                     <svg
                       className="w-7 h-7 fill-current text-navy group-hover:text-black transition-colors"
-                      viewBox="0 0 170 170"
+                      viewBox="0 0 24 24"
                       aria-hidden="true"
                     >
-                      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.74 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.6-7.77-11.7-14.19-5.77-9.01-10.36-19.16-13.77-30.45-3.41-11.29-5.11-22.18-5.11-32.66 0-14.22 3.66-26.04 10.98-35.45 7.32-9.41 16.59-14.28 27.81-14.62 5.03 0 10.63 1.34 16.8 4.02 6.17 2.68 10.28 4.11 12.33 4.29 1.79 0 6.08-1.57 12.87-4.7 6.79-3.13 12.69-4.47 17.7-4.02 13.06.9 23.36 5.66 30.9 14.28-11.39 6.93-16.97 16.48-16.75 28.66.22 9.62 3.97 17.55 11.24 23.79 7.27 6.24 15.93 9.77 25.99 10.59-2.23 6.7-4.91 13.62-8.03 20.76zM119.22 33.36c0-7.38 2.64-14.12 7.92-20.22 5.28-6.1 11.83-9.92 19.65-11.46.22 1.12.34 2.24.34 3.36 0 7.39-2.73 14.3-8.19 20.74-5.46 6.44-12.08 10.29-19.86 11.56-.11-1.34-.17-2.68-.17-3.98z" />
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 1.01-2.87-.96.04-2.16.65-2.84 1.44-.59.69-1.11 1.76-1.01 2.82 1.07.08 2.21-.57 2.84-1.39z" />
                     </svg>
                   </div>
                   <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-bold border border-blue-200/60">
@@ -671,6 +689,13 @@ export function KaatyMobileAppPage() {
 
               <div className="pt-2">
                 <div className="w-full py-3 px-4 rounded-2xl bg-navy text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm group-hover:bg-black transition-colors">
+                  <svg
+                    className="w-3.5 h-3.5 fill-white shrink-0"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 1.01-2.87-.96.04-2.16.65-2.84 1.44-.59.69-1.11 1.76-1.01 2.82 1.07.08 2.21-.57 2.84-1.39z" />
+                  </svg>
                   <span>Download on App Store</span>
                   <Icon
                     name="arrow-right"
