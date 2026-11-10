@@ -76,9 +76,9 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/mobile-app': {
-    title: 'Kaaty Mobile Ordering — Direct-to-Consumer Campus & Food App',
+    title: "Kaaty Mobile App — Your Food Business, Right in Your Customers' Hands",
     description:
-      'Allow customers and students to browse menus, order ahead, and receive live pickup notifications from their phone.',
+      'Give customers a convenient way to explore your menu, place orders, and follow their order status through a branded Kaaty mobile ordering experience.',
     canonical: `${BASE_URL}/products/mobile-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },

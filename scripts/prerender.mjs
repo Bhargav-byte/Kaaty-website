@@ -115,6 +115,12 @@ const ROUTE_CONTENT = {
       'Zero paper lost, color-coded prep timers, station routing, and live bump bars to keep kitchen stations aligned.',
     cta: 'Explore KDS',
   },
+  '/products/mobile-app': {
+    heading: 'Kaaty Mobile App — Your Food Business, Right in Your Customers’ Hands',
+    subheading:
+      'Give customers a convenient way to explore your menu, place orders and follow their order status through a branded Kaaty mobile experience.',
+    cta: 'Book a Free Demo',
+  },
   '/integrations/razorpay': {
     heading: 'Razorpay Integration — Seamless Payments for Kaaty',
     subheading:

@@ -11,6 +11,7 @@ import { KaatyPosPage } from './components/KaatyPosPage'
 import { KaatyKdsPage } from './components/KaatyKdsPage'
 import { KaatySelfKioskPage } from './components/KaatySelfKioskPage'
 import { KaatyTokenBoardPage } from './components/KaatyTokenBoardPage'
+import { KaatyMobileAppPage } from './components/KaatyMobileAppPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -360,41 +361,53 @@ const PRODUCTS = {
     icon: 'smartphone',
     group: 'Customer Experience',
     visual: 'phone',
-    title: 'Let customers order before they arrive',
-    sub: 'A branded native ordering app with live tracking and push notifications that eliminate customer lines entirely.',
+    title: "Your food business, right in your customers' hands",
+    sub: 'Give customers a convenient way to explore your menu, place orders and follow their order status through a branded Kaaty mobile experience.',
     features: [
       {
-        title: 'Your own branded app',
+        title: 'Branded ordering experience',
         mock: 'phone',
-        desc: 'A customer ordering channel that puts your brand front and centre.',
-        points: ['Responsive digital menus with images.', 'Commission-free, direct-to-you orders.'],
+        desc: 'A customer ordering channel that puts your food business front and centre.',
+        points: [
+          'Responsive visual digital menus with images.',
+          'Campus and venue location selection.',
+        ],
       },
       {
-        title: 'Real-time order tracking',
+        title: 'Live order tracking',
         mock: 'phone',
         desc: 'Keep customers informed at every stage automatically.',
-        points: ['Placed → Preparing → Ready updates.', 'Accurate, live pickup countdowns.'],
+        points: [
+          'Ordered → Preparing → Ready → Delivered timeline.',
+          'Direct sync with kitchen display tokens.',
+        ],
       },
       {
-        title: 'Push notifications',
+        title: 'Visual digital menu',
         mock: 'phone',
-        desc: 'Ping customers the exact second an order is ready.',
-        points: ['Order-ready and offer notifications.', 'Win-back nudges for lapsed customers.'],
+        desc: 'Present food categories, photos, and dietary tags clearly.',
+        points: [
+          'Breakfast, lunch, snacks, and beverage categories.',
+          'Veg and non-veg dietary badges on every item.',
+        ],
       },
       {
-        title: 'Secure digital payments',
-        mock: 'business',
-        desc: 'Direct integration with modern payment rails.',
-        points: ['UPI, cards and wallets supported.', 'Pre-paid wallet for quick checkout.'],
+        title: 'Order history & receipts',
+        mock: 'phone',
+        desc: 'Instant access to past tokens and account details.',
+        points: [
+          'Track live orders or review past receipts.',
+          'Personalized customer profile with order stats.',
+        ],
       },
     ],
     benefits: [
-      { icon: 'smartphone', label: 'Native iOS & Android' },
-      { icon: 'bell', label: 'Push notifications' },
-      { icon: 'map-pin', label: 'Live tracking' },
-      { icon: 'wallet', label: 'Pre-paid wallet' },
-      { icon: 'palette', label: 'Fully branded' },
-      { icon: 'percent', label: 'Zero commission' },
+      { icon: 'smartphone', label: 'Mobile ordering' },
+      { icon: 'map-pin', label: 'Live order tracking' },
+      { icon: 'utensils', label: 'Visual menu' },
+      { icon: 'file-text', label: 'Digital tokens' },
+      { icon: 'palette', label: 'Branded identity' },
+      { icon: 'chef-hat', label: 'Kitchen synced' },
     ],
   },
 
@@ -4301,6 +4314,11 @@ function renderRoute(pathname: string) {
     if (prodSlug === 'token-board') {
       trackEvent('product_page_view', { product_slug: 'token-board' })
       return <KaatyTokenBoardPage />
+    }
+
+    if (prodSlug === 'mobile-app') {
+      trackEvent('product_page_view', { product_slug: 'mobile-app' })
+      return <KaatyMobileAppPage />
     }
 
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {

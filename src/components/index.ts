@@ -1,3 +1,5 @@
 export * from './KaatyKdsPage'
 export * from './KaatySelfKioskPage'
 export * from './KaatyTokenBoardPage'
+export * from './KaatyMobileAppPage'
+export * from './MobileAppUiMockups'
