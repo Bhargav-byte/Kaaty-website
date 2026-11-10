@@ -121,6 +121,12 @@ const ROUTE_CONTENT = {
       'Give customers a convenient way to explore your menu, place orders and follow their order status through a branded Kaaty mobile experience.',
     cta: 'Book a Free Demo',
   },
+  '/products/qr-ordering': {
+    heading: 'Kaaty QR Ordering — Scan. Order. Enjoy.',
+    subheading:
+      'Let guests order from their table with a simple scan — fewer steps between choosing a meal and placing an order.',
+    cta: 'Book a Free Demo',
+  },
   '/integrations/razorpay': {
     heading: 'Razorpay Integration — Seamless Payments for Kaaty',
     subheading:

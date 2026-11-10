@@ -104,9 +104,9 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/qr-ordering': {
-    title: 'Kaaty QR Ordering — Dine-In & Self-Service Mobile Menus',
+    title: 'Kaaty QR Ordering — Scan. Order. Enjoy.',
     description:
-      'Instant camera scan with no app install required. Boost ticket sizes with photo menus, item modifiers, and instant UPI checkout.',
+      'Let guests order from their table with a simple scan — explore digital menus, place orders, and pay directly from smartphone browsers with zero app installation required.',
     canonical: `${BASE_URL}/products/qr-ordering`,
     ogImage: DEFAULT_OG_IMAGE,
   },

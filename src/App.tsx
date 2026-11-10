@@ -12,6 +12,7 @@ import { KaatyKdsPage } from './components/KaatyKdsPage'
 import { KaatySelfKioskPage } from './components/KaatySelfKioskPage'
 import { KaatyTokenBoardPage } from './components/KaatyTokenBoardPage'
 import { KaatyMobileAppPage } from './components/KaatyMobileAppPage'
+import { KaatyQrOrderingPage } from './components/KaatyQrOrderingPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -546,7 +547,7 @@ const PRODUCTS = {
     group: 'Customer Experience',
     visual: 'qr',
     title: 'Scan. Order. Enjoy.',
-    sub: 'Let guests order from their table with a simple scan — fewer lines, faster turns, and higher ticket values.',
+    sub: 'Let guests order from their table with a simple scan — fewer steps between choosing a meal and placing an order.',
     features: [
       {
         title: 'Scan-to-order in seconds',
@@ -561,21 +562,21 @@ const PRODUCTS = {
         points: ['Self-service from tables and benches.', 'Staff freed up to serve.'],
       },
       {
-        title: 'Smart upsell',
+        title: 'Table-aware ordering',
         mock: 'qr',
-        desc: 'Automated recommendations lift average order value.',
-        points: ['Add-on and combo prompts.', 'Most-loved item suggestions.'],
+        desc: 'Automated table detection links tickets to the right dining area.',
+        points: ['Table-specific QR stand.', 'Direct KDS station routing.'],
       },
       {
         title: 'Live table management',
         mock: 'business',
         desc: 'See every table orders and status in real time.',
-        points: ['Table-wise order history.', 'Merge, move and split with ease.'],
+        points: ['Table-wise order history.', 'Instant status sync with POS.'],
       },
     ],
     benefits: [
       { icon: 'qr-code', label: 'No app needed' },
-      { icon: 'trending-up', label: '+ ticket value' },
+      { icon: 'smartphone', label: 'In-browser menu' },
       { icon: 'users', label: 'Less crowding' },
       { icon: 'utensils-crossed', label: 'Table-aware' },
       { icon: 'zap', label: 'Instant to kitchen' },
@@ -4319,6 +4320,11 @@ function renderRoute(pathname: string) {
     if (prodSlug === 'mobile-app') {
       trackEvent('product_page_view', { product_slug: 'mobile-app' })
       return <KaatyMobileAppPage />
+    }
+
+    if (prodSlug === 'qr-ordering') {
+      trackEvent('product_page_view', { product_slug: 'qr-ordering' })
+      return <KaatyQrOrderingPage />
     }
 
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
