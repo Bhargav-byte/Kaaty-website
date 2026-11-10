@@ -27,26 +27,26 @@ export function KaatyMobileAppPage() {
     {
       id: 1,
       num: '02',
-      title: 'ORDER',
-      desc: 'Customers select their items, customize their meal, and place their order directly.',
+      title: 'SELECT DISHES',
+      desc: 'Customers choose dishes, view instant prices, and add items into their live cart.',
       screen: 'menu',
-      icon: 'shopping-bag',
+      icon: 'utensils',
     },
     {
       id: 2,
       num: '03',
-      title: 'TRACK',
-      desc: 'Customers follow order progress in real time through Ordered, Preparing, and Ready stages.',
-      screen: 'tracking',
-      icon: 'timer',
+      title: 'CART & CHECKOUT',
+      desc: 'Review selected dishes, adjust quantities, choose payment method, and place the order.',
+      screen: 'cart',
+      icon: 'shopping-bag',
     },
     {
       id: 3,
       num: '04',
-      title: 'PICK UP',
-      desc: 'Customers collect their food smoothly at the counter when their token is marked ready.',
-      screen: 'orders',
-      icon: 'check-circle-2',
+      title: 'TRACK & PICK UP',
+      desc: 'Follow live kitchen status: Ordered → Preparing → Ready. Pick up smoothly when ready.',
+      screen: 'tracking',
+      icon: 'timer',
     },
   ]
 
@@ -77,8 +77,20 @@ export function KaatyMobileAppPage() {
       features: [
         'Category-based navigation and dietary badges',
         'Real prices and high-resolution food imagery',
-        'Quick item addition with clear cart summary',
-        'Clean direct handoff to order placement',
+        'Quick item addition with quantity adjustment controls',
+        'Clear cart indicator bar with direct review handoff',
+      ],
+    },
+    {
+      id: 'cart',
+      label: 'Cart & Checkout',
+      title: 'Cart, Quantities & Payment',
+      desc: 'Full interactive cart allowing customers to modify quantities, remove items, review the bill breakdown, and choose from supported campus payment methods.',
+      features: [
+        'Full itemized list with instant subtotal and tax calculation',
+        'Quantity increment/decrement and item removal controls',
+        'Supported payment options (UPI / QR, Student ID Card, Counter Pay)',
+        'Simulated one-tap payment leading to order confirmation',
       ],
     },
     {
@@ -125,7 +137,6 @@ export function KaatyMobileAppPage() {
           1. HERO SECTION
           ========================================================================= */}
       <section className="relative overflow-hidden bg-gradient-to-b from-orange-50/40 via-white to-white pt-12 pb-20 lg:pt-20 lg:pb-32">
-        {/* Subtle decorative background glow */}
         <div className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-orange-400/10 blur-3xl" />
         <div className="pointer-events-none absolute top-40 -left-20 h-80 w-80 rounded-full bg-blue-400/5 blur-3xl" />
 
@@ -183,16 +194,16 @@ export function KaatyMobileAppPage() {
               </div>
             </div>
 
-            {/* Right Column: Dual Phone Showcase */}
-            <div className="lg:col-span-5 relative z-10 flex justify-center items-center">
-              <div className="relative w-full max-w-[420px] mx-auto flex items-center justify-center">
+            {/* Right Column: Dual Phone Showcase (Neatly contained with no edge overflow) */}
+            <div className="lg:col-span-5 relative z-10 flex justify-center items-center py-4 px-2 sm:px-6">
+              <div className="relative w-full max-w-[380px] mx-auto flex items-center justify-center">
                 {/* Secondary Background Phone (Order Tracking) */}
-                <div className="hidden sm:block absolute -right-6 top-6 scale-[0.88] opacity-85 rotate-6 hover:rotate-2 hover:opacity-100 transition-all duration-500 filter drop-shadow-2xl z-0 pointer-events-none">
+                <div className="hidden sm:block absolute -right-4 top-6 scale-[0.85] opacity-80 rotate-3 transition-transform duration-500 filter drop-shadow-xl z-0 pointer-events-none">
                   <PremiumMobileAppUi initialScreen="tracking" compact={true} />
                 </div>
 
                 {/* Primary Foreground Phone (Home Screen - Interactive) */}
-                <div className="relative z-10 filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.18)]">
+                <div className="relative z-10 filter drop-shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
                   <PremiumMobileAppUi initialScreen="home" />
                 </div>
               </div>
@@ -317,7 +328,7 @@ export function KaatyMobileAppPage() {
           <SectionHead
             eyebrow="The Workflow"
             title="From browsing to pickup, all in one app."
-            sub="Tap any step to see how the customer experience unfolds inside the application."
+            sub="Tap any step to see how the customer journey unfolds inside the application."
             align="center"
           />
 
@@ -368,7 +379,7 @@ export function KaatyMobileAppPage() {
             </div>
 
             {/* Interactive Phone Mockup Synchronized to Step */}
-            <div className="lg:col-span-5 flex justify-center">
+            <div className="lg:col-span-5 flex justify-center py-2">
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-r from-orange-100 to-amber-50 rounded-[54px] -z-10 blur-xl opacity-70" />
                 <PremiumMobileAppUi
@@ -473,7 +484,7 @@ export function KaatyMobileAppPage() {
       </section>
 
       {/* =========================================================================
-          5. APP SCREENS SHOWCASE (Interactive Gallery matching Screenshots)
+          5. APP SCREENS SHOWCASE (Interactive Gallery with Cart & Checkout)
           ========================================================================= */}
       <section className="py-20 lg:py-32 bg-white">
         <Container>
@@ -485,7 +496,7 @@ export function KaatyMobileAppPage() {
           />
 
           {/* Screen Tab Buttons */}
-          <div className="mt-12 flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
+          <div className="mt-12 flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
             {showcaseTabs.map((tab) => {
               const isSelected = showcaseScreen === tab.id
               return (
