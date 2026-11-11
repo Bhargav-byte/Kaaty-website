@@ -1,5 +1,6 @@
-import { query, internalQuery, internalMutation } from './_generated/server'
+import { query, mutation, internalQuery, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
+import { requireSuperAdmin } from './auth'
 
 /* ── Public query (read-only) ────────────────────────────────────────────── */
 
@@ -18,7 +19,7 @@ export const get = query({
   },
 })
 
-/* ── Internal functions (admin-only, NOT callable from the browser) ──────── */
+/* ── Internal utilities (Server execution only) ──────────────────────────── */
 
 export const getUrls = internalQuery({
   args: { ids: v.array(v.id('_storage')) },
@@ -76,7 +77,9 @@ export const seed = internalMutation({
   },
 })
 
-export const update = internalMutation({
+/* ── Authenticated Admin Mutations (Callable by Authenticated Admins from Browser) ── */
+
+export const update = mutation({
   args: {
     id: v.id('integrations'),
     name: v.optional(v.string()),
@@ -88,12 +91,13 @@ export const update = internalMutation({
     order: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     const { id, ...updates } = args
     await ctx.db.patch(id, updates)
   },
 })
 
-export const add = internalMutation({
+export const add = mutation({
   args: {
     name: v.string(),
     slug: v.string(),
@@ -104,21 +108,24 @@ export const add = internalMutation({
     order: v.number(),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     return await ctx.db.insert('integrations', args)
   },
 })
 
-export const remove = internalMutation({
+export const remove = mutation({
   args: {
     id: v.id('integrations'),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     await ctx.db.delete(args.id)
   },
 })
 
-export const generateUploadUrl = internalMutation({
+export const generateUploadUrl = mutation({
   handler: async (ctx) => {
+    await requireSuperAdmin(ctx)
     return await ctx.storage.generateUploadUrl()
   },
 })

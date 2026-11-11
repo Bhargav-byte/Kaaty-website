@@ -265,7 +265,7 @@ export const PRODUCT_INDUSTRIES: Record<string, ProductIndustryRef[]> = {
       industryName: 'College Canteens',
       icon: 'graduation-cap',
       useCase:
-        'Student campus app with digital ID wallet balance, instant top-ups, and pre-ordering.',
+        'Student campus app allowing students to browse menus, order ahead, and track token status directly from their phone.',
     },
   ],
 }

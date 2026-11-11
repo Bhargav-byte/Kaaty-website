@@ -1,8 +1,8 @@
-import { action } from './_generated/server'
+import { internalAction } from './_generated/server'
 import { v } from 'convex/values'
 import { Resend } from 'resend'
 
-export const sendConfirmationEmail = action({
+export const sendConfirmationEmail = internalAction({
   args: {
     name: v.string(),
     business: v.string(),
@@ -39,6 +39,8 @@ export const sendConfirmationEmail = action({
           .summary-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 12px; }
           .cta-box { background: #fff7ed; border: 1px solid #ffedd5; border-radius: 14px; padding: 18px; text-align: center; margin-top: 24px; }
           .cta-text { font-size: 14px; font-weight: 600; color: #c2410c; margin: 0; }
+          a { color: #000000 !important; text-decoration: none !important; }
+          .btn { display: block; width: 100%; text-align: center; background-color: #ea580c; color: #000000 !important; padding: 14px 0; border-radius: 8px; text-decoration: none !important; font-weight: 700; font-size: 15px; margin-top: 24px; box-sizing: border-box; }
           .footer { text-align: center; padding: 24px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; }
         </style>
       </head>
@@ -58,17 +60,19 @@ export const sendConfirmationEmail = action({
             <div class="summary">
               <div class="summary-title">Submission Details</div>
               <div style="line-height: 1.9; font-size: 14px;">
-                <div><span style="color:#64748b">Name:</span> <strong>${args.name}</strong></div>
-                <div><span style="color:#64748b">Business:</span> <strong>${args.business}</strong></div>
-                <div><span style="color:#64748b">Type:</span> <strong>${args.type}</strong></div>
-                <div><span style="color:#64748b">Phone:</span> <strong>${args.phone}</strong></div>
-                <div><span style="color:#64748b">Email:</span> <strong>${args.email}</strong></div>
-                ${args.message ? `<div><span style="color:#64748b">Message:</span> <em>${args.message}</em></div>` : ''}
+                <div><span style="color:#64748b">Name:</span> <strong style="color: #000000;">${args.name}</strong></div>
+                <div><span style="color:#64748b">Business:</span> <strong style="color: #000000;">${args.business}</strong></div>
+                <div><span style="color:#64748b">Type:</span> <strong style="color: #000000;">${args.type}</strong></div>
+                <div><span style="color:#64748b">Phone:</span> <a href="tel:${args.phone}" style="color: #000000 !important; text-decoration: none !important;"><strong style="color: #000000 !important;">${args.phone}</strong></a></div>
+                <div><span style="color:#64748b">Email:</span> <a href="mailto:${args.email}" style="color: #000000 !important; text-decoration: none !important;"><strong style="color: #000000 !important;">${args.email}</strong></a></div>
+                ${args.message ? `<div><span style="color:#64748b">Message:</span> <em style="color: #000000;">${args.message}</em></div>` : ''}
               </div>
             </div>
 
+            <a href="https://www.kaaty.co.in" class="btn" style="display: block; width: 100%; text-align: center; background-color: #ea580c; color: #000000 !important; padding: 14px 0; border-radius: 8px; text-decoration: none !important; font-weight: 700; font-size: 15px; margin-top: 24px; box-sizing: border-box;"><span style="color: #000000 !important; text-decoration: none !important; font-weight: 700;">Explore Kaaty features</span></a>
+
             <div class="cta-box">
-              <p class="cta-text">Need immediate assistance? Call us directly at <strong>+91 93923 65308</strong></p>
+              <p class="cta-text">Need immediate assistance? Call us directly at <a href="tel:+919392365308" style="color: #000000 !important; text-decoration: none !important;"><strong style="color: #000000 !important;">+91 93923 65308</strong></a></p>
             </div>
           </div>
           <div class="footer">
@@ -81,7 +85,7 @@ export const sendConfirmationEmail = action({
 
     try {
       const data = await resend.emails.send({
-        from: 'Kaaty <onboarding@resend.dev>', // TODO: Change back to hello@kaaty.co.in after verifying kaaty.co.in on https://resend.com/domains
+        from: 'Kaaty <hello@kaaty.co.in>',
         to: [args.email],
         subject: `Demo Request Confirmed — Kaaty (${args.business})`,
         html: htmlContent,

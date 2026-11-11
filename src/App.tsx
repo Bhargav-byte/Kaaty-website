@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMutation, useQuery } from 'convex/react'
+import { useQuery } from 'convex/react'
 import { api } from '../convex/_generated/api'
 import { Icon } from './components/Icon'
 import { useRouter } from './lib/router'
@@ -7,6 +7,13 @@ import { updatePageMetadata } from './lib/seo'
 import { trackEvent, setupScrollDepthTracking } from './lib/analytics'
 import { SolutionsHubPage } from './components/SolutionsHubPage'
 import { IndustrySolutionPage } from './components/IndustrySolutionPage'
+import { KaatyPosPage } from './components/KaatyPosPage'
+import { KaatyKdsPage } from './components/KaatyKdsPage'
+import { KaatySelfKioskPage } from './components/KaatySelfKioskPage'
+import { KaatyTokenBoardPage } from './components/KaatyTokenBoardPage'
+import { KaatyMobileAppPage } from './components/KaatyMobileAppPage'
+import { KaatyQrOrderingPage } from './components/KaatyQrOrderingPage'
+import { KaatyBusinessAppPage } from './components/KaatyBusinessAppPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -356,41 +363,53 @@ const PRODUCTS = {
     icon: 'smartphone',
     group: 'Customer Experience',
     visual: 'phone',
-    title: 'Let customers order before they arrive',
-    sub: 'A branded native ordering app with live tracking and push notifications that eliminate customer lines entirely.',
+    title: "Your food business, right in your customers' hands",
+    sub: 'Give customers a convenient way to explore your menu, place orders and follow their order status through a branded Kaaty mobile experience.',
     features: [
       {
-        title: 'Your own branded app',
+        title: 'Branded ordering experience',
         mock: 'phone',
-        desc: 'A customer ordering channel that puts your brand front and centre.',
-        points: ['Responsive digital menus with images.', 'Commission-free, direct-to-you orders.'],
+        desc: 'A customer ordering channel that puts your food business front and centre.',
+        points: [
+          'Responsive visual digital menus with images.',
+          'Campus and venue location selection.',
+        ],
       },
       {
-        title: 'Real-time order tracking',
+        title: 'Live order tracking',
         mock: 'phone',
         desc: 'Keep customers informed at every stage automatically.',
-        points: ['Placed → Preparing → Ready updates.', 'Accurate, live pickup countdowns.'],
+        points: [
+          'Ordered → Preparing → Ready → Delivered timeline.',
+          'Direct sync with kitchen display tokens.',
+        ],
       },
       {
-        title: 'Push notifications',
+        title: 'Visual digital menu',
         mock: 'phone',
-        desc: 'Ping customers the exact second an order is ready.',
-        points: ['Order-ready and offer notifications.', 'Win-back nudges for lapsed customers.'],
+        desc: 'Present food categories, photos, and dietary tags clearly.',
+        points: [
+          'Breakfast, lunch, snacks, and beverage categories.',
+          'Veg and non-veg dietary badges on every item.',
+        ],
       },
       {
-        title: 'Secure digital payments',
-        mock: 'business',
-        desc: 'Direct integration with modern payment rails.',
-        points: ['UPI, cards and wallets supported.', 'Pre-paid wallet for quick checkout.'],
+        title: 'Order history & receipts',
+        mock: 'phone',
+        desc: 'Instant access to past tokens and account details.',
+        points: [
+          'Track live orders or review past receipts.',
+          'Personalized customer profile with order stats.',
+        ],
       },
     ],
     benefits: [
-      { icon: 'smartphone', label: 'Native iOS & Android' },
-      { icon: 'bell', label: 'Push notifications' },
-      { icon: 'map-pin', label: 'Live tracking' },
-      { icon: 'wallet', label: 'Pre-paid wallet' },
-      { icon: 'palette', label: 'Fully branded' },
-      { icon: 'percent', label: 'Zero commission' },
+      { icon: 'smartphone', label: 'Mobile ordering' },
+      { icon: 'map-pin', label: 'Live order tracking' },
+      { icon: 'utensils', label: 'Visual menu' },
+      { icon: 'file-text', label: 'Digital tokens' },
+      { icon: 'palette', label: 'Branded identity' },
+      { icon: 'chef-hat', label: 'Kitchen synced' },
     ],
   },
 
@@ -529,7 +548,7 @@ const PRODUCTS = {
     group: 'Customer Experience',
     visual: 'qr',
     title: 'Scan. Order. Enjoy.',
-    sub: 'Let guests order from their table with a simple scan — fewer lines, faster turns, and higher ticket values.',
+    sub: 'Let guests order from their table with a simple scan — fewer steps between choosing a meal and placing an order.',
     features: [
       {
         title: 'Scan-to-order in seconds',
@@ -544,21 +563,21 @@ const PRODUCTS = {
         points: ['Self-service from tables and benches.', 'Staff freed up to serve.'],
       },
       {
-        title: 'Smart upsell',
+        title: 'Table-aware ordering',
         mock: 'qr',
-        desc: 'Automated recommendations lift average order value.',
-        points: ['Add-on and combo prompts.', 'Most-loved item suggestions.'],
+        desc: 'Automated table detection links tickets to the right dining area.',
+        points: ['Table-specific QR stand.', 'Direct KDS station routing.'],
       },
       {
         title: 'Live table management',
         mock: 'business',
         desc: 'See every table orders and status in real time.',
-        points: ['Table-wise order history.', 'Merge, move and split with ease.'],
+        points: ['Table-wise order history.', 'Instant status sync with POS.'],
       },
     ],
     benefits: [
       { icon: 'qr-code', label: 'No app needed' },
-      { icon: 'trending-up', label: '+ ticket value' },
+      { icon: 'smartphone', label: 'In-browser menu' },
       { icon: 'users', label: 'Less crowding' },
       { icon: 'utensils-crossed', label: 'Table-aware' },
       { icon: 'zap', label: 'Instant to kitchen' },
@@ -970,7 +989,7 @@ const MENU_PRODUCTS = [
     items: [
       {
         name: 'Business App',
-        slug: 'business',
+        slug: 'business-app',
         icon: 'layout-dashboard',
         desc: 'Owner command centre.',
       },
@@ -2484,7 +2503,7 @@ function FinalCTA() {
         ['Kaaty POS', '/products/pos'],
         ['Kaaty KDS', '/products/kds'],
         ['Mobile App', '/products/mobile-app'],
-        ['Business App', '/products/business'],
+        ['Business App', '/products/business-app'],
         ['QR Ordering', '/products/qr-ordering'],
         ['Self Kiosk', '/products/kiosk'],
       ],
@@ -3042,7 +3061,6 @@ type DemoFormData = {
 }
 
 function DemoForm() {
-  const submitToConvex = useMutation(api.demoRequests.submitDemoRequest)
   const [countryCode, setCountryCode] = React.useState('+91')
   const [countryDropdownOpen, setCountryDropdownOpen] = React.useState(false)
   const [countrySearch, setCountrySearch] = React.useState('')
@@ -3135,7 +3153,6 @@ function DemoForm() {
   const [loading, setLoading] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [err, setErr] = React.useState<Partial<Record<keyof DemoFormData, number>>>({})
-  const savePartialToConvex = useMutation(api.demoRequests.savePartial)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [partialId, setPartialId] = React.useState<any>(null)
 
@@ -3183,23 +3200,37 @@ function DemoForm() {
           }
         }
 
-        const id = await savePartialToConvex({
-          id: partialId || undefined,
-          name: form.name.trim() || undefined,
-          business: form.business.trim() || undefined,
-          phone: form.phone.trim() ? `${countryCode} ${form.phone.trim()}` : undefined,
-          email: form.email.trim() || undefined,
-          type: form.type || undefined,
-          message: form.message.trim() || undefined,
-          source: sourceStr,
+        // SECURITY: Partial saves also route through the Cloudflare Worker.
+        // The Worker forwards with X-Kaaty-Worker-Secret server-side.
+        const partialEndpoint = import.meta.env.VITE_DEMO_PARTIAL_INGRESS_URL || '/api/demo-partial'
+
+        const res = await fetch(partialEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: partialId || undefined,
+            name: form.name.trim() || undefined,
+            business: form.business.trim() || undefined,
+            phone: form.phone.trim() ? `${countryCode} ${form.phone.trim()}` : undefined,
+            email: form.email.trim() || undefined,
+            type: form.type || undefined,
+            message: form.message.trim() || undefined,
+            source: sourceStr,
+          }),
         })
-        if (id && !partialId) setPartialId(id)
+
+        if (res.ok) {
+          const data = await res.json()
+          if (data.id && !partialId) setPartialId(data.id)
+        }
       } catch {
         // Ignore partial save errors
       }
     }, 1500)
     return () => clearTimeout(timer)
-  }, [form, partialId, sent, countryCode, savePartialToConvex])
+  }, [form, partialId, sent, countryCode])
 
   const startedRef = React.useRef(false)
 
@@ -3268,16 +3299,33 @@ function DemoForm() {
     }
 
     try {
-      await submitToConvex({
-        id: partialId || undefined,
-        name: form.name.trim(),
-        business: form.business.trim(),
-        phone: `${countryCode} ${form.phone.trim()}`,
-        email: form.email.trim(),
-        type: form.type,
-        message: form.message.trim() || undefined,
-        source: sourceStr,
+      // SECURITY: Must call the Cloudflare Worker, never the Convex URL directly.
+      // Cloudflare Worker enforces: Turnstile + rate limiting + WORKER_SHARED_SECRET.
+      // The secret is held server-side in the Worker; the browser never sees it.
+      const ingressEndpoint = import.meta.env.VITE_DEMO_INGRESS_URL || '/api/demo-request'
+
+      const response = await fetch(ingressEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: partialId || undefined,
+          name: form.name.trim(),
+          business: form.business.trim(),
+          phone: `${countryCode} ${form.phone.trim()}`,
+          email: form.email.trim(),
+          type: form.type,
+          message: form.message.trim() || undefined,
+          source: sourceStr,
+        }),
       })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.error || 'Submission failed')
+      }
+
       trackEvent('demo_form_submit', { business_type: form.type })
       setSent(true)
     } catch {
@@ -4249,6 +4297,42 @@ function renderRoute(pathname: string) {
   if (seg[0] === 'demo') return <ContactPage />
   if (seg[0] === 'products' && seg[1]) {
     const prodSlug = seg[1] === 'analytics' ? 'business' : seg[1]
+
+    if (prodSlug === 'pos') {
+      trackEvent('product_page_view', { product_slug: 'pos' })
+      return <KaatyPosPage />
+    }
+
+    if (prodSlug === 'kds') {
+      trackEvent('product_page_view', { product_slug: 'kds' })
+      return <KaatyKdsPage />
+    }
+
+    if (prodSlug === 'kiosk') {
+      trackEvent('product_page_view', { product_slug: 'kiosk' })
+      return <KaatySelfKioskPage />
+    }
+
+    if (prodSlug === 'token-board') {
+      trackEvent('product_page_view', { product_slug: 'token-board' })
+      return <KaatyTokenBoardPage />
+    }
+
+    if (prodSlug === 'mobile-app') {
+      trackEvent('product_page_view', { product_slug: 'mobile-app' })
+      return <KaatyMobileAppPage />
+    }
+
+    if (prodSlug === 'qr-ordering') {
+      trackEvent('product_page_view', { product_slug: 'qr-ordering' })
+      return <KaatyQrOrderingPage />
+    }
+
+    if (prodSlug === 'business-app' || prodSlug === 'business') {
+      trackEvent('product_page_view', { product_slug: 'business-app' })
+      return <KaatyBusinessAppPage />
+    }
+
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
       trackEvent('product_page_view', { product_slug: prodSlug })
       return <ProductPage slug={prodSlug} />

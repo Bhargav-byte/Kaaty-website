@@ -76,17 +76,24 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/mobile-app': {
-    title: 'Kaaty Mobile Ordering — Direct-to-Consumer Campus & Food App',
+    title: "Kaaty Mobile App — Your Food Business, Right in Your Customers' Hands",
     description:
-      'Allow customers and students to browse menus, order ahead, and receive live pickup notifications from their phone.',
+      'Give customers a convenient way to explore your menu, place orders, and follow their order status through a branded Kaaty mobile ordering experience.',
     canonical: `${BASE_URL}/products/mobile-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
-  '/products/business': {
-    title: 'Kaaty Business App — Real-Time Owner Command Centre',
+  '/products/business-app': {
+    title: 'Kaaty Business App — Your Business. In Your Hands.',
     description:
-      'Live revenue tracking, hourly volume heatmaps, inventory stockout alerts, and multi-outlet performance from your phone.',
-    canonical: `${BASE_URL}/products/business`,
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    canonical: `${BASE_URL}/products/business-app`,
+    ogImage: DEFAULT_OG_IMAGE,
+  },
+  '/products/business': {
+    title: 'Kaaty Business App — Your Business. In Your Hands.',
+    description:
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    canonical: `${BASE_URL}/products/business-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/vendor': {
@@ -104,9 +111,9 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/qr-ordering': {
-    title: 'Kaaty QR Ordering — Dine-In & Self-Service Mobile Menus',
+    title: 'Kaaty QR Ordering — Scan. Order. Enjoy.',
     description:
-      'Instant camera scan with no app install required. Boost ticket sizes with photo menus, item modifiers, and instant UPI checkout.',
+      'Let guests order from their table with a simple scan — explore digital menus, place orders, and pay directly from smartphone browsers with zero app installation required.',
     canonical: `${BASE_URL}/products/qr-ordering`,
     ogImage: DEFAULT_OG_IMAGE,
   },

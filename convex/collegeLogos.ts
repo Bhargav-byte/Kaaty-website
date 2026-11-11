@@ -1,5 +1,6 @@
-import { query, internalMutation } from './_generated/server'
+import { query, mutation, internalMutation } from './_generated/server'
 import { v } from 'convex/values'
+import { requireSuperAdmin } from './auth'
 
 import type { Id } from './_generated/dataModel'
 
@@ -24,7 +25,7 @@ export const get = query({
   },
 })
 
-/* ── Internal mutations (admin-only, NOT callable from the browser) ──────── */
+/* ── Internal seed (CLI / server migration only) ─────────────────────────── */
 
 export const seed = internalMutation({
   handler: async (ctx) => {
@@ -43,7 +44,9 @@ export const seed = internalMutation({
   },
 })
 
-export const update = internalMutation({
+/* ── Authenticated Admin Mutations (Callable by Authenticated Admins from Browser) ── */
+
+export const update = mutation({
   args: {
     id: v.id('collegeLogos'),
     name: v.optional(v.string()),
@@ -51,27 +54,30 @@ export const update = internalMutation({
     order: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     const { id, ...updates } = args
     await ctx.db.patch(id, updates)
   },
 })
 
-export const add = internalMutation({
+export const add = mutation({
   args: {
     name: v.string(),
     icon: v.string(),
     order: v.number(),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     return await ctx.db.insert('collegeLogos', args)
   },
 })
 
-export const remove = internalMutation({
+export const remove = mutation({
   args: {
     id: v.id('collegeLogos'),
   },
   handler: async (ctx, args) => {
+    await requireSuperAdmin(ctx)
     await ctx.db.delete(args.id)
   },
 })
