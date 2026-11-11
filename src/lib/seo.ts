@@ -96,11 +96,18 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     canonical: `${BASE_URL}/products/business-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
-  '/products/vendor': {
-    title: 'Kaaty Vendor App — Mobile Billing for Stalls & Counters',
+  '/products/vendor-app': {
+    title: 'Kaaty Vendor App — Your Entire Stall. Right in Your Pocket.',
     description:
-      'Turn any Android smartphone into a handheld POS terminal with built-in camera barcode and QR scanning.',
-    canonical: `${BASE_URL}/products/vendor`,
+      'Run your food stall with a simple mobile POS. Manage orders, update your menu, control stock and track daily sales — all from your smartphone.',
+    canonical: `${BASE_URL}/products/vendor-app`,
+    ogImage: DEFAULT_OG_IMAGE,
+  },
+  '/products/vendor': {
+    title: 'Kaaty Vendor App — Your Entire Stall. Right in Your Pocket.',
+    description:
+      'Run your food stall with a simple mobile POS. Manage orders, update your menu, control stock and track daily sales — all from your smartphone.',
+    canonical: `${BASE_URL}/products/vendor-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/token-board': {

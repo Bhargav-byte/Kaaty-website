@@ -139,6 +139,18 @@ const ROUTE_CONTENT = {
       'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
     cta: 'Book a Free Demo',
   },
+  '/products/vendor-app': {
+    heading: 'Kaaty Vendor App — Your Entire Stall. Right in Your Pocket.',
+    subheading:
+      'Run your food stall with a simple mobile POS. Manage orders, update your menu, control stock and track daily sales — all from your smartphone.',
+    cta: 'Book a Free Demo',
+  },
+  '/products/vendor': {
+    heading: 'Kaaty Vendor App — Your Entire Stall. Right in Your Pocket.',
+    subheading:
+      'Run your food stall with a simple mobile POS. Manage orders, update your menu, control stock and track daily sales — all from your smartphone.',
+    cta: 'Book a Free Demo',
+  },
   '/integrations/razorpay': {
     heading: 'Razorpay Integration — Seamless Payments for Kaaty',
     subheading:

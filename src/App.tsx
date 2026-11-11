@@ -14,6 +14,7 @@ import { KaatyTokenBoardPage } from './components/KaatyTokenBoardPage'
 import { KaatyMobileAppPage } from './components/KaatyMobileAppPage'
 import { KaatyQrOrderingPage } from './components/KaatyQrOrderingPage'
 import { KaatyBusinessAppPage } from './components/KaatyBusinessAppPage'
+import { KaatyVendorAppPage } from './components/KaatyVendorAppPage'
 import { ProductIndustriesSection } from './components/ProductIndustriesSection'
 import { IndustrySolutionCard } from './components/IndustrySolutionCard'
 import { INDUSTRY_SOLUTIONS } from './data/industrySolutions'
@@ -993,7 +994,12 @@ const MENU_PRODUCTS = [
         icon: 'layout-dashboard',
         desc: 'Owner command centre.',
       },
-      { name: 'Vendor App', slug: 'vendor', icon: 'store', desc: 'Mobile POS for stalls.' },
+      {
+        name: 'Vendor App',
+        slug: 'vendor-app',
+        icon: 'store',
+        desc: 'Mobile POS for stalls.',
+      },
     ],
   },
 ]
@@ -2504,6 +2510,7 @@ function FinalCTA() {
         ['Kaaty KDS', '/products/kds'],
         ['Mobile App', '/products/mobile-app'],
         ['Business App', '/products/business-app'],
+        ['Vendor App', '/products/vendor-app'],
         ['QR Ordering', '/products/qr-ordering'],
         ['Self Kiosk', '/products/kiosk'],
       ],
@@ -4331,6 +4338,11 @@ function renderRoute(pathname: string) {
     if (prodSlug === 'business-app' || prodSlug === 'business') {
       trackEvent('product_page_view', { product_slug: 'business-app' })
       return <KaatyBusinessAppPage />
+    }
+
+    if (prodSlug === 'vendor-app' || prodSlug === 'vendor') {
+      trackEvent('product_page_view', { product_slug: 'vendor-app' })
+      return <KaatyVendorAppPage />
     }
 
     if (PRODUCTS[prodSlug as keyof typeof PRODUCTS]) {
