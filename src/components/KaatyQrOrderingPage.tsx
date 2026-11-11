@@ -190,24 +190,24 @@ export function KaatyQrOrderingPage() {
             {/* Right Column: Premium Table & Phone Visual */}
             <div className="lg:col-span-5 relative z-10 flex flex-col justify-center items-center py-4 px-2 sm:px-6">
               <div className="relative w-full max-w-[380px] mx-auto flex items-center justify-center">
-                {/* Secondary Table QR Stand Preview Card (Restaurant Atmosphere) */}
-                <div className="hidden sm:block absolute -left-8 -bottom-4 w-40 p-3 bg-white/95 backdrop-blur-md rounded-2xl border border-gray-200/80 shadow-xl z-20">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <span className="w-4 h-4 rounded bg-[#FA5A1E] text-white flex items-center justify-center text-[9px] font-black">
-                      K
-                    </span>
-                    <span className="text-[10px] font-extrabold text-navy">TABLE 04</span>
-                  </div>
-                  <div className="w-16 h-16 bg-gray-50 border border-gray-200 rounded-lg p-1 mx-auto flex items-center justify-center">
-                    <Icon name="qr-code" size={48} className="text-navy" />
-                  </div>
-                  <div className="text-[9px] font-bold text-center text-gray-500 mt-1.5 leading-tight">
-                    Scan to Order
-                  </div>
-                </div>
-
                 {/* Primary Interactive Smartphone Mockup */}
                 <div className="relative z-10 filter drop-shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
+                  {/* Secondary Table QR Stand Preview Card (Restaurant Atmosphere) */}
+                  <div className="hidden sm:block absolute -left-16 lg:-left-20 bottom-32 w-28 p-2.5 bg-white/95 backdrop-blur-md rounded-2xl border border-gray-200/80 shadow-[0_12px_28px_rgba(0,0,0,0.12)] z-30 pointer-events-none sm:pointer-events-auto">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <span className="w-3.5 h-3.5 rounded bg-[#FA5A1E] text-white flex items-center justify-center text-[8px] font-black">
+                        K
+                      </span>
+                      <span className="text-[10px] font-extrabold text-navy">TABLE 04</span>
+                    </div>
+                    <div className="w-12 h-12 bg-gray-50 border border-gray-200 rounded-lg p-1 mx-auto flex items-center justify-center">
+                      <Icon name="qr-code" size={34} className="text-navy" />
+                    </div>
+                    <div className="text-[8px] font-bold text-center text-gray-500 mt-1 leading-tight">
+                      Scan to Order
+                    </div>
+                  </div>
+
                   <PremiumQrOrderingUi initialScreen="scan" tableNumber="04" />
                 </div>
               </div>
@@ -873,38 +873,31 @@ export function KaatyQrOrderingPage() {
         <div className="pointer-events-none absolute bottom-0 left-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
 
         <Container className="relative z-10 text-center">
-          <span className="inline-block px-3.5 py-1.5 rounded-full bg-white/10 text-orange-400 font-semibold text-xs sm:text-sm mb-6 border border-white/10">
-            Get Started with Kaaty
-          </span>
+          <div className="max-w-3xl mx-auto">
+            <span className="inline-block px-3.5 py-1.5 rounded-full bg-white/10 text-orange-400 font-semibold text-xs sm:text-sm mb-6 border border-white/10">
+              Get Started with Kaaty
+            </span>
 
-          <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl max-w-3xl mx-auto mb-6 leading-tight">
-            Make ordering easier at every table.
-          </h2>
+            <h2 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl mb-6 leading-tight">
+              Make ordering easier at every table.
+            </h2>
 
-          <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Give your guests a simple way to explore your menu and place orders with Kaaty QR
-            Ordering. See how fast your tables can turn with modern self-ordering.
-          </p>
+            <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+              Give your guests a simple way to explore your menu and place orders with Kaaty QR
+              Ordering.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              as="a"
-              href="/demo?source=qr_ordering_footer"
-              variant="primary"
-              size="lg"
-              className="bg-[#FA5A1E] hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl shadow-orange-500/25"
-            >
-              Book a Free Demo →
-            </Button>
-            <Button
-              as="a"
-              href="#workflow"
-              variant="outline"
-              size="lg"
-              className="border-white/20 text-white hover:bg-white/10 font-bold px-8 py-3.5 rounded-2xl"
-            >
-              See How It Works
-            </Button>
+            <div className="flex justify-center items-center">
+              <Button
+                as="a"
+                href="/demo?source=qr_ordering_footer"
+                variant="primary"
+                size="lg"
+                className="bg-[#FA5A1E] hover:bg-orange-600 text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl shadow-orange-500/25"
+              >
+                Book a Free Demo →
+              </Button>
+            </div>
           </div>
         </Container>
       </section>

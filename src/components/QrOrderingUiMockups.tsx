@@ -188,66 +188,82 @@ export function PremiumQrOrderingUi({
 
       {/* Screen Frame Container */}
       <div className="relative w-full h-full bg-gray-50 rounded-[38px] overflow-hidden flex flex-col justify-between border border-gray-200">
-        {/* Dynamic Island / Speaker Notch */}
-        <div className="absolute top-2.5 inset-x-0 mx-auto w-24 h-5 bg-black rounded-full z-50 flex items-center justify-between px-2.5">
-          <div className="w-2 h-2 rounded-full bg-[#FA5A1E]/80 animate-pulse" />
-          <div className="w-2.5 h-2.5 rounded-full bg-navy-900 border border-white/10" />
-        </div>
+        {/* Unified Status Bar & Dynamic Island */}
+        <div
+          className={`px-6 pt-3.5 pb-2 flex items-center justify-between text-[11px] font-bold z-40 shrink-0 transition-colors duration-200 ${
+            activeScreen === 'scan'
+              ? 'bg-black text-white/90 border-b border-white/5'
+              : 'bg-gray-100/90 text-navy-800'
+          }`}
+        >
+          {/* Time (Safe inset away from curved corner bezel) */}
+          <span className="w-12 text-left tracking-tight pl-1">12:45</span>
 
-        {/* Top Status Bar */}
-        <div className="pt-2.5 px-6 pb-1 flex justify-between items-center text-[10px] font-semibold text-gray-700 z-40 bg-white/90 backdrop-blur-xs">
-          <span>12:45</span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[9px] px-1 py-0.2 rounded-xs bg-orange-100 text-[#FA5A1E] font-bold">
+          {/* Dynamic Island (Centered notch) */}
+          <div className="w-20 h-4.5 rounded-full bg-black flex items-center justify-end pr-2 gap-1.5 shadow-inner border border-white/10 shrink-0">
+            <div className="w-2 h-2 rounded-full bg-[#111] border border-white/10" />
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-950/80" />
+          </div>
+
+          {/* Indicators (Safe inset away from curved corner bezel) */}
+          <div className="w-12 flex items-center justify-end gap-1.5 text-[10px] pr-1">
+            <span
+              className={`text-[8px] px-1 py-0.2 rounded-xs font-bold leading-none ${
+                activeScreen === 'scan' ? 'bg-white/20 text-white' : 'bg-orange-100 text-[#FA5A1E]'
+              }`}
+            >
               5G
             </span>
-            <Icon name="zap" size={11} className="text-gray-600" />
+            <Icon
+              name="battery"
+              size={12}
+              className={activeScreen === 'scan' ? 'text-white/80' : 'text-gray-700'}
+            />
           </div>
         </div>
 
-        {/* Browser URL Bar (Visual confirmation: It's in the browser, no app download required!) */}
-        <div className="px-3 py-1.5 bg-gray-100/90 border-b border-gray-200/80 flex items-center justify-between z-40 text-xs">
-          <div className="flex items-center gap-1.5 text-gray-500">
-            <Icon name="lock" size={11} className="text-emerald-600" />
-            <span className="text-[11px] font-medium text-gray-700 tracking-tight">
-              kaaty.store/table/{tableNumber}
-            </span>
+        {/* Browser URL Header (Visible in in-browser states: Menu, Item, Cart, Checkout, Confirmation) */}
+        {activeScreen !== 'scan' && (
+          <div className="px-3.5 pb-2 pt-0.5 bg-gray-100/90 border-b border-gray-200/70 z-40 shrink-0">
+            <div className="bg-white rounded-xl border border-gray-200/90 px-3 py-1.5 flex items-center justify-between shadow-2xs">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <Icon name="lock" size={11} className="text-emerald-600 shrink-0" />
+                <span className="text-[11px] font-medium text-navy-800 tracking-tight truncate">
+                  kaaty.store/table/{tableNumber}
+                </span>
+              </div>
+              <div className="flex items-center gap-1 shrink-0 ml-2">
+                <span className="px-1.5 py-0.5 rounded-md bg-orange-50 border border-orange-200/60 text-[#FA5A1E] text-[9px] font-bold">
+                  Table {tableNumber}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-bold">
-              Table {tableNumber}
-            </span>
-            <button
-              onClick={() => setScreen('scan')}
-              title="Rescan"
-              className="text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
-            >
-              <Icon name="refresh-cw" size={11} />
-            </button>
-          </div>
-        </div>
+        )}
 
         {/* =========================================================================
             STATE 1: QR SCAN
             ========================================================================= */}
         {activeScreen === 'scan' && (
           <div className="flex-1 flex flex-col justify-between p-4 bg-gradient-to-b from-gray-900 via-navy-950 to-black text-white relative overflow-hidden">
-            <div className="text-center pt-2">
-              <span className="inline-block px-2.5 py-1 rounded-full bg-white/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider mb-2 border border-white/10">
+            {/* Camera Header */}
+            <div className="text-center pt-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-orange-400 text-[10px] font-bold uppercase tracking-wider mb-2 border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FA5A1E] animate-ping" />
                 Camera Scan
               </span>
               <h4 className="text-sm sm:text-base font-bold text-white leading-tight">
                 Point at Table QR Stand
               </h4>
-              <p className="text-[11px] text-gray-400 mt-0.5">
-                Scan the QR code on your table to browse and order
+              <p className="text-[11px] text-gray-300 mt-1 max-w-[240px] mx-auto leading-normal">
+                Scan the QR code on your table to browse menu and order
               </p>
             </div>
 
             {/* Camera Viewfinder with Realistic Table QR Stand */}
             <div className="relative my-auto flex flex-col items-center justify-center">
               {/* Scan Reticle Frame */}
-              <div className="relative w-48 h-48 rounded-2xl p-3 border-2 border-dashed border-[#FA5A1E]/60 bg-black/40 backdrop-blur-xs flex flex-col items-center justify-center shadow-lg">
+              <div className="relative w-44 h-44 rounded-2xl p-2.5 border-2 border-dashed border-[#FA5A1E]/80 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center shadow-lg">
                 {/* 4 Corner Accents */}
                 <div className="absolute -top-1 -left-1 w-4 h-4 border-t-3 border-l-3 border-[#FA5A1E] rounded-tl-md" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 border-t-3 border-r-3 border-[#FA5A1E] rounded-tr-md" />
@@ -260,7 +276,7 @@ export function PremiumQrOrderingUi({
                 )}
 
                 {/* Realistic Table Tent QR Card Stand Visual */}
-                <div className="w-36 bg-white rounded-xl p-2.5 text-navy shadow-md flex flex-col items-center text-center border border-gray-100">
+                <div className="w-32 bg-white rounded-xl p-2 text-navy shadow-md flex flex-col items-center text-center border border-gray-200">
                   <div className="flex items-center gap-1 mb-1">
                     <span className="w-3.5 h-3.5 rounded bg-[#FA5A1E] text-white flex items-center justify-center text-[8px] font-black">
                       K
@@ -269,12 +285,12 @@ export function PremiumQrOrderingUi({
                       KAATY
                     </span>
                   </div>
-                  <div className="px-2 py-0.5 rounded-full bg-orange-100 text-[#FA5A1E] text-[9px] font-extrabold mb-1.5">
+                  <div className="px-2 py-0.5 rounded-full bg-orange-100 text-[#FA5A1E] text-[8px] font-extrabold mb-1">
                     TABLE {tableNumber}
                   </div>
 
                   {/* Clean Vector QR Code Matrix */}
-                  <div className="w-20 h-20 bg-gray-50 border border-gray-300 rounded-lg p-1.5 flex items-center justify-center">
+                  <div className="w-18 h-18 bg-gray-50 border border-gray-300 rounded-lg p-1 flex items-center justify-center">
                     <svg viewBox="0 0 100 100" className="w-full h-full fill-navy">
                       {/* Top-Left Finder */}
                       <rect x="5" y="5" width="28" height="28" rx="3" fill="#111827" />
@@ -326,10 +342,10 @@ export function PremiumQrOrderingUi({
               <button
                 onClick={triggerScan}
                 disabled={isScanning}
-                className="w-full py-3 px-4 rounded-2xl bg-[#FA5A1E] text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-600/30 hover:bg-orange-600 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-[#FA5A1E] hover:bg-orange-600 text-white font-extrabold text-xs shadow-lg shadow-orange-600/30 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Icon name="scan-line" size={16} />
-                <span>{isScanning ? 'Scanning QR Stand...' : 'Tap to Scan Table QR'}</span>
+                <span>{isScanning ? 'Opening Digital Menu...' : 'Tap to Scan Table QR'}</span>
               </button>
             </div>
           </div>
