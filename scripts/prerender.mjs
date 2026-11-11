@@ -127,6 +127,18 @@ const ROUTE_CONTENT = {
       'Let guests order from their table with a simple scan — fewer steps between choosing a meal and placing an order.',
     cta: 'Book a Free Demo',
   },
+  '/products/business-app': {
+    heading: 'Kaaty Business App — Your Business. In Your Hands.',
+    subheading:
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    cta: 'Book a Free Demo',
+  },
+  '/products/business': {
+    heading: 'Kaaty Business App — Your Business. In Your Hands.',
+    subheading:
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    cta: 'Book a Free Demo',
+  },
   '/integrations/razorpay': {
     heading: 'Razorpay Integration — Seamless Payments for Kaaty',
     subheading:

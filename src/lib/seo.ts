@@ -82,11 +82,18 @@ export const ROUTE_METADATA: Record<string, PageMetadata> = {
     canonical: `${BASE_URL}/products/mobile-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
-  '/products/business': {
-    title: 'Kaaty Business App — Real-Time Owner Command Centre',
+  '/products/business-app': {
+    title: 'Kaaty Business App — Your Business. In Your Hands.',
     description:
-      'Live revenue tracking, hourly volume heatmaps, inventory stockout alerts, and multi-outlet performance from your phone.',
-    canonical: `${BASE_URL}/products/business`,
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    canonical: `${BASE_URL}/products/business-app`,
+    ogImage: DEFAULT_OG_IMAGE,
+  },
+  '/products/business': {
+    title: 'Kaaty Business App — Your Business. In Your Hands.',
+    description:
+      'Stay connected to your food business wherever you are. Monitor performance, track settlements, manage menu and stock, and keep an eye on your operations — all from the Kaaty Business App.',
+    canonical: `${BASE_URL}/products/business-app`,
     ogImage: DEFAULT_OG_IMAGE,
   },
   '/products/vendor': {
