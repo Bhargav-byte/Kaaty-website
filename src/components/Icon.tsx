@@ -1,23 +1,37 @@
 import React from 'react'
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  ArrowRightLeft,
+  ArrowUpCircle,
   Award,
+  BarChart2,
+  BarChart3,
+  Battery,
+  BatteryCharging,
   BedDouble,
   Bell,
+  BellRing,
   Bike,
   BookOpen,
   Building2,
   Calendar,
   Check,
+  CheckCheck,
   CheckCircle2,
   ChefHat,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ChevronUp,
   Circle,
+  Clock,
   Cloud,
   Code,
   Coffee,
+  ConciergeBell,
+  CookingPot,
   Cpu,
   CreditCard,
   Croissant,
@@ -26,6 +40,8 @@ import {
   Drumstick,
   Eye,
   FileText,
+  FileWarning,
+  Flame,
   Globe,
   GraduationCap,
   Hand,
@@ -40,6 +56,7 @@ import {
   LayoutDashboard,
   Library,
   LifeBuoy,
+  ListOrdered,
   Lock,
   Mail,
   MapPin,
@@ -47,16 +64,24 @@ import {
   Menu,
   Minus,
   Monitor,
+  MousePointerClick,
+  Navigation,
   Network,
   Newspaper,
   Package,
+  PackageCheck,
+  PackageMinus,
   Palette,
+  Pencil,
   Percent,
   Phone,
   PhoneCall,
+  PieChart,
   Pizza,
   Play,
   Plus,
+  PlusCircle,
+  Pointer,
   Printer,
   QrCode,
   ReceiptText,
@@ -68,13 +93,20 @@ import {
   School,
   Scroll,
   Search,
+  Settings,
+  Settings2,
   ShieldCheck,
   ShoppingBag,
+  ShoppingCart,
   Smartphone,
   Smile,
   Store,
+  Sun,
+  Tag,
   Text,
+  Ticket,
   Timer,
+  Touchpad,
   Trash2,
   TrendingUp,
   Tv,
@@ -85,8 +117,10 @@ import {
   UtensilsCrossed,
   Wallet,
   Wheat,
+  Wifi,
   WifiOff,
   X,
+  XCircle,
   Zap,
   type LucideIcon,
 } from 'lucide-react'
@@ -134,98 +168,192 @@ const BRAND_ICONS: Record<string, React.ReactNode> = {
       <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
     </>
   ),
+  whatsapp: (
+    <path
+      fill="currentColor"
+      stroke="none"
+      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+    />
+  ),
 }
 
 const LUCIDE_ICON_MAP: Record<string, LucideIcon> = {
+  // Navigation & Core UI
+  home: Home,
+  house: House,
   phone: Phone,
+  'phone-call': PhoneCall,
   monitor: Monitor,
-  zap: Zap,
-  'wifi-off': WifiOff,
-  printer: Printer,
-  'shield-check': ShieldCheck,
-  'refresh-cw': RefreshCw,
-  layers: Layers,
-  'chef-hat': ChefHat,
-  route: Route,
-  timer: Timer,
-  hand: Hand,
-  bell: Bell,
   smartphone: Smartphone,
-  'map-pin': MapPin,
-  wallet: Wallet,
-  palette: Palette,
-  percent: Percent,
-  'layout-dashboard': LayoutDashboard,
-  'trending-up': TrendingUp,
-  'file-text': FileText,
-  lock: Lock,
-  store: Store,
-  package: Package,
   tv: Tv,
-  eye: Eye,
-  megaphone: Megaphone,
-  'qr-code': QrCode,
-  users: Users,
-  'utensils-crossed': UtensilsCrossed,
-  'scan-line': ScanLine,
-  'credit-card': CreditCard,
+  tablet: Smartphone,
+  menu: Menu,
+  'arrow-left': ArrowLeft,
+  'arrow-right': ArrowRight,
+  'arrow-right-left': ArrowRightLeft,
+  'chevron-down': ChevronDown,
+  'chevron-up': ChevronUp,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
+  x: X,
+  'x-circle': XCircle,
   check: Check,
-  languages: Languages,
-  smile: Smile,
-  'graduation-cap': GraduationCap,
-  coffee: Coffee,
+  'check-circle': CheckCircle2,
+  'check-circle-2': CheckCircle2,
+  'check-check': CheckCheck,
+  circle: Circle,
+  dot: Dot,
+  plus: Plus,
+  'plus-circle': PlusCircle,
+  minus: Minus,
+  search: Search,
+  settings: Settings,
+  'settings-2': Settings2,
+  lock: Lock,
+  eye: Eye,
+  text: Text,
+  trash: Trash2,
+  'trash-2': Trash2,
+
+  // Hardware, Network & System
+  wifi: Wifi,
+  'wifi-off': WifiOff,
+  battery: Battery,
+  'battery-charging': BatteryCharging,
+  printer: Printer,
+  cpu: Cpu,
+  database: Database,
+  network: Network,
   cloud: Cloud,
-  'bed-double': BedDouble,
+  zap: Zap,
+
+  // Business, Commerce & Analytics
+  'layout-dashboard': LayoutDashboard,
+  dashboard: LayoutDashboard,
+  'bar-chart': BarChart3,
+  'bar-chart-2': BarChart2,
+  'bar-chart-3': BarChart3,
+  'trending-up': TrendingUp,
+  'pie-chart': PieChart,
+  wallet: Wallet,
+  'credit-card': CreditCard,
+  'receipt-text': ReceiptText,
+  receipt: ReceiptText,
+  'file-text': FileText,
+  'file-warning': FileWarning,
+  'shopping-bag': ShoppingBag,
+  'shopping-cart': ShoppingCart,
+  cart: ShoppingCart,
+  package: Package,
+  'package-check': PackageCheck,
+  'package-minus': PackageMinus,
+  tag: Tag,
+  percent: Percent,
+  scale: Scale,
+  'qr-code': QrCode,
+  'scan-line': ScanLine,
+
+  // Kitchen, Food & Hospitality
+  'chef-hat': ChefHat,
+  kds: ChefHat,
+  'room-service': ConciergeBell,
+  'concierge-bell': ConciergeBell,
+  'cooking-pot': CookingPot,
+  utensils: Utensils,
+  'utensils-crossed': UtensilsCrossed,
+  store: Store,
+  coffee: Coffee,
+  pizza: Pizza,
   croissant: Croissant,
   'ice-cream-cone': IceCreamCone,
-  bike: Bike,
-  utensils: Utensils,
-  network: Network,
-  'shopping-bag': ShoppingBag,
+  drumstick: Drumstick,
+  wheat: Wheat,
+  'bed-double': BedDouble,
+
+  // Operations, Time & Status
+  clock: Clock,
+  timer: Timer,
+  calendar: Calendar,
+  'shield-check': ShieldCheck,
+  'refresh-cw': RefreshCw,
+  'touch-pad': Touchpad,
+  touchpad: Touchpad,
+  pointer: Pointer,
+  'mouse-pointer-click': MousePointerClick,
+  hand: Hand,
+  bell: Bell,
+  'bell-ring': BellRing,
+  flame: Flame,
+  'list-ordered': ListOrdered,
+  'alert-triangle': AlertTriangle,
+  ticket: Ticket,
+  sun: Sun,
+  layers: Layers,
   'book-open': BookOpen,
-  award: Award,
-  newspaper: Newspaper,
-  scroll: Scroll,
-  'chevron-down': ChevronDown,
-  'arrow-right': ArrowRight,
-  menu: Menu,
-  x: X,
-  minus: Minus,
-  plus: Plus,
-  dot: Dot,
-  circle: Circle,
-  play: Play,
-  'check-circle-2': CheckCircle2,
+  pencil: Pencil,
+  edit: Pencil,
+
+  // General, Marketing & Industries
+  navigation: Navigation,
+  route: Route,
+  'map-pin': MapPin,
+  users: Users,
+  user: User,
+  'user-round': UserRound,
+  'graduation-cap': GraduationCap,
+  school: School,
   'building-2': Building2,
   landmark: Landmark,
   library: Library,
-  code: Code,
-  cpu: Cpu,
-  image: Image,
-  globe: Globe,
-  database: Database,
-  scale: Scale,
-  'chevron-up': ChevronUp,
-  mail: Mail,
-  pizza: Pizza,
-  wheat: Wheat,
-  user: User,
-  text: Text,
-  search: Search,
-  'phone-call': PhoneCall,
-  calendar: Calendar,
-  rocket: Rocket,
-  drumstick: Drumstick,
-  school: School,
   headphones: Headphones,
   'life-buoy': LifeBuoy,
-  'arrow-left': ArrowLeft,
-  home: Home,
-  house: House,
-  'receipt-text': ReceiptText,
-  'user-round': UserRound,
-  trash: Trash2,
-  'trash-2': Trash2,
+  megaphone: Megaphone,
+  award: Award,
+  newspaper: Newspaper,
+  scroll: Scroll,
+  globe: Globe,
+  languages: Languages,
+  palette: Palette,
+  rocket: Rocket,
+  bike: Bike,
+  code: Code,
+  image: Image,
+  smile: Smile,
+  play: Play,
+  mail: Mail,
+  'arrow-up-circle': ArrowUpCircle,
+
+  // Common stripped aliases
+  barchart: BarChart3,
+  barchart2: BarChart2,
+  barchart3: BarChart3,
+  roomservice: ConciergeBell,
+  conciergebell: ConciergeBell,
+  chefhat: ChefHat,
+  bookopen: BookOpen,
+  layoutdashboard: LayoutDashboard,
+  checkcircle: CheckCircle2,
+  checkcircle2: CheckCircle2,
+  checkcheck: CheckCheck,
+  xcircle: XCircle,
+  creditcard: CreditCard,
+  shoppingbag: ShoppingBag,
+  shoppingcart: ShoppingCart,
+  trendingup: TrendingUp,
+  piechart: PieChart,
+  qrcode: QrCode,
+  scanline: ScanLine,
+  bellring: BellRing,
+  listordered: ListOrdered,
+  alerttriangle: AlertTriangle,
+  arrowleft: ArrowLeft,
+  arrowright: ArrowRight,
+  arrowrightleft: ArrowRightLeft,
+  chevrondown: ChevronDown,
+  chevronup: ChevronUp,
+  chevronleft: ChevronLeft,
+  chevronright: ChevronRight,
+  arrowupcircle: ArrowUpCircle,
 }
 
 export function Icon({ name, size = 24, strokeWidth = 2, className = '', style }: IconProps) {
@@ -240,13 +368,17 @@ export function Icon({ name, size = 24, strokeWidth = 2, className = '', style }
         stroke="none"
         className={className}
         style={style}
+        aria-hidden="true"
       >
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
       </svg>
     )
   }
 
-  if (BRAND_ICONS[name]) {
+  const normalized = name ? name.toLowerCase().trim() : ''
+  const stripped = normalized.replace(/[-_\s]/g, '')
+
+  if (BRAND_ICONS[normalized] || BRAND_ICONS[stripped]) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -260,14 +392,26 @@ export function Icon({ name, size = 24, strokeWidth = 2, className = '', style }
         strokeLinejoin="round"
         className={className}
         style={style}
+        aria-hidden="true"
       >
-        {BRAND_ICONS[name]}
+        {BRAND_ICONS[normalized] || BRAND_ICONS[stripped]}
       </svg>
     )
   }
 
-  const Comp = LUCIDE_ICON_MAP[name]
-  if (!Comp) return null
+  const Comp = LUCIDE_ICON_MAP[normalized] || LUCIDE_ICON_MAP[stripped]
+  if (!Comp) {
+    // Graceful fallback for unmapped or misnamed icons
+    return (
+      <Circle
+        size={size}
+        strokeWidth={strokeWidth}
+        className={className}
+        style={style}
+        aria-hidden="true"
+      />
+    )
+  }
 
   return (
     <Comp

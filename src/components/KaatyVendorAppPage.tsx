@@ -216,14 +216,19 @@ export function KaatyVendorAppPage() {
                   className="p-6 rounded-2xl bg-white border border-gray-200 shadow-xs hover:border-[#DC354B]/40 hover:shadow-md transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-rose-50 text-[#DC354B] flex items-center justify-center shrink-0 font-display font-black text-sm border border-rose-100">
-                      {feat.step}
+                    <div className="w-12 h-12 rounded-xl bg-rose-50 text-[#DC354B] flex items-center justify-center shrink-0 border border-rose-100 shadow-xs">
+                      <Icon name={feat.icon} size={22} strokeWidth={2} />
                     </div>
 
                     <div className="flex-1">
-                      <h3 className="font-display text-base sm:text-lg font-bold text-navy mb-1">
-                        {feat.title}
-                      </h3>
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-display text-base sm:text-lg font-bold text-navy">
+                          {feat.title}
+                        </h3>
+                        <span className="text-xs font-black text-[#DC354B] bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+                          {feat.step}
+                        </span>
+                      </div>
                       <p className="text-xs sm:text-sm text-navy-600 leading-relaxed mb-3">
                         {feat.desc}
                       </p>

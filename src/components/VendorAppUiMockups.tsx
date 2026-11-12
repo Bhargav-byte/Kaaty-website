@@ -668,13 +668,14 @@ export function PremiumVendorAppUi({
 
                   <button
                     onClick={() => toggleAvailability(item.id)}
-                    className={`px-3 py-1 rounded-xl text-[10px] font-black transition-all ${
+                    className={`px-3 py-1 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5 ${
                       item.isAvailable
                         ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
                         : 'bg-rose-600 text-white shadow-xs'
                     }`}
                   >
-                    {item.isAvailable ? 'In Stock' : "86'd (Off)"}
+                    <Icon name={item.isAvailable ? 'check' : 'x'} size={12} strokeWidth={2.5} />
+                    <span>{item.isAvailable ? 'In Stock' : "86'd (Off)"}</span>
                   </button>
                 </div>
               ))}
@@ -795,22 +796,26 @@ export function PremiumVendorAppUi({
               <button
                 key={tab.id}
                 onClick={() => interactive && setCurrentScreen(tab.id)}
-                className="flex flex-col items-center justify-center w-12 py-1 transition-all"
+                className="flex flex-col items-center justify-center py-1 transition-all flex-1"
               >
                 <div
-                  className={`transition-colors ${isActive ? 'text-[#DC354B]' : 'text-[#8E8E93]'}`}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
+                    isActive
+                      ? 'bg-rose-50 text-[#DC354B] shadow-xs'
+                      : 'text-slate-400 hover:text-slate-600'
+                  }`}
                 >
-                  <Icon name={tab.icon} size={18} />
+                  <Icon name={tab.icon} size={18} strokeWidth={2} />
                 </div>
                 <span
-                  className={`text-[9px] font-bold mt-1 transition-colors ${
-                    isActive ? 'text-[#DC354B]' : 'text-[#8E8E93]'
+                  className={`text-[9px] font-bold mt-0.5 transition-colors ${
+                    isActive ? 'text-[#DC354B]' : 'text-slate-400'
                   }`}
                 >
                   {tab.label}
                 </span>
                 {isActive && (
-                  <span className="w-4 h-0.5 rounded-full bg-[#DC354B] mt-0.5 animate-fade-in" />
+                  <span className="w-3.5 h-0.5 rounded-full bg-[#DC354B] mt-0.5 animate-fade-in" />
                 )}
               </button>
             )
