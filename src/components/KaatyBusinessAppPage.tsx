@@ -98,26 +98,30 @@ export function KaatyBusinessAppPage() {
   ]
 
   return (
-    <div className="pt-24 min-h-screen font-sans bg-white text-navy selection:bg-orange-100 selection:text-[#FA5A1E]">
+    <div className="pt-24 min-h-screen font-sans bg-white text-navy selection:bg-emerald-100 selection:text-[#028006]">
       {/* =========================================================================
           1. HERO SECTION
           ========================================================================= */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-orange-50/40 via-white to-white pt-12 pb-20 lg:pt-20 lg:pb-32">
-        <div className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-orange-400/10 blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/30 via-white to-white pt-12 pb-20 lg:pt-20 lg:pb-32">
+        <div className="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="pointer-events-none absolute top-40 -left-20 h-80 w-80 rounded-full bg-blue-400/5 blur-3xl" />
 
         <Container>
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             {/* Left Content Column */}
             <div className="lg:col-span-7 text-center lg:text-left z-10">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 text-[#FA5A1E] font-semibold text-xs sm:text-sm mb-6 border border-orange-200 shadow-xs">
-                <Icon name="layout-dashboard" size={16} />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#028006] font-semibold text-xs sm:text-sm mb-6 border border-emerald-200/80 shadow-xs">
+                <img
+                  src="/images/business-app-icon.png"
+                  alt="Kaaty Business App"
+                  className="w-4 h-4 rounded-xs object-cover"
+                />
                 <span>Kaaty Business App</span>
               </div>
 
               <h1 className="font-display text-4xl font-extrabold text-navy tracking-tight sm:text-5xl lg:text-6xl mb-6 leading-[1.08]">
                 Your business. <br />
-                <span className="text-[#FA5A1E]">In your hands.</span>
+                <span className="text-[#028006]">In your hands.</span>
               </h1>
 
               <p className="text-lg sm:text-xl text-navy-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
@@ -138,21 +142,21 @@ export function KaatyBusinessAppPage() {
               {/* Verified Trust Metrics / Key Points */}
               <div className="mt-10 pt-8 border-t border-gray-100 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0 text-left">
                 <div>
-                  <div className="flex items-center gap-1.5 text-[#FA5A1E] font-bold text-sm sm:text-base">
+                  <div className="flex items-center gap-1.5 text-[#028006] font-bold text-sm sm:text-base">
                     <Icon name="check" size={16} />
                     <span>Multi-Outlet</span>
                   </div>
                   <p className="text-xs text-navy-500 mt-0.5">Central branch rollup</p>
                 </div>
                 <div>
-                  <div className="flex items-center gap-1.5 text-[#FA5A1E] font-bold text-sm sm:text-base">
+                  <div className="flex items-center gap-1.5 text-[#028006] font-bold text-sm sm:text-base">
                     <Icon name="check" size={16} />
                     <span>Settlements</span>
                   </div>
                   <p className="text-xs text-navy-500 mt-0.5">Automated bank sync</p>
                 </div>
                 <div>
-                  <div className="flex items-center gap-1.5 text-[#FA5A1E] font-bold text-sm sm:text-base">
+                  <div className="flex items-center gap-1.5 text-[#028006] font-bold text-sm sm:text-base">
                     <Icon name="check" size={16} />
                     <span>1-Tap Control</span>
                   </div>
@@ -165,10 +169,10 @@ export function KaatyBusinessAppPage() {
             <div className="lg:col-span-5 relative z-10 flex flex-col justify-center items-center py-4 px-2 sm:px-6">
               <div className="relative w-full max-w-[380px] mx-auto flex items-center justify-center">
                 {/* Floating Owner Live Badge */}
-                <div className="hidden sm:block absolute -left-14 lg:-left-18 bottom-36 w-36 p-3 bg-white/95 backdrop-blur-md rounded-2xl border border-gray-200/80 shadow-[0_12px_28px_rgba(0,0,0,0.12)] z-30 pointer-events-none sm:pointer-events-auto">
+                <div className="hidden sm:block absolute -left-14 lg:-left-18 bottom-36 w-36 p-3 bg-white/95 backdrop-blur-md rounded-2xl border border-gray-200/80 shadow-[0_12px_28px_rgba(2,128,6,0.12)] z-30 pointer-events-none sm:pointer-events-auto">
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] font-bold text-emerald-700">Live Counters</span>
+                    <span className="w-2 h-2 rounded-full bg-[#028006] animate-pulse" />
+                    <span className="text-[10px] font-bold text-[#028006]">Live Counters</span>
                   </div>
                   <div className="text-xs font-black text-navy">₹54,820 Today</div>
                   <div className="text-[9px] text-gray-500 mt-0.5 leading-tight">
@@ -195,7 +199,7 @@ export function KaatyBusinessAppPage() {
       >
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Remote Visibility
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -219,7 +223,7 @@ export function KaatyBusinessAppPage() {
                     onClick={() => setActiveDashboardTab(feat.id)}
                     className={`p-6 rounded-2xl border transition-all duration-300 cursor-pointer ${
                       isActive
-                        ? 'bg-orange-50/50 border-[#FA5A1E] shadow-md ring-1 ring-[#FA5A1E]'
+                        ? 'bg-emerald-50/50 border-[#028006] shadow-md ring-1 ring-[#028006]'
                         : 'bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50/50'
                     }`}
                   >
@@ -227,7 +231,7 @@ export function KaatyBusinessAppPage() {
                       <div
                         className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-display font-black text-sm ${
                           isActive
-                            ? 'bg-[#FA5A1E] text-white shadow-sm'
+                            ? 'bg-[#028006] text-white shadow-sm'
                             : 'bg-gray-100 text-gray-500'
                         }`}
                       >
@@ -238,7 +242,7 @@ export function KaatyBusinessAppPage() {
                         <div className="flex items-center justify-between">
                           <h3
                             className={`font-display text-base sm:text-lg font-bold leading-tight ${
-                              isActive ? 'text-[#FA5A1E]' : 'text-navy'
+                              isActive ? 'text-[#028006]' : 'text-navy'
                             }`}
                           >
                             {feat.title}
@@ -246,7 +250,7 @@ export function KaatyBusinessAppPage() {
                           <Icon
                             name={feat.icon}
                             size={18}
-                            className={isActive ? 'text-[#FA5A1E]' : 'text-gray-400'}
+                            className={isActive ? 'text-[#028006]' : 'text-gray-400'}
                           />
                         </div>
 
@@ -255,13 +259,13 @@ export function KaatyBusinessAppPage() {
                         </p>
 
                         {isActive && (
-                          <div className="mt-4 pt-3 border-t border-orange-200/60 space-y-1.5 animate-in fade-in duration-200">
+                          <div className="mt-4 pt-3 border-t border-emerald-200/60 space-y-1.5 animate-in fade-in duration-200">
                             {feat.points.map((pt, idx) => (
                               <div
                                 key={idx}
                                 className="flex items-center gap-2 text-xs font-semibold text-navy-800"
                               >
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#FA5A1E]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#028006]" />
                                 <span>{pt}</span>
                               </div>
                             ))}
@@ -295,7 +299,7 @@ export function KaatyBusinessAppPage() {
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-6">
-              <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+              <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 Financial Clarity
               </span>
               <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -309,7 +313,7 @@ export function KaatyBusinessAppPage() {
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center shrink-0">
                     <Icon name="check-circle-2" size={20} />
                   </div>
                   <div>
@@ -322,7 +326,7 @@ export function KaatyBusinessAppPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-orange-100 text-[#FA5A1E] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center shrink-0">
                     <Icon name="file-text" size={20} />
                   </div>
                   <div>
@@ -378,7 +382,7 @@ export function KaatyBusinessAppPage() {
 
             {/* Right Content */}
             <div className="lg:col-span-6 order-1 lg:order-2">
-              <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+              <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 Menu Control
               </span>
               <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -393,7 +397,7 @@ export function KaatyBusinessAppPage() {
               <div className="space-y-4">
                 <div className="p-4 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
                   <div className="flex items-center gap-2.5 mb-1 text-navy font-bold text-sm">
-                    <Icon name="pencil" size={16} className="text-[#FA5A1E]" />
+                    <Icon name="pencil" size={16} className="text-[#028006]" />
                     <span>Instant Price Updates</span>
                   </div>
                   <p className="text-xs text-navy-600 leading-relaxed">
@@ -415,7 +419,7 @@ export function KaatyBusinessAppPage() {
 
                 <div className="p-4 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
                   <div className="flex items-center gap-2.5 mb-1 text-navy font-bold text-sm">
-                    <Icon name="zap" size={16} className="text-emerald-600" />
+                    <Icon name="zap" size={16} className="text-[#028006]" />
                     <span>Zero Counter Interruption</span>
                   </div>
                   <p className="text-xs text-navy-600 leading-relaxed">
@@ -437,7 +441,7 @@ export function KaatyBusinessAppPage() {
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-6">
-              <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+              <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 Inventory Visibility
               </span>
               <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -464,7 +468,7 @@ export function KaatyBusinessAppPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-[#028006] flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
                     ✓
                   </div>
                   <div>
@@ -477,7 +481,7 @@ export function KaatyBusinessAppPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-orange-100 text-[#FA5A1E] flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-[#028006] flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
                     ✓
                   </div>
                   <div>
@@ -507,7 +511,7 @@ export function KaatyBusinessAppPage() {
       <section className="py-20 lg:py-32 bg-gray-50 border-t border-gray-100">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Business Intelligence
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -524,7 +528,7 @@ export function KaatyBusinessAppPage() {
             {/* Card 1 */}
             <div className="p-6 rounded-3xl bg-white border border-gray-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded-2xl bg-orange-100 text-[#FA5A1E] flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center mb-4">
                   <Icon name="trending-up" size={20} />
                 </div>
                 <h3 className="font-display text-base font-bold text-navy mb-1.5">
@@ -535,7 +539,7 @@ export function KaatyBusinessAppPage() {
                   weekday patterns.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] font-bold text-[#FA5A1E]">
+              <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] font-bold text-[#028006]">
                 Daily Trailing Insights
               </div>
             </div>
@@ -562,7 +566,7 @@ export function KaatyBusinessAppPage() {
             {/* Card 3 */}
             <div className="p-6 rounded-3xl bg-white border border-gray-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center mb-4">
                   <Icon name="bar-chart-3" size={20} />
                 </div>
                 <h3 className="font-display text-base font-bold text-navy mb-1.5">
@@ -573,7 +577,7 @@ export function KaatyBusinessAppPage() {
                   Regular (₹101–200), and Group (₹201+).
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] font-bold text-emerald-600">
+              <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] font-bold text-[#028006]">
                 Ticket Size Intelligence
               </div>
             </div>
@@ -613,7 +617,7 @@ export function KaatyBusinessAppPage() {
       <section className="py-20 lg:py-32 bg-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               The Owner's Journey
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -664,7 +668,7 @@ export function KaatyBusinessAppPage() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-display font-black text-sm text-[#FA5A1E]">
+                    <span className="font-display font-black text-sm text-[#028006]">
                       {journey.step}
                     </span>
                     <Icon name={journey.icon} size={18} className="text-gray-400" />
@@ -686,7 +690,7 @@ export function KaatyBusinessAppPage() {
       <section className="py-20 lg:py-32 bg-gray-50 border-t border-gray-100">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Ecosystem Architecture
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -702,7 +706,7 @@ export function KaatyBusinessAppPage() {
             {/* Top/Central Command Layer */}
             <div className="lg:col-span-12">
               <div className="p-6 rounded-3xl bg-gradient-to-r from-navy via-navy-900 to-navy-950 text-white shadow-xl border border-navy-800 text-center">
-                <span className="inline-block px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 font-bold text-xs mb-2 border border-orange-500/30">
+                <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs mb-2 border border-emerald-500/30">
                   Owner Intelligence Layer
                 </span>
                 <h3 className="font-display text-xl sm:text-2xl font-extrabold">
@@ -748,7 +752,7 @@ export function KaatyBusinessAppPage() {
               </div>
 
               <div className="p-5 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
-                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
+                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-[#028006] flex items-center justify-center mb-3">
                   <Icon name="tv" size={16} />
                 </div>
                 <h4 className="font-bold text-navy text-sm">Kiosk & Token Board</h4>
@@ -767,7 +771,7 @@ export function KaatyBusinessAppPage() {
       <section className="py-20 lg:py-32 bg-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Purpose-Built
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -782,7 +786,7 @@ export function KaatyBusinessAppPage() {
             {/* Industry 1 */}
             <div className="p-6 rounded-3xl bg-gray-50 border border-gray-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-[#FA5A1E] flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center mb-4">
                   <Icon name="utensils" size={22} />
                 </div>
                 <h3 className="font-display text-base font-bold text-navy mb-2">Restaurants</h3>
@@ -791,7 +795,7 @@ export function KaatyBusinessAppPage() {
                   deposits, and update seasonal specials on the go.
                 </p>
               </div>
-              <div className="mt-6 pt-3 border-t border-gray-200 text-xs font-semibold text-[#FA5A1E]">
+              <div className="mt-6 pt-3 border-t border-gray-200 text-xs font-semibold text-[#028006]">
                 ✓ Floor turn tracking
               </div>
             </div>
@@ -818,7 +822,7 @@ export function KaatyBusinessAppPage() {
             {/* Industry 3 */}
             <div className="p-6 rounded-3xl bg-gray-50 border border-gray-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-[#028006] flex items-center justify-center mb-4">
                   <Icon name="coffee" size={22} />
                 </div>
                 <h3 className="font-display text-base font-bold text-navy mb-2">Cafés & QSRs</h3>
@@ -827,7 +831,7 @@ export function KaatyBusinessAppPage() {
                   reconcile multi-channel UPI and card payouts.
                 </p>
               </div>
-              <div className="mt-6 pt-3 border-t border-gray-200 text-xs font-semibold text-emerald-600">
+              <div className="mt-6 pt-3 border-t border-gray-200 text-xs font-semibold text-[#028006]">
                 ✓ Rapid 86 item control
               </div>
             </div>
@@ -858,7 +862,7 @@ export function KaatyBusinessAppPage() {
       <section className="py-20 lg:py-32 bg-gray-50 border-t border-gray-100">
         <Container>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="text-xs font-bold text-[#FA5A1E] uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+            <span className="text-xs font-bold text-[#028006] uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               Interface Gallery
             </span>
             <h2 className="font-display text-3xl font-extrabold text-navy sm:text-4xl lg:text-5xl mt-3 mb-6">
@@ -878,11 +882,11 @@ export function KaatyBusinessAppPage() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FA5A1E] font-bold text-xs border border-orange-200/60 shadow-xs">
+                    <span className="px-3 py-1 rounded-full bg-emerald-50 text-[#028006] font-bold text-xs border border-emerald-200/60 shadow-xs">
                       {screen.label}
                     </span>
-                    <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Active Sync
+                    <span className="text-[11px] font-bold text-[#028006] flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#028006]" /> Active Sync
                     </span>
                   </div>
 
@@ -893,7 +897,7 @@ export function KaatyBusinessAppPage() {
                 </div>
 
                 {/* Compact Smartphone Mockup */}
-                <div className="relative mx-auto my-2 filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.12)]">
+                <div className="relative mx-auto my-2 filter drop-shadow-[0_15px_30px_rgba(2,128,6,0.12)]">
                   <PremiumBusinessAppUi
                     compact={true}
                     interactive={false}

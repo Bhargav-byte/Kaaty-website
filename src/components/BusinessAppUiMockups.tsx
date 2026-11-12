@@ -3,6 +3,8 @@ import { Icon } from './Icon'
 
 export type BusinessAppScreen = 'dashboard' | 'settlements' | 'menu' | 'stock' | 'analytics'
 
+export const BUSINESS_GREEN = '#028006'
+
 export interface MenuItemData {
   id: string
   name: string
@@ -113,6 +115,7 @@ export function PremiumBusinessAppUi({
 
   // Toggle inStock (86 item)
   const toggleStock = (itemId: string) => {
+    if (!interactive) return
     setMenuItems((prev) =>
       prev.map((item) => {
         if (item.id === itemId) {
@@ -145,45 +148,46 @@ export function PremiumBusinessAppUi({
       ? menuItems
       : menuItems.filter((m) => m.category === selectedCategory)
 
-  const scaleClass = compact
-    ? 'w-[280px] h-[580px] text-[11px]'
-    : 'w-[320px] sm:w-[340px] h-[670px] text-xs'
-
   return (
     <div
-      className={`${scaleClass} bg-navy-950 rounded-[48px] p-3 shadow-2xl border-4 border-navy-800/80 relative flex flex-col justify-between overflow-hidden select-none text-navy-900 transition-all duration-300`}
+      className={`relative mx-auto rounded-[46px] border-[10px] border-slate-900 bg-[#F8FAFC] shadow-2xl overflow-hidden font-sans select-none ${
+        compact ? 'w-[290px] h-[590px] text-[11px]' : 'w-[340px] sm:w-[360px] h-[720px] text-xs'
+      }`}
+      style={{
+        boxShadow:
+          '0 25px 60px -15px rgba(2, 128, 6, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08), 0 20px 40px rgba(0, 0, 0, 0.15)',
+      }}
     >
-      {/* Outer Phone Bezel & Glare */}
-      <div className="absolute inset-0 rounded-[44px] pointer-events-none border border-white/10 z-50" />
-      <div className="absolute top-0 right-12 w-28 h-28 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-xl pointer-events-none z-50" />
+      {/* Phone Hardware Top: Dynamic Island & Status Bar */}
+      <div className="absolute top-0 inset-x-0 h-10 bg-[#F8FAFC] z-50 flex items-center justify-between px-6 pt-1 border-b border-gray-100">
+        <span className="text-[12px] font-bold text-slate-800 tracking-tight">12:45</span>
 
-      {/* Screen Frame Container */}
-      <div className="relative w-full h-full bg-[#F8FAFC] rounded-[38px] overflow-hidden flex flex-col justify-between border border-gray-200">
-        {/* Unified Status Bar & Dynamic Island */}
-        <div className="px-6 pt-3.5 pb-2 flex items-center justify-between text-[11px] font-bold z-40 shrink-0 bg-white border-b border-gray-100 text-navy-800">
-          <span className="w-12 text-left tracking-tight pl-1">12:45</span>
-
-          <div className="w-20 h-4.5 rounded-full bg-black flex items-center justify-end pr-2 gap-1.5 shadow-inner border border-white/10 shrink-0">
-            <div className="w-2 h-2 rounded-full bg-[#111] border border-white/10" />
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-950/80" />
-          </div>
-
-          <div className="w-12 flex items-center justify-end gap-1.5 text-[10px] pr-1">
-            <span className="text-[8px] px-1 py-0.2 rounded-xs font-bold leading-none bg-orange-100 text-[#FA5A1E]">
-              5G
-            </span>
-            <Icon name="battery" size={12} className="text-gray-700" />
-          </div>
+        {/* Dynamic Island */}
+        <div className="w-24 h-5 bg-black rounded-full flex items-center justify-end px-2 space-x-1 shadow-inner">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#028006] animate-pulse" />
+          <div className="w-1.5 h-1.5 rounded-full bg-slate-800" />
         </div>
 
-        {/* Sync Toast Notification */}
-        {syncToast && (
-          <div className="absolute top-14 inset-x-3 z-50 p-2.5 rounded-xl bg-navy-900 text-white text-[10px] font-semibold flex items-center gap-2 shadow-xl border border-navy-700 animate-in fade-in slide-in-from-top-2 duration-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
-            <span className="flex-1 leading-tight">{syncToast}</span>
-          </div>
-        )}
+        {/* Status Indicators */}
+        <div className="flex items-center space-x-1.5 text-slate-800">
+          <span className="text-[9px] font-extrabold text-[#028006] bg-emerald-50 border border-emerald-200/60 px-1 py-0.2 rounded-xs leading-none">
+            5G
+          </span>
+          <Icon name="wifi" size={12} className="text-slate-700" />
+          <Icon name="battery" size={12} className="text-slate-700" />
+        </div>
+      </div>
 
+      {/* Sync Toast Notification */}
+      {syncToast && (
+        <div className="absolute top-12 left-3 right-3 z-50 p-2.5 rounded-xl bg-slate-900/95 backdrop-blur-md text-white text-[10px] font-semibold flex items-center gap-2 shadow-xl border border-slate-800 animate-in fade-in slide-in-from-top-2 duration-200">
+          <span className="w-2 h-2 rounded-full bg-[#028006] shrink-0 animate-pulse" />
+          <span className="flex-1 leading-tight truncate">{syncToast}</span>
+        </div>
+      )}
+
+      {/* Main Screen Content Body */}
+      <div className="pt-11 pb-16 h-full flex flex-col justify-between overflow-hidden bg-[#F8FAFC]">
         {/* =========================================================================
             STATE 1: OWNER DASHBOARD
             ========================================================================= */}
@@ -192,11 +196,11 @@ export function PremiumBusinessAppUi({
             {/* Header / Outlet Switcher */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Owner Dashboard
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[9px] border border-emerald-200/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-[#028006] font-bold text-[9px] border border-emerald-200/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#028006] animate-pulse" />
                   Live Sync
                 </span>
               </div>
@@ -204,21 +208,21 @@ export function PremiumBusinessAppUi({
               {/* Outlet Selector Dropdown */}
               <div className="relative">
                 <button
-                  onClick={() => setShowOutletDropdown(!showOutletDropdown)}
-                  className="w-full p-2.5 rounded-xl bg-white border border-gray-200/80 shadow-xs flex items-center justify-between text-left hover:border-orange-300 transition-colors cursor-pointer"
+                  onClick={() => interactive && setShowOutletDropdown(!showOutletDropdown)}
+                  className="w-full p-2.5 rounded-xl bg-white border border-gray-200/80 shadow-xs flex items-center justify-between text-left hover:border-emerald-300 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="w-7 h-7 rounded-lg bg-orange-100 text-[#FA5A1E] flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#028006] flex items-center justify-center shrink-0 border border-emerald-100">
                       <Icon name="store" size={14} />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-xs font-extrabold text-navy truncate">
+                      <h4 className="text-xs font-extrabold text-slate-900 truncate">
                         {selectedOutlet}
                       </h4>
-                      <p className="text-[10px] text-gray-500">Tap to switch branch</p>
+                      <p className="text-[10px] text-slate-500">Tap to switch branch</p>
                     </div>
                   </div>
-                  <Icon name="chevron-down" size={14} className="text-gray-400 shrink-0" />
+                  <Icon name="chevron-down" size={14} className="text-slate-400 shrink-0" />
                 </button>
 
                 {showOutletDropdown && (
@@ -237,8 +241,8 @@ export function PremiumBusinessAppUi({
                         }}
                         className={`w-full text-left p-2 rounded-lg text-xs font-semibold cursor-pointer ${
                           selectedOutlet === name
-                            ? 'bg-orange-50 text-[#FA5A1E] font-bold'
-                            : 'text-navy-700 hover:bg-gray-50'
+                            ? 'bg-emerald-50 text-[#028006] font-bold'
+                            : 'text-slate-700 hover:bg-gray-50'
                         }`}
                       >
                         {name}
@@ -250,8 +254,8 @@ export function PremiumBusinessAppUi({
             </div>
 
             {/* Today Revenue Hero Card */}
-            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-navy-900 via-navy-950 to-black text-white shadow-md border border-navy-800">
-              <div className="flex items-center justify-between text-[10px] text-gray-400 mb-1">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-black text-white shadow-md border border-slate-800">
+              <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1">
                 <span>Today Revenue</span>
                 <span className="text-emerald-400 font-bold flex items-center gap-0.5">
                   <Icon name="trending-up" size={11} /> +14.2% vs yesterday
@@ -263,11 +267,11 @@ export function PremiumBusinessAppUi({
 
               <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-white/10 text-[10px]">
                 <div>
-                  <span className="text-gray-400 block">Active Orders</span>
-                  <span className="text-xs font-extrabold text-orange-400">342 Completed</span>
+                  <span className="text-slate-400 block">Active Orders</span>
+                  <span className="text-xs font-extrabold text-emerald-400">342 Completed</span>
                 </div>
                 <div>
-                  <span className="text-gray-400 block">Avg. Order Value</span>
+                  <span className="text-slate-400 block">Avg. Order Value</span>
                   <span className="text-xs font-extrabold text-white">₹160</span>
                 </div>
               </div>
@@ -276,8 +280,10 @@ export function PremiumBusinessAppUi({
             {/* Hourly Order Velocity Mini Bar */}
             <div className="p-3 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-extrabold text-navy">Peak Velocity Today</span>
-                <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] font-extrabold text-slate-900">
+                  Peak Velocity Today
+                </span>
+                <span className="text-[10px] font-bold text-[#028006] bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md">
                   Peak: 1 PM - 2 PM (84 orders)
                 </span>
               </div>
@@ -289,14 +295,14 @@ export function PremiumBusinessAppUi({
                   >
                     <div
                       className={`w-full rounded-xs transition-all ${
-                        h >= 90 ? 'bg-[#FA5A1E]' : 'bg-orange-200'
+                        h >= 90 ? 'bg-[#028006]' : 'bg-emerald-200'
                       }`}
                       style={{ height: `${h}%` }}
                     />
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between text-[9px] text-gray-400 mt-1.5 font-medium">
+              <div className="flex justify-between text-[9px] text-slate-400 mt-1.5 font-medium">
                 <span>10 AM</span>
                 <span>1 PM (Rush)</span>
                 <span>4 PM</span>
@@ -308,12 +314,12 @@ export function PremiumBusinessAppUi({
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setScreen('stock')}
-                className="p-3 rounded-xl bg-white border border-gray-200/80 hover:border-orange-300 text-left transition-colors cursor-pointer group"
+                className="p-3 rounded-xl bg-white border border-gray-200/80 hover:border-emerald-300 text-left transition-colors cursor-pointer group"
               >
                 <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
                   <Icon name="package" size={14} />
                 </div>
-                <div className="text-xs font-bold text-navy">Stock Control</div>
+                <div className="text-xs font-bold text-slate-900">Stock Control</div>
                 <div className="text-[10px] text-rose-600 font-semibold mt-0.5">
                   {outOfStockCount > 0 ? `${outOfStockCount} item 86'd` : 'All in stock'}
                 </div>
@@ -321,13 +327,13 @@ export function PremiumBusinessAppUi({
 
               <button
                 onClick={() => setScreen('settlements')}
-                className="p-3 rounded-xl bg-white border border-gray-200/80 hover:border-orange-300 text-left transition-colors cursor-pointer group"
+                className="p-3 rounded-xl bg-white border border-gray-200/80 hover:border-emerald-300 text-left transition-colors cursor-pointer group"
               >
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
+                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#028006] flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform border border-emerald-100">
                   <Icon name="wallet" size={14} />
                 </div>
-                <div className="text-xs font-bold text-navy">Settlements</div>
-                <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">
+                <div className="text-xs font-bold text-slate-900">Settlements</div>
+                <div className="text-[10px] text-[#028006] font-semibold mt-0.5">
                   ₹48,250 Next Payout
                 </div>
               </button>
@@ -342,18 +348,18 @@ export function PremiumBusinessAppUi({
           <div className="flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar p-3.5 space-y-3 bg-[#F8FAFC]">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Settlements & Payouts
                 </span>
-                <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[9px] font-bold text-[#028006] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                   Daily Payout Cycle
                 </span>
               </div>
-              <h4 className="text-sm font-extrabold text-navy">Bank Settlement Summary</h4>
+              <h4 className="text-sm font-extrabold text-slate-900">Bank Settlement Summary</h4>
             </div>
 
             {/* Available Settlement Card */}
-            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-950 via-navy-950 to-black text-white shadow-md border border-emerald-900/50">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#063311] via-slate-950 to-black text-white shadow-md border border-emerald-800/40">
               <span className="text-[10px] text-emerald-300 font-medium block">
                 Net Payout (Tomorrow Transfer)
               </span>
@@ -367,15 +373,15 @@ export function PremiumBusinessAppUi({
 
               {/* Settlement Deductions Breakdown */}
               <div className="mt-3 pt-3 border-t border-white/10 space-y-1.5 text-[10px]">
-                <div className="flex justify-between text-gray-300">
+                <div className="flex justify-between text-slate-300">
                   <span>Gross Counter & Online Sales</span>
                   <span className="font-bold text-white">₹50,790.00</span>
                 </div>
-                <div className="flex justify-between text-gray-300">
+                <div className="flex justify-between text-slate-300">
                   <span>Platform & Processing Fee (2%)</span>
                   <span className="text-rose-300">-₹1,015.80</span>
                 </div>
-                <div className="flex justify-between text-gray-300">
+                <div className="flex justify-between text-slate-300">
                   <span>Applicable GST (18% on fee)</span>
                   <span className="text-rose-300">-₹182.84</span>
                 </div>
@@ -388,7 +394,7 @@ export function PremiumBusinessAppUi({
 
             {/* Settlement History Log */}
             <div>
-              <h5 className="text-xs font-bold text-navy mb-2">Recent Bank Transfers</h5>
+              <h5 className="text-xs font-bold text-slate-900 mb-2">Recent Bank Transfers</h5>
               <div className="space-y-2">
                 {[
                   {
@@ -415,12 +421,12 @@ export function PremiumBusinessAppUi({
                     className="p-2.5 rounded-xl bg-white border border-gray-200/80 shadow-xs flex items-center justify-between"
                   >
                     <div>
-                      <div className="text-xs font-extrabold text-navy">{s.amount}</div>
-                      <div className="text-[10px] text-gray-500 mt-0.5">
+                      <div className="text-xs font-extrabold text-slate-900">{s.amount}</div>
+                      <div className="text-[10px] text-slate-500 mt-0.5">
                         {s.date} • UTR: {s.utr}
                       </div>
                     </div>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-bold">
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-[#028006] text-[9px] font-bold border border-emerald-200/50">
                       {s.status}
                     </span>
                   </div>
@@ -438,14 +444,14 @@ export function PremiumBusinessAppUi({
             {/* Header */}
             <div className="p-3 pb-2 bg-white border-b border-gray-100">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Menu Management
                 </span>
-                <span className="text-[10px] font-bold text-[#FA5A1E]">
+                <span className="text-[10px] font-bold text-[#028006] bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                   {menuItems.length} Dishes
                 </span>
               </div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-navy">
+              <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">
                 Tap Any Price to Modify Live
               </h4>
 
@@ -457,8 +463,8 @@ export function PremiumBusinessAppUi({
                     onClick={() => setSelectedCategory(cat)}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors cursor-pointer ${
                       selectedCategory === cat
-                        ? 'bg-[#FA5A1E] text-white shadow-xs'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-[#028006] text-white shadow-xs'
+                        : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
                     }`}
                   >
                     {cat}
@@ -485,18 +491,18 @@ export function PremiumBusinessAppUi({
                           item.isVeg ? 'bg-emerald-600' : 'bg-rose-600'
                         }`}
                       />
-                      <span className="text-[10px] text-gray-400 font-semibold">
+                      <span className="text-[10px] text-slate-400 font-semibold">
                         {item.category}
                       </span>
                     </div>
-                    <h5 className="font-bold text-xs text-navy truncate">{item.name}</h5>
+                    <h5 className="font-bold text-xs text-slate-900 truncate">{item.name}</h5>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs font-black text-navy">₹{item.price}</span>
+                      <span className="text-xs font-black text-slate-900">₹{item.price}</span>
                       <span
                         className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
                           item.inStock
-                            ? 'text-emerald-700 bg-emerald-50'
-                            : 'text-rose-700 bg-rose-50'
+                            ? 'text-[#028006] bg-emerald-50 border border-emerald-200/60'
+                            : 'text-rose-700 bg-rose-50 border border-rose-200/60'
                         }`}
                       >
                         {item.inStock ? 'In Stock' : "86'd"}
@@ -510,7 +516,7 @@ export function PremiumBusinessAppUi({
                       setEditingItem(item)
                       setTempPrice(item.price)
                     }}
-                    className="px-2 py-1.5 rounded-lg bg-orange-50 hover:bg-orange-100 text-[#FA5A1E] font-bold text-[10px] border border-orange-200/60 transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
+                    className="px-2 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#028006] font-bold text-[10px] border border-emerald-200/60 transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
                   >
                     <Icon name="pencil" size={11} />
                     <span>Edit ₹</span>
@@ -521,34 +527,34 @@ export function PremiumBusinessAppUi({
 
             {/* Price Edit Sheet Modal inside phone */}
             {editingItem && (
-              <div className="absolute inset-x-2 bottom-2 z-50 p-3.5 bg-white rounded-2xl shadow-2xl border-2 border-orange-300 animate-in fade-in slide-in-from-bottom-4 duration-200">
+              <div className="absolute inset-x-2 bottom-2 z-50 p-3.5 bg-white rounded-2xl shadow-2xl border-2 border-emerald-300 animate-in fade-in slide-from-bottom-4 duration-200">
                 <div className="flex items-center justify-between mb-2">
-                  <h5 className="text-xs font-black text-navy truncate">
+                  <h5 className="text-xs font-black text-slate-900 truncate">
                     Edit: {editingItem.name}
                   </h5>
                   <button
                     onClick={() => setEditingItem(null)}
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     ✕
                   </button>
                 </div>
 
                 <div className="flex items-center justify-between bg-gray-50 rounded-xl p-2 border border-gray-200 mb-3">
-                  <span className="text-xs font-bold text-navy-600">New Counter Price:</span>
+                  <span className="text-xs font-bold text-slate-700">New Counter Price:</span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setTempPrice((p) => Math.max(10, p - 5))}
-                      className="w-7 h-7 rounded-lg bg-white border border-gray-200 font-bold text-navy hover:bg-gray-100 cursor-pointer"
+                      className="w-7 h-7 rounded-lg bg-white border border-gray-200 font-bold text-slate-900 hover:bg-gray-100 cursor-pointer"
                     >
                       -
                     </button>
-                    <span className="font-display text-base font-black text-[#FA5A1E] w-12 text-center">
+                    <span className="font-display text-base font-black text-[#028006] w-12 text-center">
                       ₹{tempPrice}
                     </span>
                     <button
                       onClick={() => setTempPrice((p) => p + 5)}
-                      className="w-7 h-7 rounded-lg bg-white border border-gray-200 font-bold text-navy hover:bg-gray-100 cursor-pointer"
+                      className="w-7 h-7 rounded-lg bg-white border border-gray-200 font-bold text-slate-900 hover:bg-gray-100 cursor-pointer"
                     >
                       +
                     </button>
@@ -557,7 +563,7 @@ export function PremiumBusinessAppUi({
 
                 <button
                   onClick={handleSavePrice}
-                  className="w-full py-2.5 rounded-xl bg-[#FA5A1E] hover:bg-orange-600 text-white font-bold text-xs shadow-md transition-colors cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-[#028006] hover:bg-[#026e05] text-white font-bold text-xs shadow-md transition-colors cursor-pointer"
                 >
                   Save & Broadcast to POS Counters
                 </button>
@@ -574,17 +580,17 @@ export function PremiumBusinessAppUi({
             {/* Header */}
             <div className="p-3 pb-2 bg-white border-b border-gray-100">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Live Stock Control
                 </span>
                 <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
                   {outOfStockCount} Items 86'd
                 </span>
               </div>
-              <h4 className="text-xs sm:text-sm font-extrabold text-navy">
+              <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">
                 Tap Switch to 86 Item Instantly
               </h4>
-              <p className="text-[10px] text-gray-500 mt-0.5">
+              <p className="text-[10px] text-slate-500 mt-0.5">
                 Removing an item instantly prevents orders on Customer App, QR, & Kiosk.
               </p>
             </div>
@@ -611,8 +617,8 @@ export function PremiumBusinessAppUi({
                       />
                     </div>
                     <div className="min-w-0">
-                      <h5 className="font-bold text-xs text-navy truncate">{item.name}</h5>
-                      <span className="text-[10px] text-gray-400 font-semibold">
+                      <h5 className="font-bold text-xs text-slate-900 truncate">{item.name}</h5>
+                      <span className="text-[10px] text-slate-400 font-semibold">
                         ₹{item.price} • {item.category}
                       </span>
                     </div>
@@ -623,15 +629,11 @@ export function PremiumBusinessAppUi({
                     onClick={() => toggleStock(item.id)}
                     className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 ${
                       item.inStock
-                        ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                        ? 'bg-emerald-50 text-[#028006] border border-emerald-200/80 hover:bg-emerald-100'
                         : 'bg-rose-600 text-white hover:bg-rose-700 shadow-xs'
                     }`}
                   >
-                    <span
-                      className={`w-2 h-2 rounded-full ${
-                        item.inStock ? 'bg-emerald-600' : 'bg-white'
-                      }`}
-                    />
+                    <Icon name={item.inStock ? 'check' : 'x'} size={12} strokeWidth={2.5} />
                     <span>{item.inStock ? 'In Stock' : "86'd (Off)"}</span>
                   </button>
                 </div>
@@ -647,55 +649,57 @@ export function PremiumBusinessAppUi({
           <div className="flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar p-3.5 space-y-3 bg-[#F8FAFC]">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                   Business Intelligence
                 </span>
-                <span className="text-[10px] font-bold text-navy-600 bg-gray-100 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold text-[#028006] bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                   Last 7 Days
                 </span>
               </div>
-              <h4 className="text-sm font-extrabold text-navy">Sales & Channel Velocity</h4>
+              <h4 className="text-sm font-extrabold text-slate-900">Sales & Channel Velocity</h4>
             </div>
 
             {/* Total 7-day stats */}
             <div className="p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
-              <span className="text-[10px] font-bold text-gray-400 uppercase">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
                 7-Day Total Revenue
               </span>
-              <div className="font-display text-2xl font-black text-navy mt-0.5">₹3,84,500</div>
-              <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-600">
+              <div className="font-display text-2xl font-black text-slate-900 mt-0.5">
+                ₹3,84,500
+              </div>
+              <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-600">
                 <span>
-                  <strong className="text-navy font-bold">2,390</strong> Orders
+                  <strong className="text-slate-900 font-bold">2,390</strong> Orders
                 </span>
                 <span>•</span>
                 <span>
-                  <strong className="text-navy font-bold">₹161</strong> Avg Ticket
+                  <strong className="text-slate-900 font-bold">₹161</strong> Avg Ticket
                 </span>
               </div>
             </div>
 
             {/* Channel Breakdown Card */}
             <div className="p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-xs space-y-2.5">
-              <h5 className="text-xs font-bold text-navy">Revenue by Channel</h5>
+              <h5 className="text-xs font-bold text-slate-900">Revenue by Channel</h5>
 
               <div>
                 <div className="flex justify-between text-[10px] font-bold mb-1">
-                  <span className="text-navy flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#FA5A1E]" /> Counter POS
+                  <span className="text-slate-900 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#028006]" /> Counter POS
                   </span>
-                  <span className="text-gray-600">₹2,38,390 (62%)</span>
+                  <span className="text-slate-600">₹2,38,390 (62%)</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                  <div className="h-full bg-[#FA5A1E] rounded-full" style={{ width: '62%' }} />
+                  <div className="h-full bg-[#028006] rounded-full" style={{ width: '62%' }} />
                 </div>
               </div>
 
               <div>
                 <div className="flex justify-between text-[10px] font-bold mb-1">
-                  <span className="text-navy flex items-center gap-1.5">
+                  <span className="text-slate-900 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-blue-500" /> Kaaty Mobile App
                   </span>
-                  <span className="text-gray-600">₹92,280 (24%)</span>
+                  <span className="text-slate-600">₹92,280 (24%)</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
                   <div className="h-full bg-blue-500 rounded-full" style={{ width: '24%' }} />
@@ -704,10 +708,10 @@ export function PremiumBusinessAppUi({
 
               <div>
                 <div className="flex justify-between text-[10px] font-bold mb-1">
-                  <span className="text-navy flex items-center gap-1.5">
+                  <span className="text-slate-900 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" /> QR Table Ordering
                   </span>
-                  <span className="text-gray-600">₹53,830 (14%)</span>
+                  <span className="text-slate-600">₹53,830 (14%)</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden">
                   <div className="h-full bg-emerald-500 rounded-full" style={{ width: '14%' }} />
@@ -717,62 +721,68 @@ export function PremiumBusinessAppUi({
 
             {/* Order Size Brackets */}
             <div className="p-3.5 rounded-2xl bg-white border border-gray-200/80 shadow-xs">
-              <h5 className="text-xs font-bold text-navy mb-2">Order Size Distribution</h5>
+              <h5 className="text-xs font-bold text-slate-900 mb-2">Order Size Distribution</h5>
               <div className="grid grid-cols-2 gap-2 text-[10px]">
                 <div className="p-2 rounded-lg bg-gray-50 border border-gray-100">
-                  <span className="text-gray-400 block">Snack (₹0–50)</span>
-                  <span className="font-bold text-navy">18% of orders</span>
+                  <span className="text-slate-400 block">Snack (₹0–50)</span>
+                  <span className="font-bold text-slate-900">18% of orders</span>
                 </div>
-                <div className="p-2 rounded-lg bg-orange-50 border border-orange-100">
-                  <span className="text-orange-700 block">Quick Meal (₹51–100)</span>
-                  <span className="font-bold text-[#FA5A1E]">34% of orders</span>
+                <div className="p-2 rounded-lg bg-emerald-50/70 border border-emerald-200/60">
+                  <span className="text-[#028006] block font-semibold">Quick Meal (₹51–100)</span>
+                  <span className="font-bold text-[#028006]">34% of orders</span>
                 </div>
-                <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-100">
-                  <span className="text-emerald-700 block">Regular (₹101–200)</span>
-                  <span className="font-bold text-emerald-800">38% (Largest)</span>
+                <div className="p-2 rounded-lg bg-emerald-100/60 border border-emerald-200">
+                  <span className="text-[#028006] block font-semibold">Regular (₹101–200)</span>
+                  <span className="font-bold text-[#028006]">38% (Largest)</span>
                 </div>
                 <div className="p-2 rounded-lg bg-purple-50 border border-purple-100">
-                  <span className="text-purple-700 block">Group (₹201+)</span>
+                  <span className="text-purple-700 block font-semibold">Group (₹201+)</span>
                   <span className="font-bold text-purple-800">10% of orders</span>
                 </div>
               </div>
             </div>
           </div>
         )}
+      </div>
 
-        {/* =========================================================================
-            BOTTOM NAVIGATION BAR (5 Interactive Tabs)
-            ========================================================================= */}
-        {interactive && (
-          <div className="px-2 py-1.5 bg-white border-t border-gray-100 grid grid-cols-5 gap-1 text-center shrink-0">
-            {[
-              { id: 'dashboard' as BusinessAppScreen, label: 'Overview', icon: 'layout-dashboard' },
-              { id: 'settlements' as BusinessAppScreen, label: 'Payouts', icon: 'wallet' },
-              { id: 'menu' as BusinessAppScreen, label: 'Menu', icon: 'book-open' },
-              { id: 'stock' as BusinessAppScreen, label: 'Stock', icon: 'package' },
-              { id: 'analytics' as BusinessAppScreen, label: 'Insights', icon: 'bar-chart-3' },
-            ].map((tab) => {
-              const active = activeScreen === tab.id
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setScreen(tab.id)}
-                  className={`py-1 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer ${
-                    active ? 'text-[#FA5A1E] font-bold' : 'text-gray-400 hover:text-navy-600'
-                  }`}
-                >
-                  <Icon name={tab.icon} size={15} />
-                  <span className="text-[9px] mt-0.5 tracking-tight">{tab.label}</span>
-                </button>
-              )
-            })}
-          </div>
-        )}
-
-        {/* Bottom Home Indicator */}
-        <div className="py-1 flex justify-center bg-white border-t border-gray-50">
-          <div className="w-20 h-1 bg-gray-300 rounded-full" />
-        </div>
+      {/* =========================================================================
+          BOTTOM NAVIGATION BAR (5 Coordinated Tabs with Brand Green)
+          ========================================================================= */}
+      <div className="absolute bottom-0 inset-x-0 h-16 bg-white/95 backdrop-blur-md border-t border-gray-200/80 px-2 flex items-center justify-around z-40">
+        {[
+          { id: 'dashboard' as BusinessAppScreen, label: 'Overview', icon: 'layout-dashboard' },
+          { id: 'settlements' as BusinessAppScreen, label: 'Payouts', icon: 'wallet' },
+          { id: 'menu' as BusinessAppScreen, label: 'Menu', icon: 'book-open' },
+          { id: 'stock' as BusinessAppScreen, label: 'Stock', icon: 'package' },
+          { id: 'analytics' as BusinessAppScreen, label: 'Insights', icon: 'bar-chart-3' },
+        ].map((tab) => {
+          const active = activeScreen === tab.id
+          return (
+            <button
+              key={tab.id}
+              onClick={() => interactive && setScreen(tab.id)}
+              className={`flex-1 py-1 flex flex-col items-center justify-center transition-all cursor-pointer ${
+                active ? 'text-[#028006] font-bold' : 'text-slate-400 hover:text-slate-700'
+              }`}
+            >
+              <div
+                className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
+                  active ? 'bg-emerald-50 text-[#028006]' : 'text-slate-400'
+                }`}
+              >
+                <Icon name={tab.icon} size={18} strokeWidth={2} />
+              </div>
+              <span
+                className={`text-[9px] mt-0.5 tracking-tight font-bold transition-colors ${
+                  active ? 'text-[#028006]' : 'text-slate-400'
+                }`}
+              >
+                {tab.label}
+              </span>
+              {active && <span className="w-4 h-0.5 rounded-full bg-[#028006] mt-0.5" />}
+            </button>
+          )
+        })}
       </div>
     </div>
   )
