@@ -2495,7 +2495,7 @@ function FAQ() {
   )
 }
 
-function FinalCTA() {
+function FinalCTA({ showCtaBanner = true }: { showCtaBanner?: boolean }) {
   const cols = [
     {
       h: 'Products',
@@ -2504,6 +2504,7 @@ function FinalCTA() {
         ['Kaaty KDS', '/products/kds'],
         ['Mobile App', '/products/mobile-app'],
         ['Business App', '/products/business-app'],
+        ['Vendor App', '/products/vendor-app'],
         ['QR Ordering', '/products/qr-ordering'],
         ['Self Kiosk', '/products/kiosk'],
       ],
@@ -2539,27 +2540,33 @@ function FinalCTA() {
     },
   ]
   return (
-    <footer className="relative overflow-hidden bg-navy-950 text-white">
+    <footer
+      className={`relative overflow-hidden bg-navy-950 text-white ${
+        !showCtaBanner ? 'border-t border-white/10' : ''
+      }`}
+    >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(255,107,0,.28),transparent_70%)]" />
       <div className="pointer-events-none absolute inset-0 dotgrid opacity-30" />
       <Container className="relative">
-        <div className="border-b border-white/10 py-20 text-center sm:py-24">
-          <Eyebrow className="mx-auto bg-white/10 text-kaaty-300 ring-white/10">
-            Get started
-          </Eyebrow>
-          <h2 className="mx-auto mt-5 max-w-3xl font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.06] tracking-[-.03em]">
-            Ready To Modernize Your <span className="gradient-text">Food Business?</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-navy-300">
-            Book your free custom demo today to minimize order friction, secure your revenue, and
-            transform customer satisfaction.
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button as="a" href="/demo?source=bottom_cta" size="lg" icon="arrow-right">
-              Book a Free Demo
-            </Button>
+        {showCtaBanner && (
+          <div className="border-b border-white/10 py-20 text-center sm:py-24">
+            <Eyebrow className="mx-auto bg-white/10 text-kaaty-300 ring-white/10">
+              Get started
+            </Eyebrow>
+            <h2 className="mx-auto mt-5 max-w-3xl font-display text-[clamp(2rem,4.6vw,3.4rem)] font-extrabold leading-[1.06] tracking-[-.03em]">
+              Ready To Modernize Your <span className="gradient-text">Food Business?</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-navy-300">
+              Book your free custom demo today to minimize order friction, secure your revenue, and
+              transform customer satisfaction.
+            </p>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button as="a" href="/demo?source=bottom_cta" size="lg" icon="arrow-right">
+                Book a Free Demo
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
         <div className="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="max-w-xs">
             <Logo light />
@@ -4390,12 +4397,18 @@ function App() {
     return () => clearTimeout(t)
   }, [pathname])
 
+  const cleanPath = pathname.replace(/\/$/, '') || '/'
+  // Only the home page relies on the global CTA banner above the footer.
+  // Dedicated product pages, solutions, integrations, and demo pages
+  // feature their own tailored contextual CTA section or interactive DemoForm.
+  const showGlobalCta = cleanPath === '/'
+
   return (
     <>
       <ScrollProgress />
       <Navbar />
       <main key={pathname}>{renderRoute(pathname)}</main>
-      <FinalCTA />
+      <FinalCTA showCtaBanner={showGlobalCta} />
     </>
   )
 }
